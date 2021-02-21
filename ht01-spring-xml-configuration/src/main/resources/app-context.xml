@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <bean id="questionAndAnswerDAO" class="ru.otus.kulygin.dao.impl.QuestionAndAnswerDAOImpl"/>
+
+    <bean id="studentDAO" class="ru.otus.kulygin.dao.impl.StudentDAOImpl"/>
+
+    <bean id="studentService" class="ru.otus.kulygin.service.impl.StudentServiceImpl">
+        <constructor-arg name="studentDAO" ref="studentDAO"/>
+    </bean>
+
+    <bean id="dataService" class="ru.otus.kulygin.service.impl.CsvFileDataServiceImpl">
+        <constructor-arg name="filename" value="data.csv"/>
+        <constructor-arg name="delimiter" value=";"/>
+        <constructor-arg name="questionAndAnswerDAO" ref="questionAndAnswerDAO"/>
+    </bean>
+
+    <bean id="testTimer" class="ru.otus.kulygin.aop.TestTimer"/>
+
+    <bean id="testingService" class="ru.otus.kulygin.service.impl.TestingServiceImpl">
+        <constructor-arg name="dataService" ref="dataService"/>
+        <constructor-arg name="studentService" ref="studentService"/>
+    </bean>
+
+    <aop:config>
+        <aop:aspect ref="testTimer">
+            <aop:pointcut id="doTest" expression="execution(* ru.otus.kulygin.service.impl.TestingServiceImpl.*(..))"/>
+
+            <aop:before pointcut-ref="doTest" method="before"/>
+
+            <aop:after pointcut-ref="doTest" method="after"/>
+        </aop:aspect>
+    </aop:config>
+</beans>

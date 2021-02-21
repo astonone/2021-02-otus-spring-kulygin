@@ -1,3 +1,9 @@
-# otus.ru/ courses: Spring Framework
+# Spring Framework, otus.ru courses
 
-student: Viktor Kulygin
+Group: spring-2021-02
+
+Student: Viktor Kulygin
+
+|Module|Task|
+--- | --- |
+|[ht01-spring-xml-configuration](https://github.com/astonone/spring-courses/tree/main/ht01-spring-xml-configuration)|Цель: ориентироваться в проектах Spring для дальнейшего изучения;применять принцип IoC при написании классов и тестов;создавать контекст Spring;определять Spring Beans в контексте;организовывать правильный DI.|
