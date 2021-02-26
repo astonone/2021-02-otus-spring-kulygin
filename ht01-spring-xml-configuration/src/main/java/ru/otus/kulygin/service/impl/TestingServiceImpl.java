@@ -1,51 +1,60 @@
 package ru.otus.kulygin.service.impl;
 
-import ru.otus.kulygin.domain.QuestionAndAnswer;
+import ru.otus.kulygin.domain.Question;
 import ru.otus.kulygin.domain.Student;
-import ru.otus.kulygin.service.DataService;
-import ru.otus.kulygin.service.StudentService;
+import ru.otus.kulygin.domain.TestResult;
+import ru.otus.kulygin.service.QuestionService;
+import ru.otus.kulygin.service.TestResultService;
 import ru.otus.kulygin.service.TestingService;
+import ru.otus.kulygin.service.UiService;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
 
 public class TestingServiceImpl implements TestingService {
 
-    private final DataService dataService;
-    private final StudentService studentService;
+    private final QuestionService questionService;
+    private final UiService uiService;
+    private final TestResultService testResultService;
 
-    public TestingServiceImpl(DataService dataService, StudentService studentService) {
-        this.dataService = dataService;
-        this.studentService = studentService;
+    public TestingServiceImpl(QuestionService questionService, UiService uiService, TestResultService testResultService) {
+        this.questionService = questionService;
+        this.uiService = uiService;
+        this.testResultService = testResultService;
     }
 
     @Override
-    public Student doTest(Student student) throws IOException {
-        System.out.println("Welcome: " + student.getFirstName() + " " + student.getLastName());
-        System.out.println("Testing started");
+    public TestResult doTest(Student student) {
+        studentWelcome(student);
 
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-
-        List<QuestionAndAnswer> questionsAndAnswers = dataService.getQuestionsAndAnswers();
-
+        List<Question> questionsAndAnswers = questionService.findAll();
+        TestResult testResult = new TestResult(student);
         int questionNumber = 1;
-        for (QuestionAndAnswer questionsAndAnswer : questionsAndAnswers) {
 
-            System.out.println(questionNumber + " question:");
-            System.out.println(questionsAndAnswer.getQuestion());
+        for (Question questionsAndAnswer : questionsAndAnswers) {
 
-            System.out.println("Enter your answer:");
-            String answer = bufferedReader.readLine();
+            uiService.out(questionNumber + " question:");
+            uiService.out(questionsAndAnswer.getQuestion());
+            uiService.out("Enter your answer:");
+
+            final String answer = uiService.in();
 
             if (answer.trim().equals(questionsAndAnswer.getAnswer())) {
-                studentService.increaseStudentMark(student);
+                testResult = testResultService.increaseStudentMark(testResult);
             }
 
             questionNumber++;
         }
-        System.out.println("Testing has been finished, your mark: " + student.getMark());
-        return student;
+        studentByeBye(testResult);
+        return testResult;
     }
+
+    private void studentWelcome(Student student) {
+        uiService.out("Welcome: " + student.getFirstName() + " " + student.getLastName());
+        uiService.out("Testing started");
+    }
+
+    private void studentByeBye(TestResult testResult) {
+        uiService.out("Testing has been finished, your mark: " + testResult.getMark());
+    }
+
 }

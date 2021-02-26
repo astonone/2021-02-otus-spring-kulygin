@@ -1,20 +1,13 @@
 package ru.otus.kulygin;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ru.otus.kulygin.domain.Student;
-import ru.otus.kulygin.service.StudentService;
-import ru.otus.kulygin.service.TestingService;
-
-import java.io.IOException;
+import ru.otus.kulygin.service.RunnerService;
 
 public class HT01SpringXmlConfiguration {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("app-context.xml");
 
-        TestingService testingService = applicationContext.getBean(TestingService.class);
-        StudentService studentService = applicationContext.getBean(StudentService.class);
-
-        Student student = studentService.initStudent();
-        testingService.doTest(student);
+        RunnerService runner = applicationContext.getBean(RunnerService.class);
+        runner.run();
     }
 }

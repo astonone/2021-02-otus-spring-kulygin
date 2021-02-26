@@ -1,33 +1,27 @@
 package ru.otus.kulygin.service.impl;
 
-import ru.otus.kulygin.dao.StudentDAO;
+import ru.otus.kulygin.dao.StudentDao;
 import ru.otus.kulygin.domain.Student;
 import ru.otus.kulygin.service.StudentService;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import ru.otus.kulygin.service.UiService;
 
 public class StudentServiceImpl implements StudentService {
 
-    private final StudentDAO studentDAO;
+    private final StudentDao studentDao;
+    private final UiService uiService;
 
-    public StudentServiceImpl(StudentDAO studentDAO) {
-        this.studentDAO = studentDAO;
+    public StudentServiceImpl(StudentDao studentDao, UiService uiService) {
+        this.studentDao = studentDao;
+        this.uiService = uiService;
     }
 
     @Override
-    public Student initStudent() throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Enter your firstname:");
-        String firstName = bufferedReader.readLine();
-        System.out.println("Enter your lastname:");
-        String lastName = bufferedReader.readLine();
-        return studentDAO.create(firstName, lastName);
+    public Student initStudent() {
+        uiService.out("Enter your firstname:");
+        String firstName = uiService.in();
+        uiService.out("Enter your lastname:");
+        String lastName = uiService.in();
+        return studentDao.create(new Student(firstName, lastName));
     }
 
-    @Override
-    public void increaseStudentMark(Student student) {
-        studentDAO.increaseMark(student);
-    }
 }
