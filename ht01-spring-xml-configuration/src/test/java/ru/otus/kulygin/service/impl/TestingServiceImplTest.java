@@ -3,7 +3,6 @@ package ru.otus.kulygin.service.impl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.otus.kulygin.dao.impl.TestResultDaoImpl;
 import ru.otus.kulygin.domain.Question;
 import ru.otus.kulygin.domain.Student;
 import ru.otus.kulygin.domain.TestResult;
@@ -16,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -25,12 +25,13 @@ class TestingServiceImplTest {
     private static TestingService testingService;
     private static UiService uiService;
     private static QuestionService questionService;
+    private static TestResultService testResultService;
 
     @BeforeAll
     public static void init() {
         uiService = mock(UiService.class);
         questionService = mock(QuestionService.class);
-        TestResultService testResultService = new TestResultServiceImpl(new TestResultDaoImpl());
+        testResultService = mock(TestResultService.class);
         testingService = new TestingServiceImpl(questionService, uiService, testResultService);
     }
 
@@ -51,6 +52,12 @@ class TestingServiceImplTest {
                 .thenAnswer(a -> "2")
                 .thenAnswer(a -> "5")
                 .thenAnswer(a -> "7");
+        when(testResultService.increaseStudentMark(any()))
+                .thenAnswer(invocationOnMock -> {
+                    final TestResult argument = invocationOnMock.getArgument(0, TestResult.class);
+                    argument.setMark(argument.getMark() + 1);
+                    return argument;
+                });
 
         final TestResult testResult = testingService.doTest(student);
 
