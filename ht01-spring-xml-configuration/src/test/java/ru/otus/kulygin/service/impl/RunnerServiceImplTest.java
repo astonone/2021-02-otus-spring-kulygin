@@ -4,10 +4,15 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.otus.kulygin.domain.Student;
+import ru.otus.kulygin.exception.UserInputException;
 import ru.otus.kulygin.service.RunnerService;
 import ru.otus.kulygin.service.StudentService;
 import ru.otus.kulygin.service.TestingService;
 
+import java.io.IOException;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @DisplayName(value = "RunnerServiceImpl should ")
@@ -34,5 +39,14 @@ class RunnerServiceImplTest {
 
         verify(studentService).initStudent();
         verify(testingService).doTest(student);
+    }
+
+    @Test
+    @DisplayName(value = "not run testing process because student was not initialized")
+    void shouldNotRun_studentInitError() {
+        when(studentService.initStudent()).thenThrow(new UserInputException(new IOException("Houston!we have a problem!")));
+        Throwable throwable = assertThrows(UserInputException.class, () -> runnerService.run());
+
+        assertThat(throwable.getMessage()).isEqualTo("java.io.IOException: Houston!we have a problem!");
     }
 }

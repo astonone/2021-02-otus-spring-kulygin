@@ -4,10 +4,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.otus.kulygin.dao.QuestionDao;
+import ru.otus.kulygin.exception.QuestionsLoadingException;
 import ru.otus.kulygin.service.QuestionService;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 @DisplayName(value = "QuestionServiceImpl should ")
 class QuestionServiceImplTest {
@@ -27,5 +29,14 @@ class QuestionServiceImplTest {
         questionService.findAll();
 
         verify(questionDao).findAll();
+    }
+
+    @Test
+    @DisplayName(value = "not find all questions")
+    void shouldNotFindAll() {
+        when(questionDao.findAll()).thenThrow(new QuestionsLoadingException("lalalal!"));
+        Throwable throwable = assertThrows(QuestionsLoadingException.class, () -> questionService.findAll());
+
+        assertThat(throwable.getMessage()).isEqualTo("lalalal!");
     }
 }
