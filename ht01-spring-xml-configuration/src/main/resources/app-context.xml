@@ -11,8 +11,6 @@
 
     <bean id="studentDao" class="ru.otus.kulygin.dao.impl.StudentDaoImpl"/>
 
-    <bean id="testResultDao" class="ru.otus.kulygin.dao.impl.TestResultDaoImpl"/>
-
     <!--service layer-->
     <bean id="uiService" class="ru.otus.kulygin.service.impl.UiServiceImpl">
         <constructor-arg name="input" value="#{T(java.lang.System).in}"/>
@@ -28,14 +26,9 @@
         <constructor-arg name="questionDao" ref="questionDao"/>
     </bean>
 
-    <bean id="testResultService" class="ru.otus.kulygin.service.impl.TestResultServiceImpl">
-        <constructor-arg name="testResultDao" ref="testResultDao"/>
-    </bean>
-
     <bean id="testingService" class="ru.otus.kulygin.service.impl.TestingServiceImpl">
         <constructor-arg name="questionService" ref="questionService"/>
         <constructor-arg name="uiService" ref="uiService"/>
-        <constructor-arg name="testResultService" ref="testResultService"/>
     </bean>
 
     <bean id="runnerService" class="ru.otus.kulygin.service.impl.RunnerServiceImpl">

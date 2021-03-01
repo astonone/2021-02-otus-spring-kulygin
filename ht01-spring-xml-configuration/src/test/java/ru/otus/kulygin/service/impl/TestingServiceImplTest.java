@@ -9,7 +9,6 @@ import ru.otus.kulygin.domain.TestResult;
 import ru.otus.kulygin.exception.QuestionsLoadingException;
 import ru.otus.kulygin.exception.UserInputException;
 import ru.otus.kulygin.service.QuestionService;
-import ru.otus.kulygin.service.TestResultService;
 import ru.otus.kulygin.service.TestingService;
 import ru.otus.kulygin.service.UiService;
 
@@ -19,7 +18,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -29,14 +27,12 @@ class TestingServiceImplTest {
     private TestingService testingService;
     private UiService uiService;
     private QuestionService questionService;
-    private TestResultService testResultService;
 
     @BeforeEach
     public void init() {
         uiService = mock(UiService.class);
         questionService = mock(QuestionService.class);
-        testResultService = mock(TestResultService.class);
-        testingService = new TestingServiceImpl(questionService, uiService, testResultService);
+        testingService = new TestingServiceImpl(questionService, uiService);
     }
 
     @Test
@@ -56,12 +52,6 @@ class TestingServiceImplTest {
                 .thenAnswer(a -> "2")
                 .thenAnswer(a -> "5")
                 .thenAnswer(a -> "7");
-        when(testResultService.increaseStudentMark(any()))
-                .thenAnswer(invocationOnMock -> {
-                    final TestResult argument = invocationOnMock.getArgument(0, TestResult.class);
-                    argument.setMark(argument.getMark() + 1);
-                    return argument;
-                });
 
         final TestResult testResult = testingService.doTest(student);
 
@@ -92,7 +82,7 @@ class TestingServiceImplTest {
     @DisplayName(value = "start testing process with loading questions error")
     void shouldNotDoTest_loadingQuestionsError() {
         final Student student = new Student("Ivan", "Ivanov");
-        when(questionService.findAll()).thenThrow(new QuestionsLoadingException("Data file was stolen by thief"));
+        when(questionService.findAll()).thenThrow(new QuestionsLoadingException("Data file was stolen by thief", new IOException()));
 
         Throwable throwable = assertThrows(QuestionsLoadingException.class, () -> testingService.doTest(student));
 

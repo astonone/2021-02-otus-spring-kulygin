@@ -7,6 +7,8 @@ import ru.otus.kulygin.dao.QuestionDao;
 import ru.otus.kulygin.exception.QuestionsLoadingException;
 import ru.otus.kulygin.service.QuestionService;
 
+import java.io.IOException;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -34,7 +36,7 @@ class QuestionServiceImplTest {
     @Test
     @DisplayName(value = "not find all questions")
     void shouldNotFindAll() {
-        when(questionDao.findAll()).thenThrow(new QuestionsLoadingException("lalalal!"));
+        when(questionDao.findAll()).thenThrow(new QuestionsLoadingException("lalalal!", new IOException()));
         Throwable throwable = assertThrows(QuestionsLoadingException.class, () -> questionService.findAll());
 
         assertThat(throwable.getMessage()).isEqualTo("lalalal!");

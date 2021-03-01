@@ -24,6 +24,10 @@ public class TestResult {
         this.mark = mark;
     }
 
+    public void increaseStudentMark() {
+        this.mark++;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

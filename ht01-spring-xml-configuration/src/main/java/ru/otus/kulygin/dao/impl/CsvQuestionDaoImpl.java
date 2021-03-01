@@ -31,25 +31,15 @@ public class CsvQuestionDaoImpl implements QuestionDao {
     private List<Question> loadQuestionsFromCsvFile() {
         final InputStream inputStream = getQuestionsInputStream();
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         List<String> questionAndAnswerString = new ArrayList<>();
-        String str;
 
-        while (true) {
-            try {
-                if ((str = reader.readLine()) == null) {
-                    break;
-                }
-            } catch (IOException e) {
-                throw new QuestionsLoadingException("Problems with loading questions data");
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            String str;
+            while ((str = reader.readLine()) != null) {
+                questionAndAnswerString.add(str);
             }
-            questionAndAnswerString.add(str);
-        }
-
-        try {
-            inputStream.close();
         } catch (IOException e) {
-            throw new QuestionsLoadingException("Problems with closing questions data file");
+            throw new QuestionsLoadingException("Problems with loading questions data", e);
         }
 
         return questionAndAnswerString.stream().map(line -> {
@@ -57,7 +47,7 @@ public class CsvQuestionDaoImpl implements QuestionDao {
                 String[] questionAndAnswer = line.split(this.delimiter);
                 return new Question(questionAndAnswer[0], questionAndAnswer[1]);
             } catch (Exception e) {
-                throw new QuestionsLoadingException("Incorrect data structure in csv file");
+                throw new QuestionsLoadingException("Incorrect data structure in csv file", e);
             }
         }).collect(Collectors.toList());
     }
@@ -66,7 +56,7 @@ public class CsvQuestionDaoImpl implements QuestionDao {
         try {
             return new ClassPathResource(this.filename).getInputStream();
         } catch (IOException e) {
-            throw new QuestionsLoadingException("Csv data file has not found");
+            throw new QuestionsLoadingException("Csv data file has not found", e);
         }
     }
 

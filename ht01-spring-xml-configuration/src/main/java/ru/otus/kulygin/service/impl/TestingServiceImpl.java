@@ -4,7 +4,6 @@ import ru.otus.kulygin.domain.Question;
 import ru.otus.kulygin.domain.Student;
 import ru.otus.kulygin.domain.TestResult;
 import ru.otus.kulygin.service.QuestionService;
-import ru.otus.kulygin.service.TestResultService;
 import ru.otus.kulygin.service.TestingService;
 import ru.otus.kulygin.service.UiService;
 
@@ -14,12 +13,10 @@ public class TestingServiceImpl implements TestingService {
 
     private final QuestionService questionService;
     private final UiService uiService;
-    private final TestResultService testResultService;
 
-    public TestingServiceImpl(QuestionService questionService, UiService uiService, TestResultService testResultService) {
+    public TestingServiceImpl(QuestionService questionService, UiService uiService) {
         this.questionService = questionService;
         this.uiService = uiService;
-        this.testResultService = testResultService;
     }
 
     @Override
@@ -32,15 +29,9 @@ public class TestingServiceImpl implements TestingService {
 
         for (Question questionsAndAnswer : questionsAndAnswers) {
 
-            uiService.out(questionNumber + " question:");
-            uiService.out(questionsAndAnswer.getQuestion());
-            uiService.out("Enter your answer:");
-
-            final String answer = uiService.in();
-
-            if (answer.trim().equals(questionsAndAnswer.getAnswer())) {
-                testResult = testResultService.increaseStudentMark(testResult);
-            }
+            askStudent(questionNumber, questionsAndAnswer);
+            final String answer = getStudentAnswer();
+            testResult = increaseStudentMarkIfCorrectAnswer(testResult, questionsAndAnswer, answer);
 
             questionNumber++;
         }
@@ -51,6 +42,23 @@ public class TestingServiceImpl implements TestingService {
     private void studentWelcome(Student student) {
         uiService.out("Welcome: " + student.getFirstName() + " " + student.getLastName());
         uiService.out("Testing started");
+    }
+
+    private void askStudent(int questionNumber, Question questionsAndAnswer) {
+        uiService.out(questionNumber + " question:");
+        uiService.out(questionsAndAnswer.getQuestion());
+        uiService.out("Enter your answer:");
+    }
+
+    private String getStudentAnswer() {
+        return uiService.in();
+    }
+
+    private TestResult increaseStudentMarkIfCorrectAnswer(TestResult testResult, Question questionsAndAnswer, String answer) {
+        if (answer.trim().equals(questionsAndAnswer.getAnswer())) {
+            testResult.increaseStudentMark();
+        }
+        return testResult;
     }
 
     private void studentByeBye(TestResult testResult) {
