@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--dao layer-->
+    <bean id="questionDao" class="ru.otus.kulygin.dao.impl.CsvQuestionDaoImpl">
+        <constructor-arg name="filename" value="data.csv"/>
+        <constructor-arg name="delimiter" value=";"/>
+    </bean>
+
+    <bean id="studentDao" class="ru.otus.kulygin.dao.impl.StudentDaoImpl"/>
+
+    <!--service layer-->
+    <bean id="uiService" class="ru.otus.kulygin.service.impl.UiServiceImpl">
+        <constructor-arg name="input" value="#{T(java.lang.System).in}"/>
+        <constructor-arg name="output" value="#{T(java.lang.System).out}"/>
+    </bean>
+
+    <bean id="studentService" class="ru.otus.kulygin.service.impl.StudentServiceImpl">
+        <constructor-arg name="studentDao" ref="studentDao"/>
+        <constructor-arg name="uiService" ref="uiService"/>
+    </bean>
+
+    <bean id="questionService" class="ru.otus.kulygin.service.impl.QuestionServiceImpl">
+        <constructor-arg name="questionDao" ref="questionDao"/>
+    </bean>
+
+    <bean id="testingService" class="ru.otus.kulygin.service.impl.TestingServiceImpl">
+        <constructor-arg name="questionService" ref="questionService"/>
+        <constructor-arg name="uiService" ref="uiService"/>
+    </bean>
+
+    <bean id="runnerService" class="ru.otus.kulygin.service.impl.RunnerServiceImpl">
+        <constructor-arg name="studentService" ref="studentService"/>
+        <constructor-arg name="testingService" ref="testingService"/>
+    </bean>
+
+    <!--aspect-->
+    <bean id="testTimer" class="ru.otus.kulygin.aop.TestTimer"/>
+
+    <aop:config>
+        <aop:aspect ref="testTimer">
+            <aop:pointcut id="doTest" expression="execution(* ru.otus.kulygin.service.impl.TestingServiceImpl.*(..))"/>
+
+            <aop:before pointcut-ref="doTest" method="before"/>
+
+            <aop:after pointcut-ref="doTest" method="after"/>
+        </aop:aspect>
+    </aop:config>
+</beans>
