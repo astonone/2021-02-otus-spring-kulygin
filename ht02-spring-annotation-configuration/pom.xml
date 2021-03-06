@@ -89,7 +89,7 @@
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>libs/</classpathPrefix>
                             <mainClass>
-                                ru.otus.kulygin.HT01SpringXmlConfiguration
+                                ru.otus.kulygin.HT02SpringAnnotationConfiguration
                             </mainClass>
                         </manifest>
                     </archive>
