@@ -1,18 +1,16 @@
-package kulygin.service.impl;
+package ru.otus.kulygin.service.impl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.MessageSource;
 import ru.otus.kulygin.dao.StudentDao;
 import ru.otus.kulygin.domain.Student;
 import ru.otus.kulygin.exception.UserInputException;
+import ru.otus.kulygin.service.LocaleService;
 import ru.otus.kulygin.service.StudentService;
 import ru.otus.kulygin.service.UiService;
-import ru.otus.kulygin.service.impl.StudentServiceImpl;
 
 import java.io.IOException;
-import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -24,16 +22,14 @@ class StudentServiceImplTest {
     private StudentService studentService;
     private StudentDao studentDao;
     private UiService uiService;
-    private MessageSource messageSource;
-    private Locale locale;
+    private LocaleService localeService;
 
     @BeforeEach
     public void init() {
         uiService = mock(UiService.class);
         studentDao = mock(StudentDao.class);
-        messageSource = mock(MessageSource.class);
-        locale = mock(Locale.class);
-        studentService = new StudentServiceImpl(studentDao, uiService, messageSource, locale);
+        localeService = mock(LocaleService.class);
+        studentService = new StudentServiceImpl(studentDao, uiService, localeService);
     }
 
     @Test
@@ -41,7 +37,7 @@ class StudentServiceImplTest {
     void shouldInitStudent() {
         uiService = mock(UiService.class);
         studentDao = mock(StudentDao.class);
-        studentService = new StudentServiceImpl(studentDao, uiService, messageSource, locale);
+        studentService = new StudentServiceImpl(studentDao, uiService, localeService);
 
         final Student student = new Student("Ivan", "Ivanov");
         when(uiService.in()).thenAnswer(a -> "Ivan").thenAnswer(a -> "Ivanov");

@@ -8,13 +8,13 @@ import ru.otus.kulygin.service.UiService;
 import java.io.*;
 
 @Service
-public class UiServiceImpl implements UiService {
+public class ConsoleUiServiceImpl implements UiService {
 
     private final InputStream input;
     private final PrintStream output;
 
-    public UiServiceImpl(@Value("#{ T(java.lang.System).in }") InputStream input,
-                         @Value("#{ T(java.lang.System).out }") PrintStream output) {
+    public ConsoleUiServiceImpl(@Value("#{ T(java.lang.System).in }") InputStream input,
+                                @Value("#{ T(java.lang.System).out }") PrintStream output) {
         this.input = input;
         this.output = output;
     }

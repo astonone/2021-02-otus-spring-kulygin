@@ -1,9 +1,7 @@
-package kulygin.domain;
+package ru.otus.kulygin.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.otus.kulygin.domain.Student;
-import ru.otus.kulygin.domain.TestResult;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

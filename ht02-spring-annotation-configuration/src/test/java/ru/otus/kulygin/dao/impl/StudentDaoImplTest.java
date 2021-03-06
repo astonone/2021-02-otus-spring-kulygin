@@ -1,9 +1,8 @@
-package kulygin.dao.impl;
+package ru.otus.kulygin.dao.impl;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.otus.kulygin.dao.StudentDao;
-import ru.otus.kulygin.dao.impl.StudentDaoImpl;
 import ru.otus.kulygin.domain.Student;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;

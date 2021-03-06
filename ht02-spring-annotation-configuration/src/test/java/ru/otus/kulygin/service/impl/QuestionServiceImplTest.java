@@ -1,4 +1,4 @@
-package kulygin.service.impl;
+package ru.otus.kulygin.service.impl;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import ru.otus.kulygin.dao.QuestionDao;
 import ru.otus.kulygin.exception.QuestionsLoadingException;
 import ru.otus.kulygin.service.QuestionService;
-import ru.otus.kulygin.service.impl.QuestionServiceImpl;
 
 import java.io.IOException;
 

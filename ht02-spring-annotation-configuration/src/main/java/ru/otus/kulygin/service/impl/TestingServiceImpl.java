@@ -1,34 +1,30 @@
 package ru.otus.kulygin.service.impl;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import ru.otus.kulygin.domain.Question;
 import ru.otus.kulygin.domain.Student;
 import ru.otus.kulygin.domain.TestResult;
+import ru.otus.kulygin.service.LocaleService;
 import ru.otus.kulygin.service.QuestionService;
 import ru.otus.kulygin.service.TestingService;
 import ru.otus.kulygin.service.UiService;
 
 import java.util.List;
-import java.util.Locale;
 
 @Service
 public class TestingServiceImpl implements TestingService {
 
     private final QuestionService questionService;
     private final UiService uiService;
-    private final MessageSource messageSource;
-    private final Locale locale;
+    private final LocaleService localeService;
     private final int markForPass;
 
-    public TestingServiceImpl(QuestionService questionService, UiService uiService, MessageSource messageSource,
-                              @Value("${app.locale}") Locale locale,
+    public TestingServiceImpl(QuestionService questionService, UiService uiService, LocaleService localeService,
                               @Value("${test.mark.pass}") int markForPass) {
         this.questionService = questionService;
         this.uiService = uiService;
-        this.messageSource = messageSource;
-        this.locale = locale;
+        this.localeService = localeService;
         this.markForPass = markForPass;
     }
 
@@ -53,14 +49,14 @@ public class TestingServiceImpl implements TestingService {
     }
 
     private void studentWelcome(Student student) {
-        uiService.out(messageSource.getMessage("testing.welcome", null, locale) + student.getFirstName() + " " + student.getLastName());
-        uiService.out(messageSource.getMessage("testing.start", null, locale));
+        uiService.out(localeService.getLocalizedString("testing.welcome") + student.getFirstName() + " " + student.getLastName());
+        uiService.out(localeService.getLocalizedString(("testing.start")));
     }
 
     private void askStudent(int questionNumber, Question questionsAndAnswer) {
-        uiService.out(questionNumber + " " + messageSource.getMessage("testing.question", null, locale));
+        uiService.out(questionNumber + " " + localeService.getLocalizedString("testing.question"));
         uiService.out(questionsAndAnswer.getQuestion());
-        uiService.out(messageSource.getMessage("testing.answer", null, locale));
+        uiService.out(localeService.getLocalizedString("testing.answer"));
     }
 
     private String getStudentAnswer() {
@@ -75,16 +71,16 @@ public class TestingServiceImpl implements TestingService {
     }
 
     private void studentByeBye(TestResult testResult) {
-        uiService.out(messageSource.getMessage("testing.finish", null, locale) + testResult.getMark());
+        uiService.out(localeService.getLocalizedString("testing.finish") + testResult.getMark());
 
         checkTestResult(testResult);
     }
 
     private void checkTestResult(TestResult testResult) {
         if (testResult.getMark() >= markForPass) {
-            uiService.out(messageSource.getMessage("testing.pass", null, locale));
+            uiService.out(localeService.getLocalizedString("testing.pass"));
         } else {
-            uiService.out(messageSource.getMessage("testing.notpass", null, locale));
+            uiService.out(localeService.getLocalizedString("testing.notpass"));
         }
     }
 

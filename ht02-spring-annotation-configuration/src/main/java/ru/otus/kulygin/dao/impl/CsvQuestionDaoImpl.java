@@ -20,12 +20,10 @@ public class CsvQuestionDaoImpl implements QuestionDao {
 
     private final String path;
     private final String delimiter;
-    private final String locale;
 
-    public CsvQuestionDaoImpl(@Value("${test.file.path}") String path, @Value("${test.file.delimiter}") String delimiter, @Value("${app.locale}") String locale) {
+    public CsvQuestionDaoImpl(@Value("${test.file.path}") String path, @Value("${test.file.delimiter}") String delimiter) {
         this.path = path;
         this.delimiter = delimiter;
-        this.locale = locale;
     }
 
     @Override
@@ -59,14 +57,9 @@ public class CsvQuestionDaoImpl implements QuestionDao {
 
     private InputStream getQuestionsInputStream() {
         try {
-            return new ClassPathResource(getPathToFile()).getInputStream();
+            return new ClassPathResource(path).getInputStream();
         } catch (IOException e) {
             throw new QuestionsLoadingException("Csv data file has not found", e);
         }
     }
-
-    private String getPathToFile() {
-        return path + "/" + locale.toLowerCase() + ".csv";
-    }
-
 }

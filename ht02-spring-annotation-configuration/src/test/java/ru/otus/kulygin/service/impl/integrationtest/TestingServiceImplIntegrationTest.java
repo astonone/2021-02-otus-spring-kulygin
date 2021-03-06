@@ -1,4 +1,4 @@
-package kulygin.service.impl.integrationtest;
+package ru.otus.kulygin.service.impl.integrationtest;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -7,9 +7,11 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import ru.otus.kulygin.dao.impl.CsvQuestionDaoImpl;
 import ru.otus.kulygin.domain.Student;
 import ru.otus.kulygin.domain.TestResult;
+import ru.otus.kulygin.service.LocaleService;
 import ru.otus.kulygin.service.QuestionService;
 import ru.otus.kulygin.service.TestingService;
 import ru.otus.kulygin.service.UiService;
+import ru.otus.kulygin.service.impl.LocaleServiceImpl;
 import ru.otus.kulygin.service.impl.QuestionServiceImpl;
 import ru.otus.kulygin.service.impl.TestingServiceImpl;
 
@@ -26,8 +28,9 @@ public class TestingServiceImplIntegrationTest {
     @BeforeEach
     public void init() {
         uiService = mock(UiService.class);
-        QuestionService questionService = new QuestionServiceImpl(new CsvQuestionDaoImpl("integration-test-data", ";", "en"));
-        testingService = new TestingServiceImpl(questionService, uiService, createMessageSource(), Locale.ENGLISH, 4);
+        QuestionService questionService = new QuestionServiceImpl(new CsvQuestionDaoImpl("integration-test-data/en.csv", ";"));
+        LocaleService localeService = new LocaleServiceImpl(createMessageSource(), Locale.ENGLISH);
+        testingService = new TestingServiceImpl(questionService, uiService, localeService, 4);
     }
 
     public ResourceBundleMessageSource createMessageSource() {

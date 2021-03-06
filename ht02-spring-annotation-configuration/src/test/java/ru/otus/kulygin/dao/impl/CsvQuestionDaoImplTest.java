@@ -1,9 +1,8 @@
-package kulygin.dao.impl;
+package ru.otus.kulygin.dao.impl;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.otus.kulygin.dao.QuestionDao;
-import ru.otus.kulygin.dao.impl.CsvQuestionDaoImpl;
 import ru.otus.kulygin.domain.Question;
 import ru.otus.kulygin.exception.QuestionsLoadingException;
 
@@ -15,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @DisplayName(value = "CsvQuestionDao should ")
 class CsvQuestionDaoImplTest {
 
-    private QuestionDao questionDao = new CsvQuestionDaoImpl("data", ";", "en");
+    private QuestionDao questionDao = new CsvQuestionDaoImpl("data/en.csv", ";");
 
     @Test
     @DisplayName(value = "get list with questions and answers for english locale")
@@ -32,7 +31,7 @@ class CsvQuestionDaoImplTest {
     @Test
     @DisplayName(value = "get list with questions and answers for russian locale")
     public void shouldFindQuestions_ruLocale() {
-        questionDao = new CsvQuestionDaoImpl("data", ";", "ru");
+        questionDao = new CsvQuestionDaoImpl("data/ru.csv", ";");
         final List<Question> questions = questionDao.findAll();
 
         assertThat(questions).hasSize(2);
@@ -45,7 +44,7 @@ class CsvQuestionDaoImplTest {
     @Test
     @DisplayName(value = "throw exception when file has not exists")
     public void shouldThrowExceptionWhenFileHasNotExists() {
-        questionDao = new CsvQuestionDaoImpl("lala", ";", "en");
+        questionDao = new CsvQuestionDaoImpl("lala/en.csv", ";");
         Throwable throwable = assertThrows(QuestionsLoadingException.class, () -> questionDao.findAll());
 
         assertThat(throwable.getMessage()).isEqualTo("Csv data file has not found");
@@ -54,7 +53,7 @@ class CsvQuestionDaoImplTest {
     @Test
     @DisplayName(value = "throw exception when delimiter is incorrect")
     public void shouldThrowExceptionWhenDelimiterIsIncorrect() {
-        questionDao = new CsvQuestionDaoImpl("data", "!", "en");
+        questionDao = new CsvQuestionDaoImpl("data/en.csv", "!");
         Throwable throwable = assertThrows(QuestionsLoadingException.class, () -> questionDao.findAll());
 
         assertThat(throwable.getMessage()).isEqualTo("Incorrect data structure in csv file");

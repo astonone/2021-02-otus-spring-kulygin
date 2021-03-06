@@ -1,23 +1,21 @@
-package kulygin.service.impl;
+package ru.otus.kulygin.service.impl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.MessageSource;
 import ru.otus.kulygin.domain.Question;
 import ru.otus.kulygin.domain.Student;
 import ru.otus.kulygin.domain.TestResult;
 import ru.otus.kulygin.exception.QuestionsLoadingException;
 import ru.otus.kulygin.exception.UserInputException;
+import ru.otus.kulygin.service.LocaleService;
 import ru.otus.kulygin.service.QuestionService;
 import ru.otus.kulygin.service.TestingService;
 import ru.otus.kulygin.service.UiService;
-import ru.otus.kulygin.service.impl.TestingServiceImpl;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -29,16 +27,14 @@ class TestingServiceImplTest {
     private TestingService testingService;
     private UiService uiService;
     private QuestionService questionService;
-    private MessageSource messageSource;
-    private Locale locale;
+    private LocaleService localeService;
 
     @BeforeEach
     public void init() {
         uiService = mock(UiService.class);
         questionService = mock(QuestionService.class);
-        messageSource = mock(MessageSource.class);
-        locale = mock(Locale.class);
-        testingService = new TestingServiceImpl(questionService, uiService, messageSource, locale, 3);
+        localeService = mock(LocaleService.class);
+        testingService = new TestingServiceImpl(questionService, uiService, localeService, 3);
     }
 
     @Test
@@ -59,7 +55,7 @@ class TestingServiceImplTest {
                 .thenAnswer(a -> "5")
                 .thenAnswer(a -> "7");
 
-        when(messageSource.getMessage("testing.pass", null, locale)).thenReturn("Test passed");
+        when(localeService.getLocalizedString("testing.pass")).thenReturn("Test passed");
 
         final TestResult testResult = testingService.doTest(student);
 
@@ -72,7 +68,7 @@ class TestingServiceImplTest {
     @Test
     @DisplayName(value = "start testing process and successfully finish it and not pass it")
     void shouldDoTestAndNotPassIt() {
-        testingService = new TestingServiceImpl(questionService, uiService, messageSource, locale, 5);
+        testingService = new TestingServiceImpl(questionService, uiService, localeService, 5);
         final Student student = new Student("Ivan", "Ivanov");
         List<Question> questionsAndAnswers = new ArrayList<>();
         questionsAndAnswers.add(new Question("How much 2+2?", "4"));
@@ -88,7 +84,7 @@ class TestingServiceImplTest {
                 .thenAnswer(a -> "5")
                 .thenAnswer(a -> "7");
 
-        when(messageSource.getMessage("testing.notpass", null, locale)).thenReturn("Test was not passed");
+        when(localeService.getLocalizedString("testing.notpass")).thenReturn("Test was not passed");
 
         final TestResult testResult = testingService.doTest(student);
 
