@@ -1,0 +1,9 @@
+app:
+  locale: en
+
+test:
+  file:
+    delimiter: ;
+    path: data/${app.locale}.csv
+  mark:
+    pass: 3
