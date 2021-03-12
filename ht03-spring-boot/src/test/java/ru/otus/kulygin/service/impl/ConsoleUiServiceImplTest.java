@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.otus.kulygin.exception.UserInputException;
+import ru.otus.kulygin.provider.UserIOProvider;
 import ru.otus.kulygin.service.UiService;
 
 import java.io.InputStream;
@@ -17,8 +18,7 @@ import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @DisplayName(value = "UiServiceImpl should ")
@@ -28,25 +28,25 @@ class ConsoleUiServiceImplTest {
     @Configuration
     static class NestedConfiguration {
         @Bean
-        PrintStream printStream() {
-            return mock(PrintStream.class);
+        UserIOProvider userIOProvider() {
+            return mock(UserIOProvider.class);
         }
 
         @Bean
         UiService uiService() {
-            return new ConsoleUiServiceImpl(mock(InputStream.class), printStream());
+            return new ConsoleUiServiceImpl(userIOProvider());
         }
     }
 
     @Autowired
     private UiService uiService;
     @Autowired
-    private PrintStream out;
+    private UserIOProvider userIOProvider;
 
     @Test
-    @DisplayName(value = "not get user in")
+    @DisplayName(value = "get user in")
     void shouldIn() {
-        uiService = new ConsoleUiServiceImpl(IOUtils.toInputStream("Hello", StandardCharsets.UTF_8), out);
+        when(userIOProvider.getInput()).thenReturn(IOUtils.toInputStream("Hello", StandardCharsets.UTF_8));
 
         final String result = uiService.in();
 
@@ -54,8 +54,10 @@ class ConsoleUiServiceImplTest {
     }
 
     @Test
-    @DisplayName(value = "get user in")
+    @DisplayName(value = "not get user in")
     void shouldNotIn() {
+        when(userIOProvider.getInput()).thenReturn(mock(InputStream.class));
+
         Throwable throwable = assertThrows(UserInputException.class, () -> uiService.in());
 
         assertThat(throwable.getMessage()).isNotEmpty().isEqualTo("java.io.IOException: Underlying input stream returned zero bytes");
@@ -64,8 +66,10 @@ class ConsoleUiServiceImplTest {
     @Test
     @DisplayName(value = "create out for user")
     void shouldOut() {
+        when(userIOProvider.getOutput()).thenReturn(mock(PrintStream.class));
+
         uiService.out("Test");
 
-        verify(out).println("Test");
+        verify(userIOProvider.getOutput()).println("Test");
     }
 }

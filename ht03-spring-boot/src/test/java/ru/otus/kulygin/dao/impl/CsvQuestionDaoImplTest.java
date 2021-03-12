@@ -10,11 +10,14 @@ import org.springframework.test.annotation.DirtiesContext;
 import ru.otus.kulygin.dao.QuestionDao;
 import ru.otus.kulygin.domain.Question;
 import ru.otus.kulygin.exception.QuestionsLoadingException;
+import ru.otus.kulygin.provider.CsvResourceProvider;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @DisplayName(value = "CsvQuestionDao should ")
@@ -24,17 +27,28 @@ class CsvQuestionDaoImplTest {
     @Configuration
     static class NestedConfiguration {
         @Bean
+        CsvResourceProvider csvResourceProvider() {
+            return mock(CsvResourceProvider.class);
+        }
+
+        @Bean
         QuestionDao questionDao() {
-            return new CsvQuestionDaoImpl("data/en.csv", ";");
+            return new CsvQuestionDaoImpl(csvResourceProvider());
         }
     }
 
     @Autowired
     private QuestionDao questionDao;
 
+    @Autowired
+    private CsvResourceProvider csvResourceProvider;
+
     @Test
     @DisplayName(value = "get list with questions and answers for english locale")
     public void shouldFindQuestions_enLocale() {
+        when(csvResourceProvider.getPath()).thenReturn("data/en.csv");
+        when(csvResourceProvider.getDelimiter()).thenReturn(";");
+
         final List<Question> questions = questionDao.findAll();
 
         assertThat(questions).hasSize(2);
@@ -47,7 +61,9 @@ class CsvQuestionDaoImplTest {
     @Test
     @DisplayName(value = "get list with questions and answers for russian locale")
     public void shouldFindQuestions_ruLocale() {
-        questionDao = new CsvQuestionDaoImpl("data/ru.csv", ";");
+        when(csvResourceProvider.getPath()).thenReturn("data/ru.csv");
+        when(csvResourceProvider.getDelimiter()).thenReturn(";");
+
         final List<Question> questions = questionDao.findAll();
 
         assertThat(questions).hasSize(2);
@@ -60,7 +76,9 @@ class CsvQuestionDaoImplTest {
     @Test
     @DisplayName(value = "get list with questions and answers for estonian locale")
     public void shouldFindQuestions_etLocale() {
-        questionDao = new CsvQuestionDaoImpl("data/et.csv", ";");
+        when(csvResourceProvider.getPath()).thenReturn("data/et.csv");
+        when(csvResourceProvider.getDelimiter()).thenReturn(";");
+
         final List<Question> questions = questionDao.findAll();
 
         assertThat(questions).hasSize(2);
@@ -73,7 +91,9 @@ class CsvQuestionDaoImplTest {
     @Test
     @DisplayName(value = "throw exception when file has not exists")
     public void shouldThrowExceptionWhenFileHasNotExists() {
-        questionDao = new CsvQuestionDaoImpl("lala/en.csv", ";");
+        when(csvResourceProvider.getPath()).thenReturn("lala/en.csv");
+        when(csvResourceProvider.getDelimiter()).thenReturn(";");
+
         Throwable throwable = assertThrows(QuestionsLoadingException.class, () -> questionDao.findAll());
 
         assertThat(throwable.getMessage()).isEqualTo("Csv data file has not found");
@@ -82,9 +102,12 @@ class CsvQuestionDaoImplTest {
     @Test
     @DisplayName(value = "throw exception when delimiter is incorrect")
     public void shouldThrowExceptionWhenDelimiterIsIncorrect() {
-        questionDao = new CsvQuestionDaoImpl("data/en.csv", "!");
+        when(csvResourceProvider.getPath()).thenReturn("data/en.csv");
+        when(csvResourceProvider.getDelimiter()).thenReturn("!");
+
         Throwable throwable = assertThrows(QuestionsLoadingException.class, () -> questionDao.findAll());
 
         assertThat(throwable.getMessage()).isEqualTo("Incorrect data structure in csv file");
     }
+
 }

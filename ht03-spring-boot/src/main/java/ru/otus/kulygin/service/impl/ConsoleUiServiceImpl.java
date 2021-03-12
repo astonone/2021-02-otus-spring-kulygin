@@ -1,28 +1,27 @@
 package ru.otus.kulygin.service.impl;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.otus.kulygin.exception.UserInputException;
+import ru.otus.kulygin.provider.UserIOProvider;
 import ru.otus.kulygin.service.UiService;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 @Service
 public class ConsoleUiServiceImpl implements UiService {
 
-    private final InputStream input;
-    private final PrintStream output;
+    private final UserIOProvider userIOProvider;
 
-    public ConsoleUiServiceImpl(@Value("#{ T(java.lang.System).in }") InputStream input,
-                                @Value("#{ T(java.lang.System).out }") PrintStream output) {
-        this.input = input;
-        this.output = output;
+    public ConsoleUiServiceImpl(UserIOProvider userIOProvider) {
+        this.userIOProvider = userIOProvider;
     }
 
     @Override
     public String in() {
         try {
-            return new BufferedReader(new InputStreamReader(input)).readLine();
+            return new BufferedReader(new InputStreamReader(userIOProvider.getInput())).readLine();
         } catch (IOException e) {
             throw new UserInputException(e);
         }
@@ -30,7 +29,7 @@ public class ConsoleUiServiceImpl implements UiService {
 
     @Override
     public void out(String stringForPrint) {
-        output.println(stringForPrint);
+        userIOProvider.getOutput().println(stringForPrint);
     }
 
 }

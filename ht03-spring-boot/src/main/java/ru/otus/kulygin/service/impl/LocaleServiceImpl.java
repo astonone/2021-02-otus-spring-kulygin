@@ -19,8 +19,8 @@ public class LocaleServiceImpl implements LocaleService {
     }
 
     @Override
-    public String getLocalizedString(String key) {
-        return messageSource.getMessage(key, null, locale);
+    public String getLocalizedString(String key, String ...args) {
+        return messageSource.getMessage(key, args, locale);
     }
 
 }

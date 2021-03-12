@@ -57,4 +57,5 @@ class QuestionServiceImplTest {
 
         assertThat(throwable.getMessage()).isEqualTo("lalalal!");
     }
+
 }

@@ -71,4 +71,5 @@ class RunnerServiceImplTest {
 
         assertThat(throwable.getMessage()).isEqualTo("java.io.IOException: Houston!we have a problem!");
     }
+
 }

@@ -10,9 +10,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import ru.otus.kulygin.dao.StudentDao;
 import ru.otus.kulygin.domain.Student;
 import ru.otus.kulygin.exception.UserInputException;
-import ru.otus.kulygin.service.LocaleService;
+import ru.otus.kulygin.facade.UiFacade;
 import ru.otus.kulygin.service.StudentService;
-import ru.otus.kulygin.service.UiService;
 
 import java.io.IOException;
 
@@ -28,13 +27,8 @@ class StudentServiceImplTest {
     @Configuration
     static class NestedConfiguration {
         @Bean
-        LocaleService localeService() {
-            return mock(LocaleService.class);
-        }
-
-        @Bean
-        UiService uiService() {
-            return mock(UiService.class);
+        UiFacade uiLocalizedFacade() {
+            return mock(UiFacade.class);
         }
 
         @Bean
@@ -44,7 +38,7 @@ class StudentServiceImplTest {
 
         @Bean
         StudentService studentService() {
-            return new StudentServiceImpl(studentDao(), uiService(), localeService());
+            return new StudentServiceImpl(studentDao(), uiLocalizedFacade());
         }
     }
 
@@ -55,29 +49,30 @@ class StudentServiceImplTest {
     private StudentDao studentDao;
 
     @Autowired
-    private UiService uiService;
+    private UiFacade uiFacade;
 
     @Test
     @DisplayName(value = "init student")
     void shouldInitStudent() {
         final Student student = new Student("Ivan", "Ivanov");
-        when(uiService.in()).thenAnswer(a -> "Ivan").thenAnswer(a -> "Ivanov");
+        when(uiFacade.getMessageFromUser()).thenAnswer(a -> "Ivan").thenAnswer(a -> "Ivanov");
         when(studentDao.create(student)).thenReturn(student);
 
         final Student result = studentService.initStudent();
 
         assertThat(result).isNotNull();
         assertThat(result).isEqualTo(student);
-        verify(uiService, times(2)).in();
+        verify(uiFacade, times(2)).getMessageFromUser();
         verify(studentDao).create(student);
     }
 
     @Test
     @DisplayName(value = "not init student")
     void shouldNotInitStudent() {
-        when(uiService.in()).thenThrow(new UserInputException(new IOException("Houston!we have a problem!")));
+        when(uiFacade.getMessageFromUser()).thenThrow(new UserInputException(new IOException("Houston!we have a problem!")));
         Throwable throwable = assertThrows(UserInputException.class, () -> studentService.initStudent());
 
         assertThat(throwable.getMessage()).isEqualTo("java.io.IOException: Houston!we have a problem!");
     }
+
 }

@@ -8,8 +8,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.otus.kulygin.domain.Student;
 import ru.otus.kulygin.domain.TestResult;
+import ru.otus.kulygin.facade.UiFacade;
 import ru.otus.kulygin.service.TestingService;
-import ru.otus.kulygin.service.UiService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -24,14 +24,14 @@ public class TestingServiceImplIntegrationTest {
     private TestingService testingService;
 
     @MockBean
-    private UiService uiService;
+    private UiFacade uiFacade;
 
     @Test
     @DisplayName(value = "start testing process and successfully finish it and pass it")
     void shouldDoTestAndPassIt() {
         final Student student = new Student("Ivan", "Ivanov");
 
-        when(uiService.in())
+        when(uiFacade.getMessageFromUser())
                 .thenAnswer(a -> "366")
                 .thenAnswer(a -> "5")
                 .thenAnswer(a -> "5")
@@ -43,14 +43,14 @@ public class TestingServiceImplIntegrationTest {
         assertThat(testResult).isNotNull();
         assertThat(testResult.getStudent()).isEqualTo(student);
         assertThat(testResult.getMark()).isEqualTo(5);
-        verify(uiService).out("Test passed");
+        verify(uiFacade).showLocalizedMessageForUser("testing.pass");
     }
 
     @Test
     @DisplayName(value = "start testing process and successfully finish it and not pass it")
     void shouldDoTestAndNotPassIt() {
         final Student student = new Student("Ivan", "Ivanov");
-        when(uiService.in())
+        when(uiFacade.getMessageFromUser())
                 .thenAnswer(a -> "366")
                 .thenAnswer(a -> "5")
                 .thenAnswer(a -> "5")
@@ -62,6 +62,7 @@ public class TestingServiceImplIntegrationTest {
         assertThat(testResult).isNotNull();
         assertThat(testResult.getStudent()).isEqualTo(student);
         assertThat(testResult.getMark()).isEqualTo(3);
-        verify(uiService).out("Test was not passed");
+        verify(uiFacade).showLocalizedMessageForUser("testing.notpass");
     }
+
 }

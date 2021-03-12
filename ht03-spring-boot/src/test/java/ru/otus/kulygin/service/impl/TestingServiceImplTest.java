@@ -12,10 +12,9 @@ import ru.otus.kulygin.domain.Student;
 import ru.otus.kulygin.domain.TestResult;
 import ru.otus.kulygin.exception.QuestionsLoadingException;
 import ru.otus.kulygin.exception.UserInputException;
-import ru.otus.kulygin.service.LocaleService;
+import ru.otus.kulygin.facade.UiFacade;
 import ru.otus.kulygin.service.QuestionService;
 import ru.otus.kulygin.service.TestingService;
-import ru.otus.kulygin.service.UiService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,13 +32,8 @@ class TestingServiceImplTest {
     @Configuration
     static class NestedConfiguration {
         @Bean
-        LocaleService localeService() {
-            return mock(LocaleService.class);
-        }
-
-        @Bean
-        UiService uiService() {
-            return mock(UiService.class);
+        UiFacade uiLocalizedFacade() {
+            return mock(UiFacade.class);
         }
 
         @Bean
@@ -49,7 +43,7 @@ class TestingServiceImplTest {
 
         @Bean
         TestingService testingService() {
-            return new TestingServiceImpl(questionService(), uiService(), localeService(), 3);
+            return new TestingServiceImpl(questionService(), uiLocalizedFacade(), 3);
         }
     }
 
@@ -57,13 +51,10 @@ class TestingServiceImplTest {
     private TestingService testingService;
 
     @Autowired
-    private UiService uiService;
+    private UiFacade uiFacade;
 
     @Autowired
     private QuestionService questionService;
-
-    @Autowired
-    private LocaleService localeService;
 
     @Test
     @DisplayName(value = "start testing process and successfully finish it and pass it")
@@ -76,27 +67,24 @@ class TestingServiceImplTest {
         questionsAndAnswers.add(new Question("How much 2+3?", "5"));
         questionsAndAnswers.add(new Question("How much 2+5?", "7"));
         when(questionService.findAll()).thenReturn(questionsAndAnswers);
-        when(uiService.in())
+        when(uiFacade.getMessageFromUser())
                 .thenAnswer(a -> "4")
                 .thenAnswer(a -> "4")
                 .thenAnswer(a -> "2")
                 .thenAnswer(a -> "5")
                 .thenAnswer(a -> "7");
 
-        when(localeService.getLocalizedString("testing.pass")).thenReturn("Test passed");
-
         final TestResult testResult = testingService.doTest(student);
 
         assertThat(testResult).isNotNull();
         assertThat(testResult.getStudent()).isEqualTo(student);
         assertThat(testResult.getMark()).isEqualTo(4);
-        verify(uiService).out("Test passed");
+        verify(uiFacade).showLocalizedMessageForUser("testing.pass");
     }
 
     @Test
     @DisplayName(value = "start testing process and successfully finish it and not pass it")
     void shouldDoTestAndNotPassIt() {
-        testingService = new TestingServiceImpl(questionService, uiService, localeService, 5);
         final Student student = new Student("Ivan", "Ivanov");
         List<Question> questionsAndAnswers = new ArrayList<>();
         questionsAndAnswers.add(new Question("How much 2+2?", "4"));
@@ -105,21 +93,19 @@ class TestingServiceImplTest {
         questionsAndAnswers.add(new Question("How much 2+3?", "5"));
         questionsAndAnswers.add(new Question("How much 2+5?", "7"));
         when(questionService.findAll()).thenReturn(questionsAndAnswers);
-        when(uiService.in())
+        when(uiFacade.getMessageFromUser())
                 .thenAnswer(a -> "4")
                 .thenAnswer(a -> "4")
-                .thenAnswer(a -> "2")
-                .thenAnswer(a -> "5")
-                .thenAnswer(a -> "7");
-
-        when(localeService.getLocalizedString("testing.notpass")).thenReturn("Test was not passed");
+                .thenAnswer(a -> "0")
+                .thenAnswer(a -> "6")
+                .thenAnswer(a -> "8");
 
         final TestResult testResult = testingService.doTest(student);
 
         assertThat(testResult).isNotNull();
         assertThat(testResult.getStudent()).isEqualTo(student);
-        assertThat(testResult.getMark()).isEqualTo(4);
-        verify(uiService).out("Test was not passed");
+        assertThat(testResult.getMark()).isEqualTo(2);
+        verify(uiFacade).showLocalizedMessageForUser("testing.notpass");
     }
 
     @Test
@@ -132,7 +118,7 @@ class TestingServiceImplTest {
         questionsAndAnswers.add(new Question("How much 2/2?", "1"));
         questionsAndAnswers.add(new Question("How much 2+3?", "5"));
         questionsAndAnswers.add(new Question("How much 2+5?", "7"));
-        when(uiService.in()).thenThrow(new UserInputException(new IOException("Aaaaaa, console was damaged!")));
+        when(uiFacade.getMessageFromUser()).thenThrow(new UserInputException(new IOException("Aaaaaa, console was damaged!")));
         when(questionService.findAll()).thenReturn(questionsAndAnswers);
 
         Throwable throwable = assertThrows(UserInputException.class, () -> testingService.doTest(student));
@@ -150,4 +136,5 @@ class TestingServiceImplTest {
 
         assertThat(throwable.getMessage()).isEqualTo("Data file was stolen by thief");
     }
+
 }

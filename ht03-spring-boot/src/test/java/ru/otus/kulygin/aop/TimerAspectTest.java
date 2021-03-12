@@ -44,7 +44,8 @@ class TimerAspectTest {
         final Object result = timerAspect.logTimeOfTesting(joinPoint);
 
         assertThat(result).isNotNull();
-        verify(localeService).getLocalizedString("testing.timer");
+        verify(localeService).getLocalizedString(eq("testing.timer"), anyString());
         verify(localeService).getLocalizedString("testing.timer.sec");
     }
+
 }

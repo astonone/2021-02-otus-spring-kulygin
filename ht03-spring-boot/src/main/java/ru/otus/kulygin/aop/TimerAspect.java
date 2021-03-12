@@ -16,26 +16,17 @@ public class TimerAspect {
         this.localeService = localeService;
     }
 
-    @Around("execution(* ru.otus.kulygin.service.impl.TestingServiceImpl.doTest(*))")
+    @Around("@annotation(ru.otus.kulygin.annotation.Measurable)")
     public Object logTimeOfTesting(ProceedingJoinPoint joinPoint) throws Throwable {
-        long startTestTime;
-
-        try {
-            startTestTime = System.currentTimeMillis();
-        } catch (Exception e) {
-            startTestTime = 0;
-        }
+        long startTestTime = System.currentTimeMillis();
 
         Object proceed = joinPoint.proceed();
 
-        try {
-            System.out.println(localeService.getLocalizedString("testing.timer")
-                    + (double) ((System.currentTimeMillis() - startTestTime) / 1000)
-                    + " " + localeService.getLocalizedString("testing.timer.sec"));
-        } catch (Exception e) {
-            // do nothing
-        }
+        System.out.println(localeService.getLocalizedString("testing.timer",
+                String.valueOf((double) ((System.currentTimeMillis() - startTestTime) / 1000)))
+        + localeService.getLocalizedString("testing.timer.sec"));
 
         return proceed;
     }
+
 }

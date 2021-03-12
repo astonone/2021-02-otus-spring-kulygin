@@ -49,7 +49,7 @@ class LocaleServiceImplTest {
     @Test
     @DisplayName(value = "get localized string by key")
     void shouldGetLocalizedString() {
-        when(messageSource.getMessage("my.super.key", null, locale)).thenReturn("You are wonderful!");
+        when(messageSource.getMessage("my.super.key", new String[]{}, locale)).thenReturn("You are wonderful!");
 
         final String localizedString = localeService.getLocalizedString("my.super.key");
 
