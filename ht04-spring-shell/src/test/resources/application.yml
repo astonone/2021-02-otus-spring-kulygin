@@ -1,0 +1,17 @@
+app:
+  locale: en
+
+test:
+  file:
+    delimiter: ;
+    path: integration-test-data/${app.locale}.csv
+  mark:
+    pass: 4
+
+spring:
+  messages:
+    basename: i18n/messages
+
+  shell:
+    interactive:
+      enabled: false
