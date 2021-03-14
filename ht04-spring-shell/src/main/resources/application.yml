@@ -1,0 +1,13 @@
+app:
+  locale: en
+
+test:
+  file:
+    delimiter: ;
+    path: data/${app.locale}.csv
+  mark:
+    pass: 3
+
+spring:
+  messages:
+    basename: i18n/messages
