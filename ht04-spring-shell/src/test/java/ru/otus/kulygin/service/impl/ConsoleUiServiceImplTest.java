@@ -5,8 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.otus.kulygin.exception.UserInputException;
 import ru.otus.kulygin.provider.UserIOProvider;
@@ -20,27 +19,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@SpringBootTest(classes = ConsoleUiServiceImpl.class)
 @DisplayName(value = "UiServiceImpl should ")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class ConsoleUiServiceImplTest {
 
-    @Configuration
-    static class NestedConfiguration {
-        @Bean
-        UserIOProvider userIOProvider() {
-            return mock(UserIOProvider.class);
-        }
-
-        @Bean
-        UiService uiService() {
-            return new ConsoleUiServiceImpl(userIOProvider());
-        }
-    }
-
     @Autowired
     private UiService uiService;
-    @Autowired
+
+    @MockBean
     private UserIOProvider userIOProvider;
 
     @Test

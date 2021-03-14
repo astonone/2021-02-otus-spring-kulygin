@@ -4,8 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.otus.kulygin.dao.QuestionDao;
 import ru.otus.kulygin.domain.Question;
@@ -16,31 +15,17 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@SpringBootTest(classes = CsvQuestionDaoImpl.class)
 @DisplayName(value = "CsvQuestionDao should ")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class CsvQuestionDaoImplTest {
 
-    @Configuration
-    static class NestedConfiguration {
-        @Bean
-        CsvResourceProvider csvResourceProvider() {
-            return mock(CsvResourceProvider.class);
-        }
-
-        @Bean
-        QuestionDao questionDao() {
-            return new CsvQuestionDaoImpl(csvResourceProvider());
-        }
-    }
-
     @Autowired
     private QuestionDao questionDao;
 
-    @Autowired
+    @MockBean
     private CsvResourceProvider csvResourceProvider;
 
     @Test
