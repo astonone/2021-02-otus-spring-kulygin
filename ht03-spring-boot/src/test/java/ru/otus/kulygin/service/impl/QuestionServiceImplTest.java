@@ -4,8 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.otus.kulygin.dao.QuestionDao;
 import ru.otus.kulygin.exception.QuestionsLoadingException;
@@ -15,30 +14,18 @@ import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@SpringBootTest(classes = QuestionServiceImpl.class)
 @DisplayName(value = "QuestionServiceImpl should ")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class QuestionServiceImplTest {
 
-    @Configuration
-    static class NestedConfiguration {
-        @Bean
-        QuestionDao questionDao() {
-            return mock(QuestionDao.class);
-        }
-
-        @Bean
-        QuestionService questionService() {
-            return new QuestionServiceImpl(questionDao());
-        }
-    }
-
     @Autowired
     private QuestionService questionService;
 
-    @Autowired
+    @MockBean
     private QuestionDao questionDao;
 
     @Test

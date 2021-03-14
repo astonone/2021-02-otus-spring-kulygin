@@ -4,8 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.otus.kulygin.domain.Student;
 import ru.otus.kulygin.exception.UserInputException;
@@ -17,38 +16,21 @@ import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@SpringBootTest(classes = RunnerServiceImpl.class)
 @DisplayName(value = "RunnerServiceImpl should ")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class RunnerServiceImplTest {
 
-    @Configuration
-    static class NestedConfiguration {
-        @Bean
-        StudentService studentService() {
-            return mock(StudentService.class);
-        }
-
-        @Bean
-        TestingService testingService() {
-            return mock(TestingService.class);
-        }
-
-        @Bean
-        RunnerService runnerService() {
-            return new RunnerServiceImpl(studentService(), testingService());
-        }
-    }
-
     @Autowired
     private RunnerService runnerService;
 
-    @Autowired
+    @MockBean
     private StudentService studentService;
 
-    @Autowired
+    @MockBean
     private TestingService testingService;
 
     @Test

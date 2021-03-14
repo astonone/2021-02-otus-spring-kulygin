@@ -5,34 +5,20 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.kulygin.service.LocaleService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@SpringBootTest(classes = TimerAspect.class)
 @DisplayName(value = "TimerAspect should ")
 class TimerAspectTest {
-
-    @Configuration
-    static class NestedConfiguration {
-        @Bean
-        LocaleService localeService() {
-            return mock(LocaleService.class);
-        }
-
-        @Bean
-        TimerAspect timerAspect() {
-            return new TimerAspect(localeService());
-        }
-    }
 
     @Autowired
     private TimerAspect timerAspect;
 
-    @Autowired
+    @MockBean
     private LocaleService localeService;
 
     @Test
