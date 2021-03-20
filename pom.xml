@@ -13,6 +13,7 @@
         <module>ht02-spring-annotation-configuration</module>
         <module>ht03-spring-boot</module>
         <module>ht04-spring-shell</module>
+        <module>ht05-spring-jdbc</module>
     </modules>
 
     <properties>
