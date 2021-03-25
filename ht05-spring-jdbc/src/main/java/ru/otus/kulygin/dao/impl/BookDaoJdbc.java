@@ -49,7 +49,7 @@ public class BookDaoJdbc implements BookDao {
 
     @Override
     public Book getById(long id, Options options) {
-        return options.isLazyLoading() ? jdbc.queryForObject("select id, title from Book where id = :id", Map.of("id", id), bookLazyMapper)
+        return options.isPartialLoading() ? jdbc.queryForObject("select id, title from Book where id = :id", Map.of("id", id), bookLazyMapper)
                 : jdbc.queryForObject("select b.id as book_id, title, g.id as genre_id, g.name as genre_name"
                 + ", a.id as author_id, a.first_name as author_first_name, a.last_name as author_last_name"
                 + " from Book b left join Genre g on b.genre_id=g.id left join Author a on a.id=b.author_id where b.id = :id", Map.of("id", id), bookMapper);
@@ -57,7 +57,7 @@ public class BookDaoJdbc implements BookDao {
 
     @Override
     public List<Book> getAll(Options options) {
-        return options.isLazyLoading() ? jdbc.query("select id, title from Book", bookLazyMapper)
+        return options.isPartialLoading() ? jdbc.query("select id, title from Book", bookLazyMapper)
                 : jdbc.query("select b.id as book_id, title, g.id as genre_id, g.name as genre_name"
                 + ", a.id as author_id, a.first_name as author_first_name, a.last_name as author_last_name"
                 + " from Book b left join Genre g on b.genre_id=g.id left join Author a on a.id=b.author_id", bookMapper);

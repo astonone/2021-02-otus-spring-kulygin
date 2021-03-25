@@ -9,6 +9,6 @@ import lombok.*;
 @EqualsAndHashCode
 public class Options {
 
-    private boolean isLazyLoading;
+    private boolean isPartialLoading;
 
 }

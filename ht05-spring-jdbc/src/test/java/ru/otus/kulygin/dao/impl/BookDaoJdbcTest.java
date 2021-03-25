@@ -134,14 +134,14 @@ class BookDaoJdbcTest {
 
     @Test
     @DisplayName("return expected book by id by lazy type")
-    void shouldReturnExpectedBookByIdLazy() {
+    void shouldReturnExpectedBookByIdPartial() {
         Book expectedBook = Book.builder()
                 .id(EXISTED_BOOK_ID)
                 .title(EXISTED_BOOK_TITLE)
                 .build();
 
         Book actualBook = bookDao.getById(expectedBook.getId(), Options.builder()
-                .isLazyLoading(true)
+                .isPartialLoading(true)
                 .build());
         assertThat(actualBook).usingRecursiveComparison().isEqualTo(expectedBook);
     }
@@ -190,11 +190,11 @@ class BookDaoJdbcTest {
                 .doesNotContainNull();
     }
 
-    @DisplayName("return list of books by lazy type")
+    @DisplayName("return list of books by partial type")
     @Test
-    void shouldReturnExpectedBooksListLazy() {
+    void shouldReturnExpectedBooksListPartial() {
         List<Book> actualBookList = bookDao.getAll(Options.builder()
-                .isLazyLoading(true)
+                .isPartialLoading(true)
                 .build());
 
         assertThat(actualBookList)

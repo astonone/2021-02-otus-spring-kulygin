@@ -87,13 +87,13 @@ class BookServiceImplTest {
     }
 
     @Test
-    @DisplayName("return expected book by id lazy")
-    public void shouldGetBookByIdLazy() {
+    @DisplayName("return expected book by id partial")
+    public void shouldGetBookByIdPartial() {
         Book book = Book.builder()
                 .id(FOR_INSERT_BOOK_ID)
                 .build();
         final Options options = Options.builder()
-                .isLazyLoading(true)
+                .isPartialLoading(true)
                 .build();
 
         when(bookDao.getById(book.getId(), options)).thenReturn(book);
@@ -126,11 +126,11 @@ class BookServiceImplTest {
     }
 
     @Test
-    @DisplayName("return list of books lazy")
-    public void shouldGetAllBookLazy() {
+    @DisplayName("return list of books partial")
+    public void shouldGetAllBookPartial() {
         List<Book> bookList = Collections.singletonList(Book.builder().build());
         final Options options = Options.builder()
-                .isLazyLoading(true)
+                .isPartialLoading(true)
                 .build();
         when(bookDao.getAll(options)).thenReturn(bookList);
 

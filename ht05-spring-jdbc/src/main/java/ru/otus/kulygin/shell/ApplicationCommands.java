@@ -12,11 +12,11 @@ import ru.otus.kulygin.exception.AuthorDoesNotExistException;
 import ru.otus.kulygin.exception.BookDoesNotExistException;
 import ru.otus.kulygin.exception.GenreDoesNotExistException;
 import ru.otus.kulygin.exception.RelatedEntityException;
-import ru.otus.kulygin.service.UiService;
 import ru.otus.kulygin.provider.LocaleProvider;
 import ru.otus.kulygin.service.AuthorService;
 import ru.otus.kulygin.service.BookService;
 import ru.otus.kulygin.service.GenreService;
+import ru.otus.kulygin.service.UiService;
 
 import java.sql.SQLException;
 
@@ -162,12 +162,12 @@ public class ApplicationCommands {
         }
     }
 
-    @ShellMethod(value = "Get book by id lazy(Integer id)", key = {"bgl", "book-get-lazy"})
-    public String getBookByIdLazy(@ShellOption Integer id) {
+    @ShellMethod(value = "Get book by id partial(Integer id)", key = {"bgl", "book-get-partial"})
+    public String getBookByIdPartial(@ShellOption Integer id) {
         try {
             return uiFacade.getLocalizedMessageForUser("book.found",
                     uiFacade.getObjectForPrettyPrint(bookService.getById(id, Options.builder()
-                            .isLazyLoading(true)
+                            .isPartialLoading(true)
                             .build())));
         } catch (GenreDoesNotExistException e) {
             return uiFacade.getLocalizedMessageForUser("book.not-found", String.valueOf(id));
@@ -219,11 +219,11 @@ public class ApplicationCommands {
                 uiFacade.getObjectForPrettyPrint(bookService.getAll()));
     }
 
-    @ShellMethod(value = "Get book list lazy", key = {"bgal", "book-get-all-lazy"})
-    public String getBooksListLazy() {
+    @ShellMethod(value = "Get book list partial", key = {"bgal", "book-get-all-partial"})
+    public String getBooksListPartial() {
         return uiFacade.getLocalizedMessageForUser("book.get-all",
                 uiFacade.getObjectForPrettyPrint(bookService.getAll(Options.builder()
-                        .isLazyLoading(true)
+                        .isPartialLoading(true)
                         .build())));
     }
 

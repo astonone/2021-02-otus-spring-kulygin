@@ -13,9 +13,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName(value = "ObjectPrettyConverterServiceJson should ")
 class ObjectPrettyConverterServiceJsonTest {
 
-    public static final String EXPECTED_PRETTY_STRING = "{\n" +
-            "  \"id\" : 1,\n" +
-            "  \"name\" : \"Fantasy\"\n" +
+    public static final String EXPECTED_PRETTY_STRING = "{" +
+            "  \"id\" : 1," +
+            "  \"name\" : \"Fantasy\"" +
             "}";
 
     @Autowired
@@ -31,7 +31,8 @@ class ObjectPrettyConverterServiceJsonTest {
 
         final String prettyString = converterService.getPrettyString(fantasy);
 
-        assertThat(prettyString).isEqualTo(EXPECTED_PRETTY_STRING);
+        assertThat(prettyString.replaceAll("\n", "")
+                .replaceAll("\r", "")).isEqualTo(EXPECTED_PRETTY_STRING);
     }
 
 }
