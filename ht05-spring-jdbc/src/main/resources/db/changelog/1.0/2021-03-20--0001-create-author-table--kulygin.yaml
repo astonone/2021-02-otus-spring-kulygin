@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 2021-20-03--create-author-table--kulygin
+      id: 2021-03-20--create-author-table--kulygin
       author: vkulygin
       createTable:
         tableName: author

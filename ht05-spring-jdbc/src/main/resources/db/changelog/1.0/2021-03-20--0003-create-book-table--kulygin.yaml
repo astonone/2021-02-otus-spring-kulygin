@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 2021-20-03--create-book-table--kulygin
+      id: 2021-03-20--create-book-table--kulygin
       author: vkulygin
       createTable:
         tableName: book
@@ -23,7 +23,7 @@ databaseChangeLog:
               name: author_id
               type: bigint
   - changeSet:
-      id: 2021-20-03--add-foreign-keys--kulygin
+      id: 2021-03-20--add-foreign-keys--kulygin
       author: vkulygin
       changes:
         - addForeignKeyConstraint:

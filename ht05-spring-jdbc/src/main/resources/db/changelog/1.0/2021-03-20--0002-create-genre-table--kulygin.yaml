@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 2021-20-03--create-genre-table--kulygin
+      id: 2021-03-20--create-genre-table--kulygin
       author: vkulygin
       createTable:
         tableName: genre
