@@ -24,6 +24,7 @@
         <com.fasterxml.jackson.version>2.12.2</com.fasterxml.jackson.version>
         <org.liquibase.liquibase-core.version>4.3.1</org.liquibase.liquibase-core.version>
         <org.yaml.snakeyaml.version>1.28</org.yaml.snakeyaml.version>
+        <ma.glasnost.orika.orika-core.version>1.5.4</ma.glasnost.orika.orika-core.version>
     </properties>
 
     <dependencies>
@@ -76,6 +77,11 @@
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
             <version>${org.yaml.snakeyaml.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ma.glasnost.orika</groupId>
+            <artifactId>orika-core</artifactId>
+            <version>${ma.glasnost.orika.orika-core.version}</version>
         </dependency>
 
         <dependency>

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.kulygin.dao.GenreDao;
 import ru.otus.kulygin.domain.Genre;
+import ru.otus.kulygin.dto.GenreDto;
 import ru.otus.kulygin.exception.GenreDoesNotExistException;
 import ru.otus.kulygin.exception.RelatedEntityException;
 import ru.otus.kulygin.service.GenreService;
@@ -15,12 +16,15 @@ import java.util.Optional;
 public class GenreServiceImpl implements GenreService {
 
     private final GenreDao genreDao;
+    private final MappingService mappingService;
 
-    public GenreServiceImpl(GenreDao genreDao) {
+    public GenreServiceImpl(GenreDao genreDao, MappingService mappingService) {
         this.genreDao = genreDao;
+        this.mappingService = mappingService;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public long count() {
         return genreDao.count();
     }
@@ -32,13 +36,15 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Optional<Genre> getById(long id) {
-        return genreDao.getById(id);
+    @Transactional(readOnly = true)
+    public Optional<GenreDto> getById(long id) {
+        return genreDao.getById(id).map(genre -> mappingService.map(genre, GenreDto.class));
     }
 
     @Override
-    public List<Genre> getAll() {
-        return genreDao.getAll();
+    @Transactional(readOnly = true)
+    public List<GenreDto> getAll() {
+        return mappingService.mapAsList(genreDao.getAll(), GenreDto.class);
     }
 
     @Override

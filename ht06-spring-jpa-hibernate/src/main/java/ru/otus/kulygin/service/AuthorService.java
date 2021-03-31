@@ -1,6 +1,7 @@
 package ru.otus.kulygin.service;
 
 import ru.otus.kulygin.domain.Author;
+import ru.otus.kulygin.dto.AuthorDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,9 +12,9 @@ public interface AuthorService {
 
     void insert(Author author);
 
-    Optional<Author> getById(long id);
+    Optional<AuthorDto> getById(long id);
 
-    List<Author> getAll();
+    List<AuthorDto> getAll();
 
     void deleteById(long id);
 

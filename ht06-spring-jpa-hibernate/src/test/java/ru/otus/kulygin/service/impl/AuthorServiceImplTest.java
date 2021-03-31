@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.kulygin.dao.AuthorDao;
 import ru.otus.kulygin.domain.Author;
+import ru.otus.kulygin.dto.AuthorDto;
 import ru.otus.kulygin.exception.AuthorDoesNotExistException;
 import ru.otus.kulygin.exception.RelatedEntityException;
 import ru.otus.kulygin.service.AuthorService;
@@ -36,6 +37,9 @@ class AuthorServiceImplTest {
     @MockBean
     private AuthorDao authorDao;
 
+    @MockBean
+    MappingService mappingService;
+
     @Test
     @DisplayName("should return expected authors count")
     public void shouldCountAuthors() {
@@ -63,16 +67,14 @@ class AuthorServiceImplTest {
     public void shouldGetAuthorById() {
         val author = Optional.of(Author.builder()
                 .id(FOR_INSERT_AUTHOR_ID)
-                .firstName(FOR_INSERT_AUTHOR_FIRST_NAME)
-                .lastName(FOR_INSERT_AUTHOR_LAST_NAME)
                 .build());
 
         when(authorDao.getById(FOR_INSERT_AUTHOR_ID)).thenReturn(author);
 
-        val result = authorService.getById(author.get().getId());
+        authorService.getById(author.get().getId());
 
-        assertThat(result).isEqualTo(author);
         verify(authorDao).getById(FOR_INSERT_AUTHOR_ID);
+        verify(mappingService).map(author.get(), AuthorDto.class);
     }
 
     @Test
@@ -89,9 +91,9 @@ class AuthorServiceImplTest {
         val authorList = Collections.singletonList(Author.builder().build());
         when(authorDao.getAll()).thenReturn(authorList);
 
-        val all = authorService.getAll();
-        assertThat(all).isEqualTo(authorList);
+        authorService.getAll();
         verify(authorDao).getAll();
+        verify(mappingService).mapAsList(authorList, AuthorDto.class);
     }
 
     @Test

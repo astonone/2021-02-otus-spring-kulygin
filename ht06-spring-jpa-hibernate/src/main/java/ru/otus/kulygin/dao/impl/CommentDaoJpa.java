@@ -8,6 +8,7 @@ import ru.otus.kulygin.exception.CommentDoesNotExistException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -44,6 +45,15 @@ public class CommentDaoJpa implements CommentDao {
         val query = em.createQuery("delete from Comment c where c.id = :id");
         query.setParameter("id", id);
         query.executeUpdate();
+    }
+
+    @Override
+    public List<Comment> findAllByBookId(Long bookId) {
+        val commentTypedQuery =
+                em.createQuery("select c from Comment c where c.book.id = :bookId", Comment.class);
+        commentTypedQuery.setParameter("bookId", bookId);
+
+        return commentTypedQuery.getResultList();
     }
 
 }

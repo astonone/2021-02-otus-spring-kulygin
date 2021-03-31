@@ -12,8 +12,6 @@ import ru.otus.kulygin.domain.Author;
 import ru.otus.kulygin.domain.Book;
 import ru.otus.kulygin.domain.Genre;
 
-import java.util.ArrayList;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -66,7 +64,6 @@ class BookDaoJpaTest {
                 .title(FOR_INSERT_BOOK_TITLE)
                 .author(author)
                 .genre(genre)
-                .comments(new ArrayList<>())
                 .build();
 
         bookDao.insert(book);
@@ -76,8 +73,7 @@ class BookDaoJpaTest {
         assertThat(actualBook).isNotNull()
                 .matches(b -> b.getTitle().equals(FOR_INSERT_BOOK_TITLE))
                 .matches(b -> b.getGenre() != null && b.getGenre().equals(genre))
-                .matches(b -> b.getAuthor() != null && b.getAuthor().equals(author))
-                .matches(b -> b.getComments() != null && b.getComments().isEmpty());
+                .matches(b -> b.getAuthor() != null && b.getAuthor().equals(author));
     }
 
     @Test

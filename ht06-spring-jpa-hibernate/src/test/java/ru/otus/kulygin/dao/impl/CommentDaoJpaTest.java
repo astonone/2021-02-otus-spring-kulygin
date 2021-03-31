@@ -23,6 +23,7 @@ class CommentDaoJpaTest {
     public static final long EXISTED_COMMENT_ID = 3;
     public static final long NOT_EXISTED_COMMENT_ID = 999;
     public static final long EXISTED_BOOK_ID = 4;
+    public static final long EXISTED_BOOK_ID_WITH_COMMENTS = 3;
     public static final String COMMENTATOR_NAME = "Владимир Путин";
     public static final String TEXT = "Очень нравится эта книга! Безумно переживал за свиней";
 
@@ -97,6 +98,22 @@ class CommentDaoJpaTest {
     void shouldNotCorrectDeleteCommentByIdBecauseCommentDoesNotExist() {
         assertThatThrownBy(() -> commentDao.deleteById(NOT_EXISTED_COMMENT_ID))
                 .isInstanceOf(CommentDoesNotExistException.class);
+    }
+
+    @Test
+    @DisplayName("find all comments by book id")
+    void shouldFindCommentsByBookId() {
+        val commentTypedQuery =
+                em.getEntityManager().createQuery("select c from Comment c where c.book.id = :bookId", Comment.class);
+        commentTypedQuery.setParameter("bookId", EXISTED_BOOK_ID_WITH_COMMENTS);
+        val actualCommentsList = commentTypedQuery.getResultList();
+
+        val expectedCommentsList = commentDao.findAllByBookId(EXISTED_BOOK_ID_WITH_COMMENTS);
+
+        assertThat(expectedCommentsList)
+                .isNotEmpty()
+                .hasSize(1)
+                .isEqualTo(actualCommentsList);
     }
 
 }

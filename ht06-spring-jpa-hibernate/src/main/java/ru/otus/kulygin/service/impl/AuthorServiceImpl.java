@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.kulygin.dao.AuthorDao;
 import ru.otus.kulygin.domain.Author;
+import ru.otus.kulygin.dto.AuthorDto;
 import ru.otus.kulygin.exception.AuthorDoesNotExistException;
 import ru.otus.kulygin.exception.RelatedEntityException;
 import ru.otus.kulygin.service.AuthorService;
@@ -15,12 +16,15 @@ import java.util.Optional;
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorDao authorDao;
+    private final MappingService mappingService;
 
-    public AuthorServiceImpl(AuthorDao authorDao) {
+    public AuthorServiceImpl(AuthorDao authorDao, MappingService mappingService) {
         this.authorDao = authorDao;
+        this.mappingService = mappingService;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public long count() {
         return authorDao.count();
     }
@@ -32,13 +36,15 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Optional<Author> getById(long id) {
-        return authorDao.getById(id);
+    @Transactional(readOnly = true)
+    public Optional<AuthorDto> getById(long id) {
+        return authorDao.getById(id).map(author -> mappingService.map(author, AuthorDto.class));
     }
 
     @Override
-    public List<Author> getAll() {
-        return authorDao.getAll();
+    @Transactional(readOnly = true)
+    public List<AuthorDto> getAll() {
+        return mappingService.mapAsList(authorDao.getAll(), AuthorDto.class);
     }
 
     @Override

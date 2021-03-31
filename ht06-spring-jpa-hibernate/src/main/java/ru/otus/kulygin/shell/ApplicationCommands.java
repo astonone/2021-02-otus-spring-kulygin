@@ -5,19 +5,22 @@ import org.h2.tools.Console;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.kulygin.domain.Author;
 import ru.otus.kulygin.domain.Book;
 import ru.otus.kulygin.domain.Genre;
+import ru.otus.kulygin.dto.AuthorDto;
+import ru.otus.kulygin.dto.BookDto;
+import ru.otus.kulygin.dto.GenreDto;
 import ru.otus.kulygin.exception.*;
 import ru.otus.kulygin.provider.LocaleProvider;
 import ru.otus.kulygin.service.AuthorService;
 import ru.otus.kulygin.service.BookService;
 import ru.otus.kulygin.service.GenreService;
 import ru.otus.kulygin.service.UiService;
+import ru.otus.kulygin.service.impl.MappingService;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.Optional;
 
 @ShellComponent
 public class ApplicationCommands {
@@ -27,14 +30,16 @@ public class ApplicationCommands {
     private final BookService bookService;
     private final LocaleProvider localeProvider;
     private final UiService uiFacade;
+    private final MappingService mappingService;
 
     public ApplicationCommands(AuthorService authorService, GenreService genreService, BookService bookService,
-                               LocaleProvider localeProvider, UiService uiFacade) {
+                               LocaleProvider localeProvider, UiService uiFacade, MappingService mappingService) {
         this.authorService = authorService;
         this.genreService = genreService;
         this.bookService = bookService;
         this.uiFacade = uiFacade;
         this.localeProvider = localeProvider;
+        this.mappingService = mappingService;
     }
 
     @ShellMethod(value = "Open web console", key = {"owc", "open-web-console"})
@@ -58,7 +63,8 @@ public class ApplicationCommands {
     public String getGenreById(@ShellOption Long id) {
         val genre = genreService.getById(id);
         return genre.isPresent()
-                ? uiFacade.getLocalizedMessageForUser("genre.found", uiFacade.getObjectForPrettyPrint(genre.get()))
+                ? uiFacade.getLocalizedMessageForUser("genre.found",
+                uiFacade.getObjectForPrettyPrint(genre.get()))
                 : uiFacade.getLocalizedMessageForUser("genre.not-found", String.valueOf(id));
     }
 
@@ -99,7 +105,8 @@ public class ApplicationCommands {
     public String getAuthorById(@ShellOption Integer id) {
         val author = authorService.getById(id);
         return author.isPresent()
-                ? uiFacade.getLocalizedMessageForUser("author.found", uiFacade.getObjectForPrettyPrint(author.get()))
+                ? uiFacade.getLocalizedMessageForUser("author.found",
+                uiFacade.getObjectForPrettyPrint(author.get()))
                 : uiFacade.getLocalizedMessageForUser("author.not-found", String.valueOf(id));
     }
 
@@ -138,11 +145,11 @@ public class ApplicationCommands {
     }
 
     @ShellMethod(value = "Get book by id(Long id)", key = {"bg", "book-get"})
-    @Transactional(readOnly = true)
     public String getBookById(@ShellOption Long id) {
         val book = bookService.getById(id);
         return book.isPresent()
-                ? uiFacade.getLocalizedMessageForUser("book.found", uiFacade.getObjectForPrettyPrint(book.get()))
+                ? uiFacade.getLocalizedMessageForUser("book.found",
+                uiFacade.getObjectForPrettyPrint(book.get()))
                 : uiFacade.getLocalizedMessageForUser("book.not-found", String.valueOf(id));
     }
 
@@ -157,7 +164,6 @@ public class ApplicationCommands {
     }
 
     @ShellMethod(value = "Insert new book(String title, Integer authorId, Long genreId)", key = {"bi", "book-insert"})
-    @Transactional
     public String insertBook(@ShellOption String title, @ShellOption Long authorId, @ShellOption Long genreId) {
         val author = authorService.getById(authorId);
         val genre = genreService.getById(genreId);
@@ -169,9 +175,8 @@ public class ApplicationCommands {
         }
         final Book bookForSave = Book.builder()
                 .title(title)
-                .genre(genre.get())
-                .author(author.get())
-                .comments(new ArrayList<>())
+                .genre(mappingService.map(genre.get(), Genre.class))
+                .author(mappingService.map(author.get(), Author.class))
                 .build();
         bookService.insert(bookForSave);
         return uiFacade.getLocalizedMessageForUser("book.insert",
@@ -179,29 +184,28 @@ public class ApplicationCommands {
     }
 
     @ShellMethod(value = "Get book list", key = {"bga", "book-get-all"})
-    @Transactional(readOnly = true)
     public String getBooksList() {
         return uiFacade.getLocalizedMessageForUser("book.get-all",
                 uiFacade.getObjectForPrettyPrint(bookService.getAll()));
     }
 
     @ShellMethod(value = "Add comment to book(String commentatorName, String text, Long bookId)", key = {"ca", "comment-add"})
-    @Transactional
     public String addCommentToBook(@ShellOption String commentatorName, @ShellOption String text, @ShellOption Long bookId) {
         val book = bookService.getById(bookId);
         if (book.isEmpty()) {
             return uiFacade.getLocalizedMessageForUser("book.not-found", String.valueOf(bookId));
         }
+        val updatedBook = bookService.addCommentToBook(commentatorName, text, mappingService.map(book.get(), Book.class));
         return uiFacade.getLocalizedMessageForUser("comment.insert",
-                uiFacade.getObjectForPrettyPrint(bookService.addCommentToBook(commentatorName, text, book.get())));
+                uiFacade.getObjectForPrettyPrint(updatedBook));
     }
 
     @ShellMethod(value = "Add comment to book(Long commentId)", key = {"cd", "comment-delete"})
-    @Transactional
     public String removeCommentFromBook(@ShellOption Long commentId) {
         try {
             val book = bookService.removeCommentFromBook(commentId);
-            return uiFacade.getLocalizedMessageForUser("comment.delete", uiFacade.getObjectForPrettyPrint(book));
+            return uiFacade.getLocalizedMessageForUser("comment.delete",
+                    uiFacade.getObjectForPrettyPrint(book));
         } catch (CommentDoesNotExistException e) {
             return uiFacade.getLocalizedMessageForUser("comment.not-found", String.valueOf(commentId));
         }

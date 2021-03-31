@@ -1,6 +1,5 @@
 package ru.otus.kulygin.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -9,7 +8,6 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = "book")
 @Entity
 @Table(name = "comment")
 public class Comment {
@@ -24,7 +22,8 @@ public class Comment {
     @Column(name = "text")
     private String text;
 
-    @ManyToOne
-    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id")
     private Book book;
+
 }

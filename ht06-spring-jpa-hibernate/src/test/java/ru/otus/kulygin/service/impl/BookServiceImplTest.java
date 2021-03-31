@@ -10,6 +10,7 @@ import ru.otus.kulygin.dao.BookDao;
 import ru.otus.kulygin.dao.CommentDao;
 import ru.otus.kulygin.domain.Book;
 import ru.otus.kulygin.domain.Comment;
+import ru.otus.kulygin.dto.BookDto;
 import ru.otus.kulygin.exception.BookDoesNotExistException;
 import ru.otus.kulygin.exception.CommentDoesNotExistException;
 import ru.otus.kulygin.service.BookService;
@@ -33,6 +34,9 @@ class BookServiceImplTest {
 
     @Autowired
     private BookService bookService;
+
+    @MockBean
+    MappingService mappingService;
 
     @MockBean
     private BookDao bookDao;
@@ -67,13 +71,12 @@ class BookServiceImplTest {
         val book = Optional.of(Book.builder()
                 .id(FOR_INSERT_BOOK_ID)
                 .build());
-
         when(bookDao.getById(FOR_INSERT_BOOK_ID)).thenReturn(book);
 
-        val result = bookService.getById(FOR_INSERT_BOOK_ID);
+        bookService.getById(FOR_INSERT_BOOK_ID);
 
-        assertThat(result).isEqualTo(book);
         verify(bookDao).getById(FOR_INSERT_BOOK_ID);
+        verify(mappingService).map(book.get(), BookDto.class);
     }
 
     @Test
@@ -90,9 +93,10 @@ class BookServiceImplTest {
         val bookList = Collections.singletonList(Book.builder().build());
         when(bookDao.getAll()).thenReturn(bookList);
 
-        val all = bookService.getAll();
-        assertThat(all).isEqualTo(bookList);
+        bookService.getAll();
+
         verify(bookDao).getAll();
+        verify(mappingService).mapAsList(bookList, BookDto.class);
     }
 
     @Test
@@ -116,25 +120,27 @@ class BookServiceImplTest {
     @DisplayName("should add comment to book")
     public void shouldAddCommentToBook() {
         val book = Optional.of(Book.builder().id(FOR_INSERT_BOOK_ID).build());
-
         when(bookDao.getById(FOR_INSERT_BOOK_ID)).thenReturn(book);
+        when(mappingService.map(book.get(), BookDto.class)).thenReturn(BookDto.builder().build());
 
         bookService.addCommentToBook("vasya", "lol", book.get());
 
-        commentDao.insert(any(Comment.class));
+        verify(commentDao).insert(any(Comment.class));
         verify(bookDao).getById(FOR_INSERT_BOOK_ID);
+        verify(mappingService).map(book.get(), BookDto.class);
     }
 
     @Test
     @DisplayName("should remove comment from book")
     public void shouldRemoveCommentFromBook() {
+        val book = Book.builder()
+                .id(FOR_INSERT_BOOK_ID)
+                .build();
         val comment = Optional.of(Comment.builder()
-                .book(Book.builder()
-                        .id(FOR_INSERT_BOOK_ID)
-                        .build())
+                .book(book)
                 .build());
-
-        when(bookDao.getById(FOR_INSERT_BOOK_ID)).thenReturn(Optional.of(Book.builder().build()));
+        when(bookDao.getById(FOR_INSERT_BOOK_ID)).thenReturn(Optional.of(book));
+        when(mappingService.map(book, BookDto.class)).thenReturn(BookDto.builder().build());
 
         when(commentDao.getById(EXISTED_COMMENT_ID)).thenReturn(comment);
 
@@ -143,6 +149,7 @@ class BookServiceImplTest {
         verify(commentDao).getById(EXISTED_COMMENT_ID);
         verify(commentDao).deleteById(EXISTED_COMMENT_ID);
         verify(bookDao).getById(FOR_INSERT_BOOK_ID);
+        verify(mappingService).map(book, BookDto.class);
     }
 
     @Test

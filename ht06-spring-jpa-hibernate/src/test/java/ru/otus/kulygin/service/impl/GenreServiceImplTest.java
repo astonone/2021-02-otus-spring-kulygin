@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.kulygin.dao.GenreDao;
 import ru.otus.kulygin.domain.Genre;
+import ru.otus.kulygin.dto.GenreDto;
 import ru.otus.kulygin.exception.GenreDoesNotExistException;
 import ru.otus.kulygin.exception.RelatedEntityException;
 import ru.otus.kulygin.service.GenreService;
@@ -31,6 +32,9 @@ class GenreServiceImplTest {
 
     @Autowired
     private GenreService genreService;
+
+    @MockBean
+    MappingService mappingService;
 
     @MockBean
     private GenreDao genreDao;
@@ -64,13 +68,12 @@ class GenreServiceImplTest {
                 .id(FOR_INSERT_GENRE_ID)
                 .name(FOR_INSERT_GENRE_NAME)
                 .build());
-
         when(genreDao.getById(FOR_INSERT_GENRE_ID)).thenReturn(genre);
 
-        val result = genreService.getById(FOR_INSERT_GENRE_ID);
+        genreService.getById(FOR_INSERT_GENRE_ID);
 
-        assertThat(result).isEqualTo(genre);
         verify(genreDao).getById(FOR_INSERT_GENRE_ID);
+        verify(mappingService).map(genre.get(), GenreDto.class);
     }
 
     @Test
@@ -87,9 +90,10 @@ class GenreServiceImplTest {
         val genreList = Collections.singletonList(Genre.builder().build());
         when(genreDao.getAll()).thenReturn(genreList);
 
-        val all = genreService.getAll();
-        assertThat(all).isEqualTo(genreList);
+        genreService.getAll();
+
         verify(genreDao).getAll();
+        verify(mappingService).mapAsList(genreList, GenreDto.class);
     }
 
     @Test

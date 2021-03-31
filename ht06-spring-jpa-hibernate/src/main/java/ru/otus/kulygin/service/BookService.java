@@ -1,6 +1,7 @@
 package ru.otus.kulygin.service;
 
 import ru.otus.kulygin.domain.Book;
+import ru.otus.kulygin.dto.BookDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,14 +12,14 @@ public interface BookService {
 
     void insert(Book book);
 
-    Optional<Book> getById(long id);
+    Optional<BookDto> getById(long id);
 
-    List<Book> getAll();
+    List<BookDto> getAll();
 
     void deleteById(long id);
 
-    Book addCommentToBook(String commentatorName, String text, Book book);
+    BookDto addCommentToBook(String commentatorName, String text, Book book);
 
-    Book removeCommentFromBook(long commentId);
+    BookDto removeCommentFromBook(long commentId);
 
 }
