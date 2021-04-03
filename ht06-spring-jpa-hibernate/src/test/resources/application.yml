@@ -1,0 +1,21 @@
+app:
+  locale: en
+
+spring:
+  messages:
+    basename: i18n/messages
+  datasource:
+    url: jdbc:h2:mem:library
+  liquibase:
+    enabled: true
+    change-log: db/changelog/db.changelog-master-test.yaml
+  shell:
+    interactive:
+      enabled: false
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate.format_sql: true

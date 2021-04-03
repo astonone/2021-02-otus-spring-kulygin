@@ -13,3 +13,4 @@ Student: Viktor Kulygin
 |[ht04-spring-shell](https://github.com/astonone/2021-02-otus-spring-kulygin/tree/main/ht04-spring-shell)|использовать Best Practiсes для конфигурирования Spring-приложений;максимально эффективно использовать анннотации конфигураций;писать приложения с использованием Spring Shell.|
 |Работа с базами данных|
 |[ht05-spring-jdbc](https://github.com/astonone/2021-02-otus-spring-kulygin/tree/main/ht05-spring-jdbc)|эффективно использовать JDBC вместе со Spring JDBC для разработки приложений с мощью чистого SQL;правильно применять паттерн DAO для подключения к БД;пользоваться embedded БД для написания тестов и при разработке простых приложений.|
+|[ht06-spring-jpa-hibernate](https://github.com/astonone/2021-02-otus-spring-kulygin/tree/main/ht06-spring-jpa-hibernate)|писать ORM DAO с помощью Spring ORM + JPA + Hibernate (в качестве JPA Vendor-a) в Spring приложениях;использовать JPQL (аналог HQL) для построения SQL-подобных запросов.|
