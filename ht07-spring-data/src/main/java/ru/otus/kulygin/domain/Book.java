@@ -13,8 +13,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "book")
-@NamedEntityGraph(name = "genre-author-entity-graph",
-        attributeNodes = {@NamedAttributeNode("genre"), @NamedAttributeNode("author")})
 public class Book {
 
     @Id
