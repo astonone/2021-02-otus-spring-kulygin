@@ -1,0 +1,17 @@
+{
+  "app": {
+    "header": {
+      "home": "Home",
+      "competitors": "Competitors",
+      "templates": "Interview's patterns",
+      "interviews": "Interviews",
+      "button": {
+        "login": "Login",
+        "sign-up": "Sign-up"
+      }
+    }
+  },
+  "home": {
+    "hello": "Hello"
+  }
+}
