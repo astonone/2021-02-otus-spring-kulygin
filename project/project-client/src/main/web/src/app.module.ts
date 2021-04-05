@@ -1,18 +1,24 @@
-﻿import { NgModule } from '@angular/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+﻿import {NgModule} from '@angular/core';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {BrowserModule} from '@angular/platform-browser';
+import {FormsModule} from '@angular/forms';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
 
-import { AppComponent } from './app.component';
-import { routing } from './app.routing';
+import {AppComponent} from './app.component';
+import {routing} from './app.routing';
 
-import { MainUiModule } from './modules/main-ui/main-ui.module';
+import {MainUiModule} from './modules/main-ui/main-ui.module';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 /*Services*/
 
 /*Components*/
-import { HomeComponent } from './components/home/home.component';
+import {HomeComponent} from './components/home/home.component';
+import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
+
+export function TranslationLoaderFactory(http: HttpClient) {
+    return new TranslateHttpLoader(http);
+}
 
 @NgModule({
     imports: [
@@ -21,18 +27,21 @@ import { HomeComponent } from './components/home/home.component';
         HttpClientModule,
         routing,
         BrowserAnimationsModule,
-        MainUiModule
+        MainUiModule,
+        TranslateModule.forRoot({
+            loader: {provide: TranslateLoader, useFactory: TranslationLoaderFactory, deps: [HttpClient]}
+        })
     ],
     declarations: [
         AppComponent,
         HomeComponent
     ],
-    entryComponents: [
-    ],
+    entryComponents: [],
     providers: [
         HomeComponent
     ],
     bootstrap: [AppComponent]
 })
 
-export class AppModule { }
+export class AppModule {
+}

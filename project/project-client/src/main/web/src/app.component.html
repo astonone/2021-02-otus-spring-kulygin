@@ -1,6 +1,30 @@
-﻿<mat-toolbar color="primary">
-    <span>Interview helper</span>
-</mat-toolbar>
+﻿<header class="p-3 bg-dark text-white">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <img src="assets/image/header-icon.png" width="40" height="32"/>
+            </a>
+
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="#" class="nav-link px-2 text-secondary">{{'app.header.home' | translate}}</a></li>
+                <li><a href="#" class="nav-link px-2 text-white">{{'app.header.competitors' | translate}}</a></li>
+                <li><a href="#" class="nav-link px-2 text-white">{{'app.header.templates' | translate}}</a></li>
+                <li><a href="#" class="nav-link px-2 text-white">{{'app.header.interviews' | translate}}</a></li>
+            </ul>
+
+            <form class="lang">
+                <a class="nav-link px-2 text-white" (click)="setRuLang()">RU</a>
+                <a class="nav-link px-2 text-white" (click)="setEnLang()">EN</a>
+            </form>
+
+            <div class="text-end">
+                <button type="button" class="btn btn-outline-light me-2">{{'app.header.button.sign-up' | translate}}</button>
+                <button type="button" class="btn btn-warning">{{'app.header.button.login' | translate}}</button>
+            </div>
+
+        </div>
+    </div>
+</header>
 <div class="app-content">
     <router-outlet></router-outlet>
 </div>

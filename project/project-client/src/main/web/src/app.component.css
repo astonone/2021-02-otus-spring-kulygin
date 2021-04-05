@@ -1,6 +1,9 @@
 .home {
     display: flex;
-    min-height: calc(100vh - 64px);
+}
+
+.lang {
+    display: flex;
 }
 
 @media screen and (max-device-width: 481px) {
