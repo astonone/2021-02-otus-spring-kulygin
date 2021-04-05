@@ -19,3 +19,5 @@ Student: Viktor Kulygin
 |Web|
 |[ht09-spring-mvc-view](https://github.com/astonone/2021-02-otus-spring-kulygin/tree/main/ht09-spring-mvc-view)|develop classic Web applications in Spring MVC;develop View layer in Thymeleaf.|
 |[ht10-spring-mvc-spa](https://github.com/astonone/2021-02-otus-spring-kulygin/tree/main/ht10-spring-mvc-spa)|Create complex classic applications using Spring Web Flow; create modern applications, as based on AJAX architecture and jQuery, as well as SPA-applications in Vue, React and Angular.|
+|Final Project|
+|[project](https://github.com/astonone/2021-02-otus-spring-kulygin/tree/main/project)|defend the project and get recommendations from the experts.|
