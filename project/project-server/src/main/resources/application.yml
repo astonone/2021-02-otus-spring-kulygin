@@ -1,0 +1,8 @@
+#Local mongoDB config
+spring:
+  data:
+    mongodb:
+      authentication-database: none
+      database: interviewer
+      port: 27017
+      host: localhost

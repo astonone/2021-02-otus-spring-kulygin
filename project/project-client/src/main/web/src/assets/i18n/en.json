@@ -2,8 +2,10 @@
   "app": {
     "header": {
       "home": "Home",
-      "competitors": "Competitors",
+      "candidates": "Competitors",
+      "interviewers": "Interviewers",
       "templates": "Interview's patterns",
+      "template-criteria": "Pattern's criteria",
       "interviews": "Interviews",
       "button": {
         "login": "Login",
