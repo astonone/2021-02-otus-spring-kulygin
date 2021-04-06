@@ -2,8 +2,10 @@
   "app": {
     "header" : {
       "home": "Главная",
-      "competitors": "Кандидаты",
+      "candidates": "Кандидаты",
+      "interviewers": "Интервьюверы",
       "templates": "Шаблоны собеседования",
+      "template-criteria": "Критерии шаблонов",
       "interviews": "Собеседования",
       "button": {
         "login": "Войти",
