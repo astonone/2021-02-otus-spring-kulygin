@@ -14,6 +14,22 @@
     }
   },
   "home": {
-    "hello": "Hello"
+    "empty": "You do not have any scheduled interviews"
+  },
+  "login": {
+    "main-text": "Please sign in",
+    "email": "Email address",
+    "password": "Password",
+    "remember-me": "Remember me",
+    "sign-in": "Sign in"
+  },
+  "sign-up": {
+    "main-text": "Please fill your personal data",
+    "email": "Email address",
+    "password": "Password",
+    "password-repeat": "Repeat password",
+    "firstname": "Firstname",
+    "lastname": "Lastname",
+    "sign-up": "Sign up"
   }
 }
