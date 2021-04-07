@@ -1,0 +1,35 @@
+{
+  "app": {
+    "header" : {
+      "home": "Главная",
+      "candidates": "Кандидаты",
+      "interviewers": "Интервьюверы",
+      "templates": "Шаблоны собеседования",
+      "template-criteria": "Критерии шаблонов",
+      "interviews": "Собеседования",
+      "button": {
+        "login": "Войти",
+        "sign-up": "Регистрация"
+      }
+    }
+  },
+  "home": {
+    "empty": "На данный момент у вас нет запланированных собеседований"
+  },
+  "login": {
+    "main-text": "Пожалуйста войдите в систему",
+    "email": "Email адрес",
+    "password": "Пароль",
+    "remember-me": "Запомнить меня",
+    "sign-in": "Вход"
+  },
+  "sign-up": {
+    "main-text": "Пожалуйста введите свои данные",
+    "email": "Email адрес",
+    "password": "Пароль",
+    "password-repeat": "Повторите пароль",
+    "firstname": "Имя",
+    "lastname": "Фамилия",
+    "sign-up": "Зарегистрироваться"
+  }
+}
