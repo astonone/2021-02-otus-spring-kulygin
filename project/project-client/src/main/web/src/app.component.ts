@@ -36,19 +36,47 @@ export class AppComponent implements OnInit {
         this.router.navigateByUrl(this.router.url.replace('ru', 'en'));
     }
 
-    public setLang(lang: string) {
+    public setLang(lang: string): void {
         this.translateService.setDefaultLang(lang);
     }
 
-    public setCurrentLang(lang: string) {
+    public setCurrentLang(lang: string): void {
         localStorage.setItem('lang', lang);
     }
 
-    public getCurrentLang() {
+    public getCurrentLang(): string {
         return localStorage.getItem('lang');
     }
 
-    public existsDefaultLanguage() {
+    public existsDefaultLanguage(): boolean {
         return localStorage.getItem('lang') !== null;
+    }
+
+    public goto(route: string): void {
+        this.router.navigate([this.translateService.getDefaultLang() + '/' + route]);
+    }
+
+    public isManPage(): boolean {
+        return this.router.url.includes('/home');
+    }
+
+    public isCandidatesPage(): boolean {
+        return this.router.url.includes('/candidates');
+    }
+
+    public isInterviewersPage(): boolean {
+        return this.router.url.includes('/interviewers');
+    }
+
+    public isInterviewPage(): boolean {
+        return this.router.url.includes('/interviews');
+    }
+
+    public isInterviewTemplatePage(): boolean {
+        return this.router.url.includes('/templates');
+    }
+
+    public isInterviewTemplateCriteriaPage(): boolean {
+        return this.router.url.includes('/template-criteria');
     }
 }

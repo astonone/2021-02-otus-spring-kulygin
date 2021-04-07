@@ -14,6 +14,14 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 /*Components*/
 import {HomeComponent} from './components/home/home.component';
+import {CandidatesComponent} from './components/candidadtes/candidates.component';
+import {InterviewersComponent} from "./components/interviewers/interviewers.component";
+import {InterviewsComponent} from "./components/interviews/interviews.component";
+import {LoginComponent} from "./components/login/login.component";
+import {SignUpComponent} from "./components/sign-up/sign-up.component";
+import {TemplatesComponent} from "./components/templates/templates.component";
+import {TemplateCriteriaComponent} from "./components/template-criteria/template-criteria.component";
+
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 
 export function TranslationLoaderFactory(http: HttpClient) {
@@ -34,11 +42,25 @@ export function TranslationLoaderFactory(http: HttpClient) {
     ],
     declarations: [
         AppComponent,
-        HomeComponent
+        HomeComponent,
+        CandidatesComponent,
+        InterviewersComponent,
+        InterviewsComponent,
+        LoginComponent,
+        SignUpComponent,
+        TemplatesComponent,
+        TemplateCriteriaComponent
     ],
     entryComponents: [],
     providers: [
-        HomeComponent
+        HomeComponent,
+        CandidatesComponent,
+        InterviewersComponent,
+        InterviewsComponent,
+        LoginComponent,
+        SignUpComponent,
+        TemplatesComponent,
+        TemplateCriteriaComponent
     ],
     bootstrap: [AppComponent]
 })

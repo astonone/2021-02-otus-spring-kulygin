@@ -1,17 +1,28 @@
-﻿<header class="p-3 bg-dark text-white">
-    <div class="container">
+﻿<header class="header p-3 bg-dark text-white">
+    <div class="header-container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+            <a (click)="goto('home')" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                 <img src="assets/image/header-icon.png" width="40" height="40"/>
             </a>
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="#" class="nav-link px-2 text-secondary">{{'app.header.home' | translate}}</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">{{'app.header.candidates' | translate}}</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">{{'app.header.interviewers' | translate}}</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">{{'app.header.templates' | translate}}</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">{{'app.header.template-criteria' | translate}}</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">{{'app.header.interviews' | translate}}</a></li>
+                <li><a (click)="goto('home')" [ngClass]="{'text-secondary': isManPage(), 'text-white': !isManPage()}"
+                       class="nav-link px-2">{{'app.header.home' | translate}}</a></li>
+                <li><a (click)="goto('candidates')"
+                       [ngClass]="{'text-secondary': isCandidatesPage(), 'text-white': !isCandidatesPage()}"
+                       class="nav-link px-2">{{'app.header.candidates' | translate}}</a></li>
+                <li><a (click)="goto('interviewers')"
+                       [ngClass]="{'text-secondary': isInterviewersPage(), 'text-white': !isInterviewersPage()}"
+                       class="nav-link px-2">{{'app.header.interviewers' | translate}}</a></li>
+                <li><a (click)="goto('templates')"
+                       [ngClass]="{'text-secondary': isInterviewTemplatePage(), 'text-white': !isInterviewTemplatePage()}"
+                       class="nav-link px-2">{{'app.header.templates' | translate}}</a></li>
+                <li><a (click)="goto('template-criteria')"
+                       [ngClass]="{'text-secondary': isInterviewTemplateCriteriaPage(), 'text-white': !isInterviewTemplateCriteriaPage()}"
+                       class="nav-link px-2">{{'app.header.template-criteria' | translate}}</a></li>
+                <li><a (click)="goto('interviews')"
+                       [ngClass]="{'text-secondary': isInterviewPage(), 'text-white': !isInterviewPage()}"
+                       class="nav-link px-2">{{'app.header.interviews' | translate}}</a></li>
             </ul>
 
             <form class="lang">
@@ -20,13 +31,16 @@
             </form>
 
             <div class="text-end">
-                <button type="button" class="btn btn-outline-light me-2">{{'app.header.button.sign-up' | translate}}</button>
-                <button type="button" class="btn btn-warning">{{'app.header.button.login' | translate}}</button>
+                <button type="button" class="btn btn-outline-light me-2"
+                        (click)="goto('sign-up')">{{'app.header.button.sign-up' | translate}}</button>
+                <button type="button" class="btn btn-warning"
+                        (click)="goto('login')">{{'app.header.button.login' | translate}}</button>
             </div>
 
         </div>
     </div>
 </header>
+
 <div class="app-content">
     <router-outlet></router-outlet>
 </div>
