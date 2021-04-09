@@ -18,7 +18,7 @@
         <org.projectlombok.lombok.version>1.18.18</org.projectlombok.lombok.version>
         <com.fasterxml.jackson.version>2.12.2</com.fasterxml.jackson.version>
         <ma.glasnost.orika.orika-core.version>1.5.4</ma.glasnost.orika.orika-core.version>
-        <com.github.mongobee.mongobee.version>0.13</com.github.mongobee.mongobee.version>
+        <mongock.version>4.1.19</mongock.version>
     </properties>
 
     <dependencies>
@@ -45,13 +45,17 @@
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${com.fasterxml.jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
             <version>${com.fasterxml.jackson.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
+            <artifactId>jackson-annotations</artifactId>
             <version>${com.fasterxml.jackson.version}</version>
         </dependency>
 
@@ -69,9 +73,13 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.mongobee</groupId>
-            <artifactId>mongobee</artifactId>
-            <version>${com.github.mongobee.mongobee.version}</version>
+            <groupId>com.github.cloudyrock.mongock</groupId>
+            <artifactId>mongock-spring-v5</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.cloudyrock.mongock</groupId>
+            <artifactId>mongodb-springdata-v3-driver</artifactId>
         </dependency>
 
         <dependency>
@@ -87,6 +95,18 @@
             <scope>runtime</scope>
         </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.github.cloudyrock.mongock</groupId>
+                <artifactId>mongock-bom</artifactId>
+                <version>${mongock.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>

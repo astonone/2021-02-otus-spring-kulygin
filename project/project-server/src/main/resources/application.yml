@@ -1,8 +1,11 @@
-#Local mongoDB config
+#MongoDB config
 spring:
   data:
     mongodb:
-      authentication-database: none
-      database: interviewer
-      port: 27017
-      host: localhost
+      uri: mongodb://localhost:27017/interviewer
+
+#Mongock config
+mongock:
+  runner-type: InitializingBean
+  change-logs-scan-package:
+    - ru.otus.kulygin.changelogs
