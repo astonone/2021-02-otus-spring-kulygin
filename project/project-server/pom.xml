@@ -89,12 +89,6 @@
         </dependency>
 
         <dependency>
-            <groupId>de.flapdoodle.embed</groupId>
-            <artifactId>de.flapdoodle.embed.mongo</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>ru.otus.kulygin</groupId>
             <artifactId>project-client</artifactId>
             <version>${ru.otus.kulygin.project-client.version}</version>
