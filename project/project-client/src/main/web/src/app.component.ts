@@ -1,6 +1,8 @@
-﻿import {Component, OnInit} from '@angular/core';
+﻿import {Component, ElementRef, Inject, OnInit} from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
 import {Router} from "@angular/router";
+import {SharedService} from "./services/shared.service";
+import {DOCUMENT} from "@angular/common";
 
 @Component({
     selector: 'app-root',
@@ -13,7 +15,16 @@ import {Router} from "@angular/router";
 export class AppComponent implements OnInit {
 
     constructor(private translateService: TranslateService,
-                private router: Router) {
+                public shared: SharedService,
+                private router: Router,
+                @Inject(DOCUMENT) document: ElementRef) {
+
+        if (localStorage.getItem('theme') === null) {
+            this.onSetTheme('indigo-pink');
+        } else {
+            this.shared.getThemeAndApply();
+        }
+
     }
 
     ngOnInit(): void {
@@ -21,6 +32,23 @@ export class AppComponent implements OnInit {
             this.setEnLang();
         } else {
             this.setLang(this.getCurrentLang());
+        }
+    }
+
+    public onSetTheme(theme: string) {
+        const themeElement: any = document.getElementById('themeAsset');
+        themeElement.href = '/assets/themes/' + theme + '.css';
+        this.shared.setTheme(theme);
+    }
+
+    public isSelected(theme: string) {
+        const themeElement: any = document.getElementById('themeAsset');
+        return themeElement.href.toString().includes(theme);
+    }
+
+    public toggleSidenav(sidenav: any) {
+        if (this.shared.isMobile()) {
+            sidenav.toggle();
         }
     }
 

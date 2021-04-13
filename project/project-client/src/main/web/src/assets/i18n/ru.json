@@ -2,14 +2,18 @@
   "app": {
     "header" : {
       "home": "Главная",
+      "themes": "Темы",
       "candidates": "Кандидаты",
       "interviewers": "Интервьюверы",
       "templates": "Шаблоны собеседования",
       "template-criteria": "Критерии шаблонов",
       "interviews": "Собеседования",
+      "menu": "Меню",
+      "user-prefix" : "Вы вошли как:",
       "button": {
         "login": "Войти",
-        "sign-up": "Регистрация"
+        "sign-up": "Регистрация",
+        "logout": "Выход"
       }
     }
   },
@@ -19,17 +23,34 @@
   "login": {
     "main-text": "Пожалуйста войдите в систему",
     "email": "Email адрес",
+    "email-placeholder": "Пожалуйста, введите свой email",
     "password": "Пароль",
+    "password-placeholder": "Пожалуйста, введите свой пароль",
     "remember-me": "Запомнить меня",
     "sign-in": "Вход"
   },
   "sign-up": {
     "main-text": "Пожалуйста введите свои данные",
+    "required-field": "Это поле обязательно к заполнению",
     "email": "Email адрес",
+    "email-placeholder": "Пожалуйста, введите свой email",
     "password": "Пароль",
+    "password-placeholder": "Пожалуйста, введите свой пароль",
     "password-repeat": "Повторите пароль",
+    "password-repeat-placeholder": "Пожалуйста, повторите свой пароль",
     "firstname": "Имя",
+    "firstname-placeholder": "Пожалуйста, введите своё имя",
     "lastname": "Фамилия",
+    "lastname-placeholder": "Пожалуйста, введите свою фамилию",
     "sign-up": "Зарегистрироваться"
+  },
+  "interviewers": {
+    "empty": "На данный момент у вас нет созданных интервьюверов",
+    "table" : {
+      "id": "Номер",
+      "firstName": "Имя",
+      "lastName": "Фамилия",
+      "actions": "Действия"
+    }
   }
 }

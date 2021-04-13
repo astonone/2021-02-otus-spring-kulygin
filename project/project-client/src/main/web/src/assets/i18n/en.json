@@ -2,14 +2,18 @@
   "app": {
     "header": {
       "home": "Home",
-      "candidates": "Competitors",
+      "themes": "Themes",
+      "candidates": "Candidates",
       "interviewers": "Interviewers",
-      "templates": "Interview's patterns",
-      "template-criteria": "Pattern's criteria",
+      "templates": "Interview's templates",
+      "template-criteria": "Template's criteria",
       "interviews": "Interviews",
+      "menu": "Menu",
+      "user-prefix" : "You are entered as:",
       "button": {
         "login": "Login",
-        "sign-up": "Sign-up"
+        "sign-up": "Sign-up",
+        "logout": "Logout"
       }
     }
   },
@@ -19,17 +23,34 @@
   "login": {
     "main-text": "Please sign in",
     "email": "Email address",
+    "email-placeholder": "Please enter your email",
     "password": "Password",
+    "password-placeholder": "Please enter your password",
     "remember-me": "Remember me",
     "sign-in": "Sign in"
   },
   "sign-up": {
     "main-text": "Please fill your personal data",
+    "required-field": "This field is required",
     "email": "Email address",
+    "email-placeholder": "Please enter your email",
     "password": "Password",
+    "password-placeholder": "Please enter your password",
     "password-repeat": "Repeat password",
+    "password-repeat-placeholder": "Please repeat your password",
     "firstname": "Firstname",
+    "firstname-placeholder": "Please enter your firstname",
     "lastname": "Lastname",
+    "lastname-placeholder": "Please enter your lastname",
     "sign-up": "Sign up"
+  },
+  "interviewers": {
+    "empty": "You do not have any created interviewers",
+    "table" : {
+      "id": "No.",
+      "firstName": "FirstName",
+      "lastName": "LastName",
+      "actions": "Actions"
+    }
   }
 }

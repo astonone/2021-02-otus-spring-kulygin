@@ -1,0 +1,12 @@
+.interviewers {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 64px);
+}
+
+.empty-table {
+}
+
+.interviewers-table {
+    width: 100%;
+}

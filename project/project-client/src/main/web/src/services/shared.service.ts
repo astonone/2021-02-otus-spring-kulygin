@@ -23,4 +23,19 @@ export class SharedService {
     public getServerURL() {
         return this.isProd ? (this.HOST_PROD) : (this.HOST_DEV + ':' + this.PORT_DEV);
     }
+
+    public setTheme(theme: string) {
+        localStorage.setItem('theme', theme);
+    }
+
+    public getThemeAndApply() {
+        const theme = localStorage.getItem('theme');
+        const themeElement: any = document.getElementById('themeAsset');
+        themeElement.href = '/assets/themes/' + theme + '.css';
+    }
+
+    public isMobile = () => screen.width < 481;
+
+    public isUserLogged = () => true;
+
 }

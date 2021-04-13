@@ -1,31 +1,29 @@
-<div class="sign-up text-center">
-    <main class="form-signin">
-        <form>
-            <h1 class="h3 mb-3 fw-normal">{{'sign-up.main-text' | translate}}</h1>
-
-            <div class="form-floating">
-                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                <label for="floatingInput">{{'sign-up.email' | translate}}</label>
-            </div>
-            <div class="form-floating">
-                <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-                <label for="floatingPassword">{{'sign-up.password' | translate}}</label>
-            </div>
-            <div class="form-floating">
-                <input type="password" class="form-control" id="floatingPasswordRepeat" placeholder="PasswordRepeat">
-                <label for="floatingPassword">{{'sign-up.password-repeat' | translate}}</label>
-            </div>
-            <div class="form-floating">
-                <input type="text" class="form-control" id="floatingInputFirstName" placeholder="John">
-                <label for="floatingInput">{{'sign-up.firstname' | translate}}</label>
-            </div>
-            <div class="form-floating">
-                <input type="text" class="form-control" id="floatingInputLastName" placeholder="Smith">
-                <label for="floatingInput">{{'sign-up.lastname' | translate}}</label>
-            </div>
-
-            <button class="btn-sign-up w-100 btn btn-lg btn-primary"
-                    type="submit">{{'sign-up.sign-up' | translate}}</button>
-        </form>
-    </main>
+<div class="registration-container">
+    <h3>{{'sign-up.main-text' | translate}}</h3>
+    <mat-form-field class="registration-text-input" appearance="outline">
+        <mat-label>{{'sign-up.email' | translate}}</mat-label>
+        <input matInput type="email" placeholder="{{'sign-up.email-placeholder' | translate}}">
+        <mat-hint class="text-filed-hint">{{'sign-up.required-field' | translate}}</mat-hint>
+    </mat-form-field>
+    <mat-form-field class="registration-text-input" appearance="outline">
+        <mat-label>{{'sign-up.password' | translate}}</mat-label>
+        <input matInput type="password" placeholder="{{'sign-up.password-placeholder' | translate}}">
+        <mat-hint class="text-filed-hint">{{'sign-up.required-field' | translate}}</mat-hint>
+    </mat-form-field>
+    <mat-form-field class="registration-text-input" appearance="outline">
+        <mat-label>{{'sign-up.password-repeat' | translate}}</mat-label>
+        <input matInput type="password" placeholder="{{'sign-up.password-repeat-placeholder' | translate}}">
+        <mat-hint class="text-filed-hint">{{'sign-up.required-field' | translate}}</mat-hint>
+    </mat-form-field>
+    <mat-form-field class="registration-text-input" appearance="outline">
+        <mat-label>{{'sign-up.firstname' | translate}}</mat-label>
+        <input matInput placeholder="{{'sign-up.firstname-placeholder' | translate}}">
+    </mat-form-field>
+    <mat-form-field class="registration-text-input" appearance="outline">
+        <mat-label>{{'sign-up.lastname' | translate}}</mat-label>
+        <input matInput placeholder="{{'sign-up.lastname-placeholder' | translate}}">
+    </mat-form-field>
+    <div class="registration-buttons">
+        <button class="registration-button" mat-raised-button color="primary">{{'sign-up.sign-up' | translate}}</button>
+    </div>
 </div>

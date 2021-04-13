@@ -1,0 +1,34 @@
+<div class="interviewers">
+    <mat-paginator [length]="totalSize"
+                   [pageSize]="pageSize"
+                   [pageSizeOptions]="pageSizeOptions"
+                   (page)="pageEvent = updatePage($event)">
+    </mat-paginator>
+    <p class="empty-table" *ngIf="dataSource.length === 0">{{'interviewers.empty' | translate}}</p>
+    <table mat-table [dataSource]="dataSource" *ngIf="dataSource.length > 0"
+           class="mat-elevation-z8 interviewers-table">
+
+        <!-- FirstName Column -->
+        <ng-container matColumnDef="firstName">
+            <th mat-header-cell *matHeaderCellDef> {{'interviewers.table.firstName' | translate}} </th>
+            <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
+        </ng-container>
+
+        <!-- LastName Column -->
+        <ng-container matColumnDef="lastName">
+            <th mat-header-cell *matHeaderCellDef> {{'interviewers.table.lastName' | translate}} </th>
+            <td mat-cell *matCellDef="let element"> {{element.lastName}} </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> {{'interviewers.table.actions' | translate}} </th>
+            <td mat-cell *matCellDef="let element">
+
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>

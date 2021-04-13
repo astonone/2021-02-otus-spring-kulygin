@@ -1,25 +1,15 @@
-<div class="login text-center">
-    <main class="form-signin">
-        <form>
-            <img class="mb-4" src="assets/image/login-icon.png" alt="" width="64" height="64">
-            <h1 class="h3 mb-3 fw-normal">{{'login.main-text' | translate}}</h1>
-
-            <div class="form-floating">
-                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                <label for="floatingInput">{{'login.email' | translate}}</label>
-            </div>
-            <div class="form-floating">
-                <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-                <label for="floatingPassword">{{'login.password' | translate}}</label>
-            </div>
-
-            <div class="checkbox mb-3">
-                <label>
-                    <input type="checkbox" value="remember-me"> {{'login.remember-me' | translate}}
-                </label>
-            </div>
-            <button class="w-100 btn btn-lg btn-primary" type="submit">{{'login.sign-in' | translate}}</button>
-            <p class="mt-5 mb-3 text-muted">&copy; Viktor Kulygin, Otus.ru 2021-02, 2021</p>
-        </form>
-    </main>
+<div class="login-container">
+    <h3>{{'login.main-text' | translate}}</h3>
+    <mat-form-field class="login-text-input" appearance="outline">
+        <mat-label>{{'login.email' | translate}}</mat-label>
+        <input matInput type="email" placeholder="{{'login.email-placeholder' | translate}}">
+    </mat-form-field>
+    <mat-form-field class="login-text-input" appearance="outline">
+        <mat-label>{{'login.password' | translate}}</mat-label>
+        <input matInput type="password" placeholder="{{'login.password-placeholder' | translate}}">
+    </mat-form-field>
+    <mat-checkbox>{{'login.remember-me' | translate}}</mat-checkbox>
+    <div class="login-buttons">
+        <button class="login-button" mat-raised-button color="primary">{{'login.sign-in' | translate}}</button>
+    </div>
 </div>
