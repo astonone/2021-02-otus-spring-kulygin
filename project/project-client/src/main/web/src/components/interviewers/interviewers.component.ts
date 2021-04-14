@@ -1,7 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {InterviewerDto} from "../../models/Interviewer-dto";
 import {InterviewersService} from "../../services/interviewers-service";
 import {PageEvent} from "@angular/material/paginator";
+import {MatTable} from "@angular/material/table";
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
 
 @Component({
     selector: 'interviewers',
@@ -26,7 +28,16 @@ export class InterviewersComponent implements OnInit {
     public displayedColumns: string[] = ['firstName', 'lastName', 'actions'];
     public dataSource: InterviewerDto[] = [];
 
-    constructor(private interviewerService: InterviewersService) {
+    private newInterviewer: InterviewerDto = new InterviewerDto(null, null, null);
+
+    @ViewChild('interviewerTable') interviewerTable: MatTable<any>;
+
+    // Snackbar options
+    private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+    private verticalPosition: MatSnackBarVerticalPosition = 'top';
+
+    constructor(private interviewerService: InterviewersService,
+                private snackBar: MatSnackBar) {
     }
 
     ngOnInit(): void {
@@ -49,6 +60,81 @@ export class InterviewersComponent implements OnInit {
             this.loadInterviewers($event.pageIndex, $event.pageSize);
         }
         return $event;
+    }
+
+    public makeEdit(element: InterviewerDto): void {
+        element.isEdit = true;
+        this.newInterviewer = new InterviewerDto(element.id, element.firstName, element.lastName);
+        this.interviewerTable.renderRows();
+    }
+
+    public remove(element: InterviewerDto): void {
+        this.interviewerService.removeById(element.id).subscribe(() => {
+            this.removeFromDataSourceById(element);
+        }, error => {
+            this.openSnackBar(error.error.message);
+        })
+    }
+
+    private removeFromDataSourceById(element: InterviewerDto): void {
+        let index = this.getElementIndexInDataSource(element);
+
+        this.dataSource.splice(index, 1);
+        this.interviewerTable.renderRows();
+    }
+
+    private openSnackBar(snackBarText: string): void {
+        this.snackBar.open(snackBarText, 'End now', {
+            duration: 2000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+        });
+    }
+
+    public isReadyToUpdate(element: InterviewerDto): boolean {
+        return !InterviewersComponent.isBlank(element.firstName) &&
+            !InterviewersComponent.isBlank(element.lastName);
+    }
+
+    private static isBlank(str: string): boolean {
+        return (!str || /^\s*$/.test(str));
+    }
+
+    public cancelEdit(element: InterviewerDto): void {
+        element.isEdit = false;
+        if (!element.id) {
+            this.dataSource.splice(this.dataSource.findIndex(e => e === element), 1);
+        } else {
+            element.firstName = this.newInterviewer.firstName;
+            element.lastName = this.newInterviewer.lastName;
+        }
+    }
+
+    public update(element: InterviewerDto): void {
+        this.interviewerService.update(InterviewerDto.createNewObjectFromDto(element)).subscribe(data => {
+            this.updateDataSource(element, data);
+            element.isEdit = false;
+            this.interviewerTable.renderRows();
+        })
+    }
+
+    private updateDataSource(element: any, interviewer: InterviewerDto): void {
+        let index = this.getElementIndexInDataSource(element);
+
+        this.dataSource.splice(index, 1, interviewer);
+    }
+
+    private getElementIndexInDataSource(element: InterviewerDto) {
+        return this.dataSource.map(function (item) {
+            return item.id
+        }).indexOf(element.id)
+    }
+
+    public create(): void {
+        let interviewer = new InterviewerDto(null, null, null);
+        interviewer.isEdit = true;
+        this.dataSource.push(interviewer);
+        this.interviewerTable.renderRows();
     }
 
 }

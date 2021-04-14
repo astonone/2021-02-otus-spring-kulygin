@@ -5,8 +5,43 @@
 }
 
 .empty-table {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    height: calc(100vh - 64px);
+}
+
+.action-element {
+    padding: 5px 5px 5px 5px;
+    height: 48px;
+    width: 48px;
+    cursor: pointer;
+}
+
+.new-entity-button {
+    width: fit-content;
+    margin: 5px 5px 5px 5px;
 }
 
 .interviewers-table {
     width: 100%;
+}
+
+.interviewers-table-row {
+    max-width: 150px;
+}
+
+@media screen and (max-device-width: 768px) {
+    .action-element {
+        padding: 5px 5px 5px 5px;
+        height: 32px;
+        width: 32px;
+        cursor: pointer;
+    }
+
+    .interviewers-table-row {
+        max-width: 100px;
+    }
 }

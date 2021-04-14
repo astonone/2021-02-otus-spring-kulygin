@@ -51,6 +51,9 @@
       "firstName": "FirstName",
       "lastName": "LastName",
       "actions": "Actions"
+    },
+    "button": {
+      "create": "Add interviewer"
     }
   }
 }

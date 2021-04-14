@@ -34,7 +34,7 @@ export class SharedService {
         themeElement.href = '/assets/themes/' + theme + '.css';
     }
 
-    public isMobile = () => screen.width < 481;
+    public isMobile = () => screen.width < 768;
 
     public isUserLogged = () => true;
 
