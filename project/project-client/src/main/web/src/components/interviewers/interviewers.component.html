@@ -5,11 +5,11 @@
                    (page)="pageEvent = updatePage($event)">
     </mat-paginator>
 
-    <p class="empty-table" *ngIf="dataSource.length === 0">{{'interviewers.empty' | translate}}</p>
-
     <button mat-raised-button color="primary" class="new-entity-button" (click)="create()">
         {{'interviewers.button.create' | translate}}
     </button>
+
+    <p class="empty-table" *ngIf="dataSource.length === 0">{{'interviewers.empty' | translate}}</p>
 
     <table mat-table #interviewerTable [dataSource]="dataSource" *ngIf="dataSource.length > 0"
            class="mat-elevation-z8 interviewers-table">
