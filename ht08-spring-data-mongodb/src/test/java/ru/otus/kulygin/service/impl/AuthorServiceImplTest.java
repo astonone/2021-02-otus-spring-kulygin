@@ -18,8 +18,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest(classes = AuthorServiceImpl.class)
 @DisplayName(value = "AuthorServiceImpl should ")
@@ -105,6 +104,17 @@ class AuthorServiceImplTest {
         authorRepository.deleteById(FOR_INSERT_AUTHOR_ID);
 
         verify(authorRepository).deleteById(FOR_INSERT_AUTHOR_ID);
+    }
+
+    @Test
+    @DisplayName("not remove author by id because author has related books")
+    void shouldNotCorrectDeleteAuthorByIdBecauseAuthorHasRelatedBooks() {
+        when(authorRepository.existsById(FOR_INSERT_AUTHOR_ID)).thenReturn(true);
+
+        doThrow(RuntimeException.class).when(authorRepository).deleteById(FOR_INSERT_AUTHOR_ID);
+
+        assertThatThrownBy(() -> authorService.deleteById(FOR_INSERT_AUTHOR_ID))
+                .isInstanceOf(Exception.class);
     }
 
     @Test

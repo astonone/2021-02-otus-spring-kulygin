@@ -18,8 +18,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest(classes = GenreServiceImpl.class)
 @DisplayName(value = "GenreServiceImpl should ")
@@ -105,6 +104,16 @@ class GenreServiceImplTest {
         genreRepository.deleteById(FOR_INSERT_GENRE_ID);
 
         verify(genreRepository).deleteById(FOR_INSERT_GENRE_ID);
+    }
+
+    @Test
+    @DisplayName("not remove genre by id because genre has related books")
+    void shouldNotCorrectDeleteGenreByIdBecauseGenreHasRelatedBooks() {
+        when(genreRepository.existsById(FOR_INSERT_GENRE_ID)).thenReturn(true);
+        doThrow(RuntimeException.class).when(genreRepository).deleteById(FOR_INSERT_GENRE_ID);
+
+        assertThatThrownBy(() -> genreService.deleteById(FOR_INSERT_GENRE_ID))
+                .isInstanceOf(Exception.class);
     }
 
     @Test

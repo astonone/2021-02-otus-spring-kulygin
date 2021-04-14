@@ -65,6 +65,8 @@ public class ApplicationCommands {
             return uiFacade.getLocalizedMessageForUser("genre.delete", String.valueOf(id));
         } catch (GenreDoesNotExistException e) {
             return uiFacade.getLocalizedMessageForUser("genre.not-found", String.valueOf(id));
+        } catch (Exception e) {
+            return uiFacade.getLocalizedMessageForUser("genre.related-entity");
         }
     }
 
@@ -105,6 +107,8 @@ public class ApplicationCommands {
             return uiFacade.getLocalizedMessageForUser("author.delete", String.valueOf(id));
         } catch (AuthorDoesNotExistException e) {
             return uiFacade.getLocalizedMessageForUser("author.not-found", String.valueOf(id));
+        } catch (Exception e) {
+            return uiFacade.getLocalizedMessageForUser("author.related-entity");
         }
     }
 
