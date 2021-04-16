@@ -19,7 +19,7 @@ public class CascadeAuthorDeleteMongoEventListener extends AbstractMongoEventLis
     @Override
     public void onBeforeDelete(BeforeDeleteEvent<Author> event) {
         String id = String.valueOf(event.getSource().get("_id"));
-        val book = bookRepository.findFirstByAuthor_Id(id);
+        val book = bookRepository.existsByAuthor_Id(id);
         if (book != null) {
             throw new RuntimeException("Author has related books");
         }

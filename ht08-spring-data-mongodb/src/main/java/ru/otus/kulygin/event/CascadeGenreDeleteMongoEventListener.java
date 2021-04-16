@@ -19,7 +19,7 @@ public class CascadeGenreDeleteMongoEventListener extends AbstractMongoEventList
     @Override
     public void onBeforeDelete(BeforeDeleteEvent<Genre> event) {
         String id = String.valueOf(event.getSource().get("_id"));
-        val book = bookRepository.findFirstByGenre_Id(id);
+        val book = bookRepository.existsByGenre_Id(id);
         if (book != null) {
             throw new RuntimeException("Genre has related books");
         }
