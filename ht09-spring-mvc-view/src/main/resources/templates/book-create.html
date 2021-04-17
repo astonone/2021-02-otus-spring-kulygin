@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Create book</title>
+    <style type="text/css">
+        .main-container {
+            padding: 15px 15px 15px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .btn-action {
+            margin-top: 15px !important;
+        }
+    </style>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <ul class="nav navbar-nav">
+        <li><a>Библиотека</a></li>
+        <li><a th:href="@{/}" href="book-list.html">Книги</a></li>
+        <li class="active"><a href="#">Создать</a></li>
+    </ul>
+</nav>
+<div class="main-container">
+    <form id="create-form" th:action="@{/create-book}" th:method="post" action="book-create.html">
+        <h1>Информация о книге:</h1>
+        <div>
+            <label for="holder-input-name">Название:</label>
+            <input id="holder-input-name" class="form-control" name="title" type="text" th:value="${book.title}"
+                   value="Holy Bible"/>
+        </div>
+        <div>
+            <label for="holder-input-author">ID Автора:</label>
+            <input id="holder-input-author" class="form-control" name="author.id" type="text"
+                   th:value="${book.author.id}" value="1"/>
+        </div>
+        <div>
+            <label for="holder-input-genre">ID Жанра:</label>
+            <input id="holder-input-genre" class="form-control" name="genre.id" type="text"
+                   th:value="${book.genre.id}" value="1"/>
+        </div>
+        <div>
+            <button class="btn btn-success btn-action" type="submit">Создать</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Books</title>
+    <style type="text/css">
+        .main-container {
+            padding: 15px 15px 15px 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .btn-action {
+            width: fit-content;
+            margin-bottom: 15px !important;
+        }
+
+        .btn-create-link {
+            width: fit-content;
+        }
+    </style>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <ul class="nav navbar-nav">
+        <li><a>Библиотека</a></li>
+        <li class="active"><a href="#">Книги</a></li>
+        <li><a th:href="@{/author-list}" href="author-list.html">Авторы</a></li>
+        <li><a th:href="@{/genre-list}" href="genre-list.html">Жанры</a></li>
+    </ul>
+</nav>
+<div class="main-container">
+    <div class="alert alert-info" role="alert" th:if="${books.isEmpty()}">
+        В библиотеке на данный момент отсутствуют книги
+    </div>
+    <a th:href="@{/create-book}" href="book-create.html" class="btn-create-link">
+        <button class="btn btn-success btn-action">Создать</button>
+    </a>
+    <div class="panel panel-default" th:if="${!books.isEmpty()}">
+        <!-- Default panel contents -->
+        <div class="panel-heading">Доступные книги</div>
+
+        <!-- Table -->
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Название</th>
+                <th>Автор</th>
+                <th>Жанр</th>
+                <th>Действиe</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="book : ${books}">
+                <td th:text="${book.id}">1</td>
+                <td th:text="${book.title}">Holy Bible</td>
+                <td th:text="${book.author.firstName + ' ' + book.author.lastName}">Jesus</td>
+                <td th:text="${book.genre.name}">Drama</td>
+                <td>
+                    <a th:href="@{/edit-book(id=${book.id})}" href="book-edit.html">
+                        <button class="btn btn-primary btn-action">Редактировать</button>
+                    </a>
+                    <form th:action="@{/delete-book(id=${book.id})}" method="post" th:object="${book}">
+                        <button class="btn btn-warning btn-action" type="submit" value="Submit">Удалить</button>
+                    </form>
+                    <a th:href="@{/book-comments(id=${book.id})}" href="book-comments.html">
+                        <button class="btn btn-default btn-action">Комментарии</button>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

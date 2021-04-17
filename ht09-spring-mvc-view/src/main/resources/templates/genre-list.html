@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Genres</title>
+    <style type="text/css">
+        .main-container {
+            padding: 15px 15px 15px 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .btn-action {
+            width: fit-content;
+            margin-bottom: 15px !important;
+        }
+
+        .btn-create-link {
+            width: fit-content;
+        }
+    </style>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <ul class="nav navbar-nav">
+        <li><a>Библиотека</a></li>
+        <li><a th:href="@{/}" href="book-list.html">Книги</a></li>
+        <li><a th:href="@{/author-list}" href="author-list.html">Авторы</a></li>
+        <li class="active"><a href="#">Жанры</a></li>
+    </ul>
+</nav>
+<div class="main-container">
+    <div class="alert alert-info" role="alert" th:if="${genres.isEmpty()}">
+        В библиотеке на данный момент отсутствуют жанры
+    </div>
+    <a th:href="@{/create-genre}" href="genre-create.html" class="btn-create-link">
+        <button class="btn btn-success btn-action">Создать</button>
+    </a>
+    <div class="panel panel-default" th:if="${!genres.isEmpty()}">
+        <!-- Default panel contents -->
+        <div class="panel-heading">Доступные жанры</div>
+
+        <!-- Table -->
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Название</th>
+                <th>Действиe</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="genre : ${genres}">
+                <td th:text="${genre.id}">1</td>
+                <td th:text="${genre.name}">Alexander</td>
+                <td>
+                    <a th:href="@{/edit-genre(id=${genre.id})}" href="genre-edit.html">
+                        <button class="btn btn-primary btn-action">Редактировать</button>
+                    </a>
+                    <form th:action="@{/delete-genre(id=${genre.id})}" method="post" th:object="${genre}">
+                        <button class="btn btn-warning btn-action" type="submit" value="Submit">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

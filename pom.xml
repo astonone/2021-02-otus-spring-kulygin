@@ -17,6 +17,7 @@
         <module>ht06-spring-jpa-hibernate</module>
         <module>ht07-spring-data</module>
         <module>ht08-spring-data-mongodb</module>
+        <module>ht09-spring-mvc-view</module>
     </modules>
 
     <properties>
