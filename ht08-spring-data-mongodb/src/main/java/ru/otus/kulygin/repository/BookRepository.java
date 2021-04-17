@@ -5,8 +5,8 @@ import ru.otus.kulygin.domain.Book;
 
 public interface BookRepository extends MongoRepository<Book, String> {
 
-    Book existsByGenre_Id(String genreId);
+    boolean existsByGenre_Id(String genreId);
 
-    Book existsByAuthor_Id(String authorId);
+    boolean existsByAuthor_Id(String authorId);
 
 }

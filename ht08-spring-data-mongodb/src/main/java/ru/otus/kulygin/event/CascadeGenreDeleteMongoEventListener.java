@@ -1,6 +1,5 @@
 package ru.otus.kulygin.event;
 
-import lombok.val;
 import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventListener;
 import org.springframework.data.mongodb.core.mapping.event.BeforeDeleteEvent;
 import org.springframework.stereotype.Component;
@@ -19,8 +18,7 @@ public class CascadeGenreDeleteMongoEventListener extends AbstractMongoEventList
     @Override
     public void onBeforeDelete(BeforeDeleteEvent<Genre> event) {
         String id = String.valueOf(event.getSource().get("_id"));
-        val book = bookRepository.existsByGenre_Id(id);
-        if (book != null) {
+        if (bookRepository.existsByGenre_Id(id)) {
             throw new RuntimeException("Genre has related books");
         }
     }
