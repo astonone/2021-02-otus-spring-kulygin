@@ -1,4 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {PageEvent} from "@angular/material/paginator";
+import {MatTable} from "@angular/material/table";
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
+import {InterviewTemplateCriteriaDto} from "../../models/interview-template-criteria-dto";
+import {InterviewTemplateCriteriaService} from "../../services/interview-template-criteria-service";
 
 @Component({
     selector: 'template-criteria',
@@ -10,10 +15,127 @@ import {Component, OnInit} from '@angular/core';
 
 export class TemplateCriteriaComponent implements OnInit {
 
-    constructor() {
+    public totalSize: number = 0;
+    public totalPageSize: number = 0;
+    public currentPageSize: number = 0;
+    public page: number = 0;
+    public pageSize: number = 10;
+    public pageSizeOptions: number[] = [5, 10, 25, 100];
+
+    // MatPaginator Output
+    public pageEvent: PageEvent;
+
+    public displayedColumns: string[] = ['name', 'positionType', 'actions'];
+    public dataSource: InterviewTemplateCriteriaDto[] = [];
+
+    private newCriteria: InterviewTemplateCriteriaDto = new InterviewTemplateCriteriaDto(null, null, null, null, null);
+
+    @ViewChild('criteriaTable') criteriaTable: MatTable<any>;
+
+    // Snackbar options
+    private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+    private verticalPosition: MatSnackBarVerticalPosition = 'top';
+
+    constructor(private interviewTemplateCriteriaService: InterviewTemplateCriteriaService,
+                private snackBar: MatSnackBar) {
     }
 
     ngOnInit(): void {
-
+        this.loadCriterias(this.page, this.pageSize);
     }
+
+    private loadCriterias(page: number, pageSize: number): void {
+        this.interviewTemplateCriteriaService.getAll(page, pageSize).subscribe(data => {
+            this.totalSize = data.totalSize;
+            this.totalPageSize = data.totalPageSize;
+            this.currentPageSize = data.currentPageSize;
+            this.page = data.page;
+            this.pageSize = data.pageSize;
+            this.dataSource = data.interviewTemplateCriterias;
+        });
+    }
+
+    public updatePage($event: PageEvent): PageEvent {
+        if (this.totalSize > this.currentPageSize) {
+            this.loadCriterias($event.pageIndex, $event.pageSize);
+        }
+        return $event;
+    }
+
+    public makeEdit(element: InterviewTemplateCriteriaDto): void {
+        element.isEdit = true;
+        this.newCriteria = new InterviewTemplateCriteriaDto(element.id, element.name, element.positionType, null, null);
+        this.criteriaTable.renderRows();
+    }
+
+    public remove(element: InterviewTemplateCriteriaDto): void {
+        this.interviewTemplateCriteriaService.removeById(element.id).subscribe(() => {
+            this.removeFromDataSourceById(element);
+        }, error => {
+            this.openSnackBar(error.error.message);
+        })
+    }
+
+    private removeFromDataSourceById(element: InterviewTemplateCriteriaDto): void {
+        let index = this.getElementIndexInDataSource(element);
+
+        this.dataSource.splice(index, 1);
+        this.criteriaTable.renderRows();
+    }
+
+    private openSnackBar(snackBarText: string): void {
+        this.snackBar.open(snackBarText, 'End now', {
+            duration: 2000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+        });
+    }
+
+    public isReadyToUpdate(element: InterviewTemplateCriteriaDto): boolean {
+        return !TemplateCriteriaComponent.isBlank(element.name) &&
+            !TemplateCriteriaComponent.isBlank(element.positionType);
+    }
+
+    private static isBlank(str: string): boolean {
+        return (!str || /^\s*$/.test(str));
+    }
+
+    public cancelEdit(element: InterviewTemplateCriteriaDto): void {
+        element.isEdit = false;
+        if (!element.id) {
+            this.dataSource.splice(this.dataSource.findIndex(e => e === element), 1);
+            this.criteriaTable.renderRows();
+        } else {
+            element.name = this.newCriteria.name;
+            element.positionType = this.newCriteria.positionType;
+        }
+    }
+
+    public update(element: InterviewTemplateCriteriaDto): void {
+        this.interviewTemplateCriteriaService.save(InterviewTemplateCriteriaDto.createNewObjectFromDto(element)).subscribe(data => {
+            this.updateDataSource(element, data);
+            element.isEdit = false;
+            this.criteriaTable.renderRows();
+        })
+    }
+
+    private updateDataSource(element: any, criteria: InterviewTemplateCriteriaDto): void {
+        let index = this.getElementIndexInDataSource(element);
+
+        this.dataSource.splice(index, 1, criteria);
+    }
+
+    private getElementIndexInDataSource(element: InterviewTemplateCriteriaDto) {
+        return this.dataSource.map(function (item) {
+            return item.id
+        }).indexOf(element.id)
+    }
+
+    public create(): void {
+        let criteria = new InterviewTemplateCriteriaDto(null, null, null, null, null);
+        criteria.isEdit = true;
+        this.dataSource.push(criteria);
+        this.criteriaTable.renderRows();
+    }
+
 }

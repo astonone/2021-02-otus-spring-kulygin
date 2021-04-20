@@ -1,8 +1,7 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {InterviewerDto} from "../../models/Interviewer-dto";
 import {InterviewersService} from "../../services/interviewers-service";
 import {PageEvent} from "@angular/material/paginator";
-import {MatTable} from "@angular/material/table";
 import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
 
 @Component({
@@ -25,12 +24,9 @@ export class InterviewersComponent implements OnInit {
     // MatPaginator Output
     public pageEvent: PageEvent;
 
-    public displayedColumns: string[] = ['firstName', 'lastName', 'actions'];
     public dataSource: InterviewerDto[] = [];
 
-    private newInterviewer: InterviewerDto = new InterviewerDto(null, null, null);
-
-    @ViewChild('interviewerTable') interviewerTable: MatTable<any>;
+    public newInterviewer: InterviewerDto = new InterviewerDto(null, null, null, null);
 
     // Snackbar options
     private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
@@ -64,13 +60,16 @@ export class InterviewersComponent implements OnInit {
 
     public makeEdit(element: InterviewerDto): void {
         element.isEdit = true;
-        this.newInterviewer = new InterviewerDto(element.id, element.firstName, element.lastName);
-        this.interviewerTable.renderRows();
+        this.newInterviewer = InterviewerDto.createNewObjectFromDto(element);
     }
 
     public remove(element: InterviewerDto): void {
         this.interviewerService.removeById(element.id).subscribe(() => {
             this.removeFromDataSourceById(element);
+            if (element.id) {
+                this.currentPageSize--;
+                this.totalSize--;
+            }
         }, error => {
             this.openSnackBar(error.error.message);
         })
@@ -80,7 +79,6 @@ export class InterviewersComponent implements OnInit {
         let index = this.getElementIndexInDataSource(element);
 
         this.dataSource.splice(index, 1);
-        this.interviewerTable.renderRows();
     }
 
     private openSnackBar(snackBarText: string): void {
@@ -92,8 +90,9 @@ export class InterviewersComponent implements OnInit {
     }
 
     public isReadyToUpdate(element: InterviewerDto): boolean {
-        return !InterviewersComponent.isBlank(element.firstName) &&
-            !InterviewersComponent.isBlank(element.lastName);
+        return !InterviewersComponent.isBlank(this.newInterviewer.firstName) &&
+            !InterviewersComponent.isBlank(this.newInterviewer.lastName) &&
+            !InterviewersComponent.isBlank(this.newInterviewer.positionType);
     }
 
     private static isBlank(str: string): boolean {
@@ -107,14 +106,22 @@ export class InterviewersComponent implements OnInit {
         } else {
             element.firstName = this.newInterviewer.firstName;
             element.lastName = this.newInterviewer.lastName;
+            element.positionType = this.newInterviewer.positionType;
+            this.newInterviewer = new InterviewerDto(null, null, null, null);
         }
     }
 
     public update(element: InterviewerDto): void {
-        this.interviewerService.update(InterviewerDto.createNewObjectFromDto(element)).subscribe(data => {
-            this.updateDataSource(element, data);
-            element.isEdit = false;
-            this.interviewerTable.renderRows();
+        this.interviewerService.save(this.newInterviewer).subscribe(data => {
+            this.newInterviewer = new InterviewerDto(null, null, null, null);
+            if (this.dataSource.length + 1 <= this.currentPageSize) {
+                this.updateDataSource(element, data);
+                element.isEdit = false;
+                this.totalSize++;
+                this.currentPageSize++;
+            } else {
+                this.loadInterviewers(this.page, this.pageSize);
+            }
         })
     }
 
@@ -131,10 +138,10 @@ export class InterviewersComponent implements OnInit {
     }
 
     public create(): void {
-        let interviewer = new InterviewerDto(null, null, null);
+        let interviewer = new InterviewerDto(null, null, null, null);
         interviewer.isEdit = true;
+        interviewer.isNew = true;
         this.dataSource.push(interviewer);
-        this.interviewerTable.renderRows();
     }
 
 }

@@ -26,13 +26,13 @@ public class InterviewerController {
     }
 
     @GetMapping("/get-all")
-    public ResponseEntity<?> getAllInterviewersPageable(@RequestParam("page") Integer page,
+    public ResponseEntity<?> getAllPageable(@RequestParam("page") Integer page,
                                                         @RequestParam("pageSize") Integer pageSize) {
         return new ResponseEntity<>(interviewerService.findAll(PageRequest.of(page, pageSize)), HttpStatus.OK);
     }
 
-    @PostMapping("update")
-    public ResponseEntity<?> update(@RequestBody InterviewerDto interviewerDto) {
+    @PostMapping("save")
+    public ResponseEntity<?> save(@RequestBody InterviewerDto interviewerDto) {
         Interviewer forSave = Interviewer.builder().build();
         Optional<InterviewerDto> interviewerById = Optional.empty();
         if (interviewerDto.getId() != null) {
@@ -44,11 +44,12 @@ public class InterviewerController {
         forSave.setId(interviewerById.map(InterviewerDto::getId).orElse(null));
         forSave.setFirstName(interviewerDto.getFirstName());
         forSave.setLastName(interviewerDto.getLastName());
-        return new ResponseEntity<>(interviewerService.update(forSave), HttpStatus.OK);
+        forSave.setPositionType(interviewerDto.getPositionType());
+        return new ResponseEntity<>(interviewerService.save(forSave), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<?> deleteGenreById(@PathVariable String id) {
+    public ResponseEntity<?> deleteById(@PathVariable String id) {
         try {
             interviewerService.deleteById(id);
             return new ResponseEntity<>(HttpStatus.OK);

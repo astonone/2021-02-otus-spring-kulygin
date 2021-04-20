@@ -14,5 +14,6 @@ public class InterviewerDto {
     private String id;
     private String firstName;
     private String lastName;
+    private String positionType;
 
 }

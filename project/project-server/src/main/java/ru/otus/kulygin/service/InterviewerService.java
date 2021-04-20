@@ -11,7 +11,7 @@ public interface InterviewerService {
 
     InterviewerPageableDto findAll(Pageable pageable);
 
-    InterviewerDto update(Interviewer interviewer);
+    InterviewerDto save(Interviewer interviewer);
 
     Optional<InterviewerDto> getById(String id);
 

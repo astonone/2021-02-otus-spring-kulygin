@@ -38,7 +38,7 @@ public class InterviewerServiceImpl implements InterviewerService {
     }
 
     @Override
-    public InterviewerDto update(Interviewer interviewer) {
+    public InterviewerDto save(Interviewer interviewer) {
         return mappingService.map(interviewerRepository.save(interviewer), InterviewerDto.class);
     }
 
@@ -50,11 +50,7 @@ public class InterviewerServiceImpl implements InterviewerService {
     @Override
     public void deleteById(String id) {
         if (interviewerRepository.existsById(id)) {
-            try {
-                interviewerRepository.deleteById(id);
-            } catch (RuntimeException e) {
-                throw new RuntimeException(e.getMessage());
-            }
+            interviewerRepository.deleteById(id);
         }
     }
 

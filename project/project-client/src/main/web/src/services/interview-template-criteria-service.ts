@@ -1,15 +1,14 @@
 import {Injectable} from '@angular/core';
 import {SharedService} from "./shared.service";
 import {HttpClient} from "@angular/common/http";
-import {InterviewerPageableDto} from "../models/pageable/Interviewer-pageable-dto";
 import {Observable} from "rxjs";
-import {InterviewerDto} from "../models/Interviewer-dto";
-
+import {InterviewTemplateCriteriaPageableDto} from "../models/pageable/interview-template-criteria-pageable-dto";
+import {InterviewTemplateCriteriaDto} from "../models/interview-template-criteria-dto";
 
 @Injectable({
     providedIn: 'root'
 })
-export class InterviewersService {
+export class InterviewTemplateCriteriaService {
 
     private readonly SERVICE: string;
     private GET_ALL: string;
@@ -19,21 +18,21 @@ export class InterviewersService {
     constructor(private sharedService: SharedService,
                 private http: HttpClient) {
 
-        this.SERVICE = this.sharedService.getServerURL() + '/api/interviewer/';
+        this.SERVICE = this.sharedService.getServerURL() + '/api/interview-template-criteria/';
         this.GET_ALL = this.SERVICE + 'get-all?page={page}&pageSize={pageSize}';
         this.SAVE = this.SERVICE + 'save';
         this.DELETE = this.SERVICE + '{id}';
     }
 
-    public getAll(page: number, pageSize: number): Observable<InterviewerPageableDto> {
+    public getAll(page: number, pageSize: number): Observable<InterviewTemplateCriteriaPageableDto> {
         const regExpPage = /{page}/gi;
         const regExpPageSize = /{pageSize}/gi;
         const url = this.GET_ALL.replace(regExpPage, page.toString()).replace(regExpPageSize, pageSize.toString());
-        return this.http.get<InterviewerPageableDto>(url);
+        return this.http.get<InterviewTemplateCriteriaPageableDto>(url);
     }
 
-    public save(interviewer: InterviewerDto): Observable<InterviewerDto> {
-        return this.http.post<InterviewerDto>(this.SAVE, interviewer.toObject());
+    public save(criteria: InterviewTemplateCriteriaDto): Observable<InterviewTemplateCriteriaDto> {
+        return this.http.post<InterviewTemplateCriteriaDto>(this.SAVE, criteria.toObject());
     }
 
     public removeById(id: string): Observable<Object> {

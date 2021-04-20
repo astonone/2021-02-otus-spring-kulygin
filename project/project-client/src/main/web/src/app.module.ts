@@ -11,6 +11,8 @@ import {MainUiModule} from './modules/main-ui/main-ui.module';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 /*Services*/
+import {InterviewersService} from "./services/interviewers-service";
+import {InterviewTemplateCriteriaService} from "./services/interview-template-criteria-service";
 
 /*Components*/
 import {HomeComponent} from './components/home/home.component';
@@ -60,7 +62,9 @@ export function TranslationLoaderFactory(http: HttpClient) {
         LoginComponent,
         SignUpComponent,
         TemplatesComponent,
-        TemplateCriteriaComponent
+        TemplateCriteriaComponent,
+        InterviewersService,
+        InterviewTemplateCriteriaService
     ],
     bootstrap: [AppComponent]
 })

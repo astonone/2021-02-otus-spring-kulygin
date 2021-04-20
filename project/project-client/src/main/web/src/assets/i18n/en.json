@@ -46,14 +46,30 @@
   },
   "interviewers": {
     "empty": "You do not have any created interviewers",
-    "table" : {
+    "items" : {
       "id": "No.",
       "firstName": "FirstName",
       "lastName": "LastName",
+      "positionType": "Position type"
+    },
+    "button": {
+      "create": "Add interviewer",
+      "save": "Save data",
+      "cancel": "Cancel edit",
+      "change": "Change data",
+      "remove": "Remove interviewer"
+    }
+  },
+  "criterias": {
+    "empty": "You do not have any created template criterias",
+    "table" : {
+      "id": "No.",
+      "name": "Criteria name",
+      "positionType": "Position type",
       "actions": "Actions"
     },
     "button": {
-      "create": "Add interviewer"
+      "create": "Add criteria"
     }
   }
 }

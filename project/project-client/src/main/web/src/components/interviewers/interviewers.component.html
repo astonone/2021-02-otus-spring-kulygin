@@ -11,63 +11,72 @@
 
     <p class="empty-table" *ngIf="dataSource.length === 0">{{'interviewers.empty' | translate}}</p>
 
-    <table mat-table #interviewerTable [dataSource]="dataSource" *ngIf="dataSource.length > 0"
-           class="mat-elevation-z8 interviewers-table">
+    <mat-accordion *ngIf="dataSource.length > 0">
+        <mat-expansion-panel *ngFor="let element of dataSource"
+                             [expanded]="element.isNew">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{!element.isNew ? element.positionType : ''}}
+                </mat-panel-title>
+                <mat-panel-description>
+                    {{!element.isNew ? element.firstName + ' ' + element.lastName : ''}}
+                </mat-panel-description>
+            </mat-expansion-panel-header>
 
-        <!-- FirstName Column -->
-        <ng-container matColumnDef="firstName">
-            <th mat-header-cell *matHeaderCellDef> {{'interviewers.table.firstName' | translate}} </th>
-            <td mat-cell *matCellDef="let element">
-                <div *ngIf="!element.isEdit">
-                    {{element.firstName}}
-                </div>
-                <div *ngIf="element.isEdit">
-                    <mat-form-field class="interviewers-table-row">
-                        <mat-label>{{'interviewers.table.firstName' | translate}}</mat-label>
-                        <input matInput [(ngModel)]="element.firstName">
+            <button mat-raised-button color="primary" class="new-entity-button" [disabled]="!isReadyToUpdate(element)"
+                    *ngIf="element.isEdit"
+                    (click)="update(element)">
+                {{'interviewers.button.save' | translate}}
+            </button>
+
+            <button mat-raised-button color="link" class="new-entity-button" *ngIf="element.isEdit"
+                    (click)="cancelEdit(element)">
+                {{'interviewers.button.cancel' | translate}}
+            </button>
+
+            <button mat-raised-button color="accent" class="new-entity-button" *ngIf="!element.isEdit"
+                    (click)="makeEdit(element)">
+                {{'interviewers.button.change' | translate}}
+            </button>
+
+            <button mat-raised-button color="warn" class="new-entity-button" (click)="remove(element)">
+                {{'interviewers.button.remove' | translate}}
+            </button>
+
+            <mat-list role="list" *ngIf="!element.isEdit">
+                <mat-list-item role="listitem">{{'interviewers.items.firstName' | translate}}
+                    : {{element.firstName}}</mat-list-item>
+                <mat-list-item role="listitem">{{'interviewers.items.lastName' | translate}}
+                    : {{element.lastName}}</mat-list-item>
+                <mat-list-item role="listitem">{{'interviewers.items.positionType' | translate}}
+                    : {{element.positionType}}</mat-list-item>
+            </mat-list>
+
+            <mat-list role="list" *ngIf="element.isEdit" class="item-change-element">
+                <mat-list-item role="listitem" class="item-input-element">
+                    <mat-form-field appearance="outline">
+                        <mat-label>{{'interviewers.items.firstName' | translate}}</mat-label>
+                        <input matInput type="text" placeholder="{{'interviewers.items.firstName' | translate}}"
+                               [(ngModel)]="newInterviewer.firstName">
                     </mat-form-field>
-                </div>
-            </td>
-        </ng-container>
-
-        <!-- LastName Column -->
-        <ng-container matColumnDef="lastName">
-            <th mat-header-cell *matHeaderCellDef> {{'interviewers.table.lastName' | translate}} </th>
-            <td mat-cell *matCellDef="let element">
-                <div *ngIf="!element.isEdit">
-                    {{element.lastName}}
-                </div>
-                <div *ngIf="element.isEdit">
-                    <mat-form-field class="interviewers-table-row">
-                        <mat-label>{{'interviewers.table.lastName' | translate}}</mat-label>
-                        <input matInput [(ngModel)]="element.lastName">
+                </mat-list-item>
+                <mat-list-item role="listitem" class="item-input-element">
+                    <mat-form-field appearance="outline">
+                        <mat-label>{{'interviewers.items.lastName' | translate}}</mat-label>
+                        <input matInput type="text" placeholder="{{'interviewers.items.lastName' | translate}}"
+                               [(ngModel)]="newInterviewer.lastName">
                     </mat-form-field>
-                </div>
-            </td>
-        </ng-container>
+                </mat-list-item>
+                <mat-list-item role="listitem" class="item-input-element">
+                    <mat-form-field appearance="outline">
+                        <mat-label>{{'interviewers.items.positionType' | translate}}</mat-label>
+                        <input matInput type="text" placeholder="{{'interviewers.items.positionType' | translate}}"
+                               [(ngModel)]="newInterviewer.positionType">
+                    </mat-form-field>
+                </mat-list-item>
+            </mat-list>
 
-        <!-- Actions Column -->
-        <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef> {{'interviewers.table.actions' | translate}} </th>
-            <td mat-cell *matCellDef="let element">
-                <div *ngIf="!element.isEdit">
-                    <img class="action-element" src="assets/image/actions/edit.png"
-                         (click)="makeEdit(element)">
-                    <img class="action-element" src="assets/image/actions/remove.png"
-                         (click)="remove(element)">
-                </div>
-                <div *ngIf="element.isEdit">
-                    <img *ngIf="isReadyToUpdate(element)" class="action-element"
-                         src="assets/image/actions/save.png" (click)="update(element)">
-                    <img class="action-element" src="assets/image/actions/cancel.png"
-                         (click)="cancelEdit(element)">
-                    <img *ngIf="element.id" class="action-element" src="assets/image/actions/remove.png"
-                         (click)="remove(element)">
-                </div>
-            </td>
-        </ng-container>
+        </mat-expansion-panel>
+    </mat-accordion>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
 </div>

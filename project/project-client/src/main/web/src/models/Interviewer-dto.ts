@@ -3,16 +3,19 @@ export class InterviewerDto {
     private _id: string;
     private _firstName: string;
     private _lastName: string;
+    private _positionType: string;
     private _isEdit: boolean = false;
+    private _isNew: boolean = false;
 
     public static createNewObjectFromDto(interviewer: InterviewerDto): InterviewerDto {
-        return new InterviewerDto(interviewer.id, interviewer.firstName, interviewer.lastName);
+        return new InterviewerDto(interviewer.id, interviewer.firstName, interviewer.lastName, interviewer.positionType);
     }
 
-    constructor(id: string, firstName: string, lastName: string) {
+    constructor(id: string, firstName: string, lastName: string, positionType: string) {
         this._id = id;
         this._firstName = firstName;
         this._lastName = lastName;
+        this._positionType = positionType;
     }
 
     get id(): string {
@@ -39,6 +42,14 @@ export class InterviewerDto {
         this._lastName = value;
     }
 
+    get positionType(): string {
+        return this._positionType;
+    }
+
+    set positionType(value: string) {
+        this._positionType = value;
+    }
+
     get isEdit(): boolean {
         return this._isEdit;
     }
@@ -47,11 +58,21 @@ export class InterviewerDto {
         this._isEdit = value;
     }
 
+    get isNew(): boolean {
+        return this._isNew;
+    }
+
+    set isNew(value: boolean) {
+        this._isNew = value;
+    }
+
     public toObject(): any {
         return {
             id: this._id,
             firstName: this._firstName,
-            lastName: this._lastName
+            lastName: this._lastName,
+            positionType: this._positionType
         }
     }
+
 }

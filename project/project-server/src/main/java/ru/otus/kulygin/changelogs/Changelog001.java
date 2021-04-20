@@ -16,16 +16,19 @@ public class Changelog001 {
         Interviewer interviewer = Interviewer.builder()
                 .firstName("Виктор")
                 .lastName("Кулыгин")
+                .positionType("Java Developer")
                 .build();
 
         Interviewer interviewer2 = Interviewer.builder()
                 .firstName("Андрей")
                 .lastName("Шмоськин")
+                .positionType("Java Developer")
                 .build();
 
         Interviewer interviewer3 = Interviewer.builder()
                 .firstName("Ирина")
                 .lastName("Медошкина")
+                .positionType("Java Developer")
                 .build();
 
         interviewerRepository.saveAll(Arrays.asList(interviewer, interviewer2, interviewer3));
