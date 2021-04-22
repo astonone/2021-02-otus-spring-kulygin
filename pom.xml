@@ -18,6 +18,7 @@
         <module>ht07-spring-data</module>
         <module>ht08-spring-data-mongodb</module>
         <module>ht09-spring-mvc-view</module>
+        <module>ht10-spring-mvc-spa</module>
     </modules>
 
     <properties>

@@ -18,3 +18,4 @@ Student: Viktor Kulygin
 |[ht08-spring-data-mongo-db](https://github.com/astonone/2021-02-otus-spring-kulygin/tree/main/ht08-spring-data-mongodb)|Spring Data Key-Value для подключения к Key-Value базам данных (и даже к SynchronizedMap);MondoDB;MongoDB c помощью Spring Data MongoDB.|
 |Web|
 |[ht09-spring-mvc-view](https://github.com/astonone/2021-02-otus-spring-kulygin/tree/main/ht09-spring-mvc-view)|разрабатывать классические Web-приложения на Spring MVC;разрабатывать слой View на Thymeleaf.|
+|[ht10-spring-mvc-spa](https://github.com/astonone/2021-02-otus-spring-kulygin/tree/main/ht10-spring-mvc-spa)|создавать сложные классические приложения с использованием Spring Web Flow;создавать современные приложения, как основанные на AJAX архитектуре и jQuery, так и SPA-приложения на Vue, React и Angular.|
