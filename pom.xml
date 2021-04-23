@@ -19,6 +19,7 @@
         <module>ht08-spring-data-mongodb</module>
         <module>ht09-spring-mvc-view</module>
         <module>ht10-spring-mvc-spa</module>
+        <module>ht11-spring-webflux</module>
     </modules>
 
     <properties>
