@@ -1,12 +1,4 @@
-app:
-  locale: en
-
 spring:
-  messages:
-    basename: i18n/messages
   data:
     mongodb:
       database: library
-  shell:
-    interactive:
-      enabled: false

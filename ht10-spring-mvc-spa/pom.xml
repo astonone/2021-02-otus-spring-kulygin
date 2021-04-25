@@ -14,7 +14,7 @@
     <artifactId>ht10-spring-mvc-spa</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>ht10-spring-mvc-spa</name>
-    <description>Library of books testing project for Spring Boot with shell command line and spring data mongodb and Angular</description>
+    <description>Library of books testing project for Spring Boot and spring data mongodb and Angular</description>
     <packaging>pom</packaging>
 
     <modules>
