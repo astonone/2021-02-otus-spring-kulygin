@@ -7,7 +7,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.MvcResult;
 import ru.otus.kulygin.domain.Author;
 import ru.otus.kulygin.domain.Book;
-import ru.otus.kulygin.domain.Comment;
 import ru.otus.kulygin.domain.Genre;
 import ru.otus.kulygin.dto.AuthorDto;
 import ru.otus.kulygin.dto.BookDto;
@@ -75,8 +74,6 @@ public class BookControllerTest extends BaseControllerTest {
         when(genreService.getById("1")).thenReturn(Optional.of(genreDto));
         when(authorService.getById("1")).thenReturn(Optional.of(authorDto));
         when(bookService.getById("1")).thenReturn(Optional.of(bookDto));
-        when(mappingService.map(authorDto, Author.class)).thenReturn(author);
-        when(mappingService.map(genreDto, Genre.class)).thenReturn(genre);
         when(mappingService.map(bookDto, Book.class)).thenReturn(book);
 
         MvcResult result = mockMvc.perform(get("/edit-book?id=1"))
@@ -102,16 +99,7 @@ public class BookControllerTest extends BaseControllerTest {
                 .firstName("Alexander")
                 .lastName("Pushkin")
                 .build();
-        val author = Author.builder()
-                .id("1")
-                .firstName("Alexander")
-                .lastName("Pushkin")
-                .build();
         val genreDto = GenreDto.builder()
-                .id("1")
-                .name("Triller")
-                .build();
-        val genre = Genre.builder()
                 .id("1")
                 .name("Triller")
                 .build();
@@ -122,20 +110,12 @@ public class BookControllerTest extends BaseControllerTest {
                 .author(authorDto)
                 .comments(new ArrayList<>())
                 .build();
-        val book = Book.builder()
-                .id("1")
-                .title("Capitan's daughter")
-                .genre(genre)
-                .author(author)
-                .build();
         when(genreService.getById("1")).thenReturn(Optional.of(genreDto));
         when(authorService.getById("1")).thenReturn(Optional.of(authorDto));
         when(bookService.getById("1")).thenReturn(Optional.of(bookDto));
-        when(mappingService.map(authorDto, Author.class)).thenReturn(author);
-        when(mappingService.map(genreDto, Genre.class)).thenReturn(genre);
 
         mockMvc.perform(post("/edit-book")
-                .flashAttr("book", book))
+                .flashAttr("bookDto", bookDto))
                 .andExpect(status().is3xxRedirection());
     }
 
@@ -147,16 +127,7 @@ public class BookControllerTest extends BaseControllerTest {
                 .firstName("Alexander")
                 .lastName("Pushkin")
                 .build();
-        val author = Author.builder()
-                .id("1")
-                .firstName("Alexander")
-                .lastName("Pushkin")
-                .build();
         val genreDto = GenreDto.builder()
-                .id("1")
-                .name("Triller")
-                .build();
-        val genre = Genre.builder()
                 .id("1")
                 .name("Triller")
                 .build();
@@ -167,20 +138,12 @@ public class BookControllerTest extends BaseControllerTest {
                 .author(authorDto)
                 .comments(new ArrayList<>())
                 .build();
-        val book = Book.builder()
-                .id("1")
-                .title("Capitan's daughter")
-                .genre(genre)
-                .author(author)
-                .build();
         when(genreService.getById("1")).thenReturn(Optional.of(genreDto));
         when(authorService.getById("1")).thenReturn(Optional.of(authorDto));
         when(bookService.getById("1")).thenReturn(Optional.of(bookDto));
-        when(mappingService.map(authorDto, Author.class)).thenReturn(author);
-        when(mappingService.map(genreDto, Genre.class)).thenReturn(genre);
 
         mockMvc.perform(post("/create-book")
-                .flashAttr("book", book))
+                .flashAttr("bookDto", bookDto))
                 .andExpect(status().is3xxRedirection());
     }
 
@@ -188,77 +151,7 @@ public class BookControllerTest extends BaseControllerTest {
     @DisplayName(value = "delete book")
     public void shouldDeleteBook() throws Exception {
         mockMvc.perform(post("/delete-book?id=1"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    @DisplayName(value = "load comments page")
-    public void shouldLoadBookCommentsPage() throws Exception {
-        mockMvc.perform(get("/book-comments?id=1"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    @DisplayName(value = "delete comment")
-    public void shouldDeleteBookComment() throws Exception {
-        mockMvc.perform(post("/delete-comment?commentId=1&bookId=1"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    @DisplayName(value = "load delete comment page")
-    public void shouldLoadBookCommentCreatePage() throws Exception {
-        mockMvc.perform(get("/book-comment-create?id=1"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    @DisplayName(value = "create comment")
-    public void shouldCreateBookComment() throws Exception {
-        val authorDto = AuthorDto.builder()
-                .id("1")
-                .firstName("Alexander")
-                .lastName("Pushkin")
-                .build();
-        val author = Author.builder()
-                .id("1")
-                .firstName("Alexander")
-                .lastName("Pushkin")
-                .build();
-        val genreDto = GenreDto.builder()
-                .id("1")
-                .name("Triller")
-                .build();
-        val genre = Genre.builder()
-                .id("1")
-                .name("Triller")
-                .build();
-        val bookDto = BookDto.builder()
-                .id("1")
-                .title("Capitan's daughter")
-                .genre(genreDto)
-                .author(authorDto)
-                .comments(new ArrayList<>())
-                .build();
-        val book = Book.builder()
-                .id("1")
-                .title("Capitan's daughter")
-                .genre(genre)
-                .author(author)
-                .build();
-
-        when(genreService.getById("1")).thenReturn(Optional.of(genreDto));
-        when(authorService.getById("1")).thenReturn(Optional.of(authorDto));
-        when(bookService.getById("1")).thenReturn(Optional.of(bookDto));
-        when(mappingService.map(authorDto, Author.class)).thenReturn(author);
-        when(mappingService.map(genreDto, Genre.class)).thenReturn(genre);
-        when(mappingService.map(bookDto, Book.class)).thenReturn(book);
-
-        mockMvc.perform(post("/book-comment-create?bookId=1")
-                .flashAttr("comment", Comment.builder()
-                        .id("1")
-                        .build()))
-                .andExpect(status().isOk());
+                .andExpect(status().is3xxRedirection());
     }
 
 }

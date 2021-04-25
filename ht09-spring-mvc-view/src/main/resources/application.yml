@@ -1,9 +1,4 @@
-app:
-  locale: en
-
 spring:
-  messages:
-    basename: i18n/messages
   data:
     mongodb:
       database: library

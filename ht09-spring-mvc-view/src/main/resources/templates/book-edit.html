@@ -14,9 +14,15 @@
         .btn-action {
             margin-top: 15px !important;
         }
+
+        .book-dropdown {
+            display: flex;
+            flex-direction: column;
+        }
     </style>
     <!-- Bootstrap core CSS -->
     <link th:href="@{/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css" rel="stylesheet"/>
+    <link th:href="@{/css/bootstrap-select.min.css}" href="../static/css/bootstrap.min.css" rel="stylesheet"/>
 </head>
 <body>
 <nav class="navbar navbar-inverse">
@@ -38,20 +44,33 @@
             <input id="holder-input-name" class="form-control" name="title" type="text" th:value="${book.title}"
                    value="Holy Bible"/>
         </div>
-        <div>
-            <label for="holder-input-author">ID Автора:</label>
-            <input id="holder-input-author" class="form-control" name="author.id" type="text"
-                   th:value="${book.author.id}" value="1"/>
+
+        <div class="book-dropdown">
+            <label for="holder-input-name">Автор:</label>
+            <select th:field="*{book.author.id}" class="selectpicker form-control">
+                <option th:each="author : ${authors}" th:value="${author.id}"
+                        th:text="${author.firstName + ' ' + author.lastName}"
+                        th:selected="${book.author.id==author.id}"></option>
+            </select>
         </div>
-        <div>
-            <label for="holder-input-genre">ID Жанра:</label>
-            <input id="holder-input-genre" class="form-control" name="genre.id" type="text" th:value="${book.genre.id}"
-                   value="1"/>
+
+        <div class="book-dropdown">
+            <label for="holder-input-name">Жанр:</label>
+            <select th:field="*{book.genre.id}" class="selectpicker form-control">
+                <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}"
+                        th:selected="${book.genre.id==genre.id}"></option>
+            </select>
         </div>
+
         <div>
             <button class="btn btn-success btn-action" type="submit">Сохранить</button>
         </div>
     </form>
 </div>
+
+<script th:src="@{/js/jquery-3.6.0.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/bootstrap-select.min.js}"></script>
+
 </body>
 </html>

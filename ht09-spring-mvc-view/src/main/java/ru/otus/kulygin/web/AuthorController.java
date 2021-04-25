@@ -34,40 +34,35 @@ public class AuthorController {
 
     @GetMapping("/edit-author")
     public String editAuthorPage(@RequestParam("id") String id, Model model) {
-        Optional<AuthorDto> author = authorService.getById(id);
-        model.addAttribute("author", author
-                .map(authorDto -> mappingService.map(authorDto, Author.class))
+        Optional<AuthorDto> authorDto = authorService.getById(id);
+        model.addAttribute("author", authorDto
                 .orElseThrow(() -> new AuthorDoesNotExistException("Author with id=" + id + " has not found")));
         return "author-edit";
     }
 
     @GetMapping("/create-author")
     public String createAuthorPage(Model model) {
-        Author author = new Author();
-        model.addAttribute("author", author);
+        AuthorDto authorDto = new AuthorDto();
+        model.addAttribute("author", authorDto);
         return "author-create";
     }
 
     @PostMapping("/edit-author")
-    public String editAuthor(Author author, Model model) {
-        authorService.save(author);
-        model.addAttribute("author", author);
+    public String editAuthor(AuthorDto author) {
+        authorService.save(mappingService.map(author, Author.class));
         return "redirect:/author-list";
     }
 
     @PostMapping("/create-author")
-    public String createAuthor(Author author, Model model) {
-        authorService.save(author);
-        model.addAttribute("author", author);
+    public String createAuthor(AuthorDto author) {
+        authorService.save(mappingService.map(author, Author.class));
         return "redirect:/author-list";
     }
 
     @PostMapping("/delete-author")
-    public String deleteAuthor(@RequestParam("id") String id, Model model) {
+    public String deleteAuthor(@RequestParam("id") String id) {
         authorService.deleteById(id);
-        val authors = authorService.getAll();
-        model.addAttribute("authors", authors);
-        return "author-list";
+        return "redirect:/author-list";
     }
 
 }

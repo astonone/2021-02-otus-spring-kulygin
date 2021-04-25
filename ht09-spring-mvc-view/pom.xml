@@ -13,14 +13,12 @@
     <artifactId>ht09-spring-mvc-view</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>ht09-spring-mvc-view</name>
-    <description>Library of books testing project for Spring Boot with shell command line and spring data mongodb and thymeleaf</description>
+    <description>Library of books testing project for Spring Boot with spring data mongodb and thymeleaf</description>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <spring.shell.version>2.0.1.RELEASE</spring.shell.version>
         <org.projectlombok.lombok.version>1.18.18</org.projectlombok.lombok.version>
-        <com.fasterxml.jackson.version>2.12.2</com.fasterxml.jackson.version>
         <ma.glasnost.orika.orika-core.version>1.5.4</ma.glasnost.orika.orika-core.version>
         <mongock.version>4.1.17</mongock.version>
     </properties>
@@ -65,34 +63,10 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.shell</groupId>
-            <artifactId>spring-shell-starter</artifactId>
-            <version>${spring.shell.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${org.projectlombok.lombok.version}</version>
             <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${com.fasterxml.jackson.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>${com.fasterxml.jackson.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>${com.fasterxml.jackson.version}</version>
         </dependency>
 
         <dependency>

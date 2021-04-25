@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.otus.kulygin.domain.Genre;
+import ru.otus.kulygin.dto.GenreDto;
 import ru.otus.kulygin.exception.GenreDoesNotExistException;
 import ru.otus.kulygin.service.GenreService;
 import ru.otus.kulygin.service.impl.mapping.MappingService;
@@ -33,7 +34,6 @@ public class GenreController {
     public String editGenrePage(@RequestParam("id") String id, Model model) {
         val genre = genreService.getById(id);
         model.addAttribute("genre", genre
-                .map(genreDto -> mappingService.map(genreDto, Genre.class))
                 .orElseThrow(() -> new GenreDoesNotExistException("Genre with id=" + id + " has not found")));
         return "genre-edit";
     }
@@ -46,25 +46,21 @@ public class GenreController {
     }
 
     @PostMapping("/edit-genre")
-    public String editGenre(Genre genre, Model model) {
-        genreService.save(genre);
-        model.addAttribute("genre", genre);
+    public String editGenre(GenreDto genre) {
+        genreService.save(mappingService.map(genre, Genre.class));
         return "redirect:/genre-list";
     }
 
     @PostMapping("/create-genre")
-    public String createGenre(Genre genre, Model model) {
-        genreService.save(genre);
-        model.addAttribute("genre", genre);
+    public String createGenre(GenreDto genre) {
+        genreService.save(mappingService.map(genre, Genre.class));
         return "redirect:/genre-list";
     }
 
     @PostMapping("/delete-genre")
-    public String deleteGenre(@RequestParam("id") String id, Model model) {
+    public String deleteGenre(@RequestParam("id") String id) {
         genreService.deleteById(id);
-        val genres = genreService.getAll();
-        model.addAttribute("genres", genres);
-        return "genre-list";
+        return "redirect:/genre-list";
     }
 
 }

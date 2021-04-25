@@ -5,7 +5,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.MvcResult;
-import ru.otus.kulygin.domain.Author;
 import ru.otus.kulygin.dto.AuthorDto;
 import ru.otus.kulygin.web.AuthorController;
 
@@ -40,12 +39,6 @@ public class AuthorControllerTest extends BaseControllerTest {
                 .lastName("Pushkin")
                 .build();
 
-        val author = Author.builder()
-                .id("1")
-                .firstName("Alexander")
-                .lastName("Pushkin")
-                .build();
-        when(mappingService.map(authorDto, Author.class)).thenReturn(author);
         when(authorService.getById("1")).thenReturn(Optional.of(authorDto));
 
         MvcResult result = mockMvc.perform(get("/edit-author?id=1"))
@@ -66,7 +59,7 @@ public class AuthorControllerTest extends BaseControllerTest {
     @Test
     @DisplayName(value = "edit author")
     public void shouldEditAuthor() throws Exception {
-        val author = Author.builder()
+        val author = AuthorDto.builder()
                 .id("1")
                 .firstName("Alexander")
                 .lastName("Pushkin")
@@ -80,7 +73,7 @@ public class AuthorControllerTest extends BaseControllerTest {
     @Test
     @DisplayName(value = "create author")
     public void shouldCreateAuthor() throws Exception {
-        val author = Author.builder()
+        val author = AuthorDto.builder()
                 .id("1")
                 .firstName("Alexander")
                 .lastName("Pushkin")
@@ -95,7 +88,7 @@ public class AuthorControllerTest extends BaseControllerTest {
     @DisplayName(value = "delete author")
     public void shouldDeleteAuthor() throws Exception {
         mockMvc.perform(post("/delete-author?id=1"))
-                .andExpect(status().isOk());
+                .andExpect(status().is3xxRedirection());
     }
 
 }

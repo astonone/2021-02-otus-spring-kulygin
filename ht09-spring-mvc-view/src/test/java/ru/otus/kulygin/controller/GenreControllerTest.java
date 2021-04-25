@@ -5,7 +5,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.MvcResult;
-import ru.otus.kulygin.domain.Genre;
 import ru.otus.kulygin.dto.GenreDto;
 import ru.otus.kulygin.web.GenreController;
 
@@ -37,11 +36,7 @@ public class GenreControllerTest extends BaseControllerTest {
                 .id("1")
                 .name("Triller")
                 .build();
-        val genre = Genre.builder()
-                .id("1")
-                .name("Triller")
-                .build();
-        when(mappingService.map(genreDto, Genre.class)).thenReturn(genre);
+
         when(genreService.getById("1")).thenReturn(Optional.of(genreDto));
 
         MvcResult result = mockMvc.perform(get("/edit-genre?id=1"))
@@ -62,7 +57,7 @@ public class GenreControllerTest extends BaseControllerTest {
     @Test
     @DisplayName(value = "edit genre")
     public void shouldEditGenre() throws Exception {
-        val genre = Genre.builder()
+        val genre = GenreDto.builder()
                 .id("1")
                 .name("Triller")
                 .build();
@@ -75,7 +70,7 @@ public class GenreControllerTest extends BaseControllerTest {
     @Test
     @DisplayName(value = "create genre")
     public void shouldCreateGenre() throws Exception {
-        val genre = Genre.builder()
+        val genre = GenreDto.builder()
                 .id("1")
                 .name("Triller")
                 .build();
@@ -89,7 +84,7 @@ public class GenreControllerTest extends BaseControllerTest {
     @DisplayName(value = "delete genre")
     public void shouldDeleteGenre() throws Exception {
         mockMvc.perform(post("/delete-genre?id=1"))
-                .andExpect(status().isOk());
+                .andExpect(status().is3xxRedirection());
     }
 
 }
