@@ -111,16 +111,8 @@ export class TemplateCriteriaComponent implements OnInit {
 
     public update(element: InterviewTemplateCriteriaDto): void {
         this.interviewTemplateCriteriaService.save(InterviewTemplateCriteriaDto.createNewObjectFromDto(element)).subscribe(data => {
-            this.updateDataSource(element, data);
-            element.isEdit = false;
-            this.criteriaTable.renderRows();
+            this.loadCriterias(this.page, this.pageSize);
         })
-    }
-
-    private updateDataSource(element: any, criteria: InterviewTemplateCriteriaDto): void {
-        let index = this.getElementIndexInDataSource(element);
-
-        this.dataSource.splice(index, 1, criteria);
     }
 
     private getElementIndexInDataSource(element: InterviewTemplateCriteriaDto) {
