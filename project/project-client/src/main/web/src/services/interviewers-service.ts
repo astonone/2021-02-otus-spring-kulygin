@@ -19,9 +19,9 @@ export class InterviewersService {
     constructor(private sharedService: SharedService,
                 private http: HttpClient) {
 
-        this.SERVICE = this.sharedService.getServerURL() + '/api/interviewer/';
-        this.GET_ALL = this.SERVICE + 'get-all?page={page}&pageSize={pageSize}';
-        this.SAVE = this.SERVICE + 'save';
+        this.SERVICE = this.sharedService.getServerURL() + '/interviewer/';
+        this.GET_ALL = this.SERVICE + '?page={page}&pageSize={pageSize}';
+        this.SAVE = this.SERVICE;
         this.DELETE = this.SERVICE + '{id}';
     }
 

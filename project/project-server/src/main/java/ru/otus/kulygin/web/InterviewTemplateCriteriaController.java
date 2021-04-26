@@ -14,7 +14,6 @@ import java.util.Optional;
 import static ru.otus.kulygin.enumeration.ApplicationErrorsEnum.CRITERIA_NOT_FOUND;
 import static ru.otus.kulygin.enumeration.ApplicationErrorsEnum.RELATED_ENTITY;
 
-@CrossOrigin
 @RestController
 @RequestMapping(path = "/api/interview-template-criteria")
 public class InterviewTemplateCriteriaController {
@@ -25,13 +24,13 @@ public class InterviewTemplateCriteriaController {
         this.interviewTemplateCriteriaService = interviewTemplateCriteriaService;
     }
 
-    @GetMapping("/get-all")
+    @GetMapping
     public ResponseEntity<?> getAllPageable(@RequestParam("page") Integer page,
                                             @RequestParam("pageSize") Integer pageSize) {
         return new ResponseEntity<>(interviewTemplateCriteriaService.findAll(PageRequest.of(page, pageSize)), HttpStatus.OK);
     }
 
-    @PostMapping("save")
+    @PostMapping
     public ResponseEntity<?> save(@RequestBody InterviewTemplateCriteriaDto criteriaDto) {
         InterviewTemplateCriteria forSave = InterviewTemplateCriteria.builder().build();
         Optional<InterviewTemplateCriteriaDto> criteriaById = Optional.empty();

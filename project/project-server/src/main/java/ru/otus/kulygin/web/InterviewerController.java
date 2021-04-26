@@ -14,7 +14,6 @@ import java.util.Optional;
 import static ru.otus.kulygin.enumeration.ApplicationErrorsEnum.INTERVIEWER_NOT_FOUND;
 import static ru.otus.kulygin.enumeration.ApplicationErrorsEnum.RELATED_ENTITY;
 
-@CrossOrigin
 @RestController
 @RequestMapping(path = "/api/interviewer")
 public class InterviewerController {
@@ -25,13 +24,13 @@ public class InterviewerController {
         this.interviewerService = interviewerService;
     }
 
-    @GetMapping("/get-all")
+    @GetMapping
     public ResponseEntity<?> getAllPageable(@RequestParam("page") Integer page,
                                                         @RequestParam("pageSize") Integer pageSize) {
         return new ResponseEntity<>(interviewerService.findAll(PageRequest.of(page, pageSize)), HttpStatus.OK);
     }
 
-    @PostMapping("save")
+    @PostMapping
     public ResponseEntity<?> save(@RequestBody InterviewerDto interviewerDto) {
         Interviewer forSave = Interviewer.builder().build();
         Optional<InterviewerDto> interviewerById = Optional.empty();

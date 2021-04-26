@@ -56,9 +56,7 @@ export class TemplateCriteriaComponent implements OnInit {
     }
 
     public updatePage($event: PageEvent): PageEvent {
-        if (this.totalSize > this.currentPageSize) {
-            this.loadCriterias($event.pageIndex, $event.pageSize);
-        }
+        this.loadCriterias($event.pageIndex, $event.pageSize);
         return $event;
     }
 
