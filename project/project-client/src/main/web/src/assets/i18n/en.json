@@ -71,5 +71,26 @@
     "button": {
       "create": "Add criteria"
     }
+  },
+  "candidates": {
+    "empty": "You do not have any created candidates",
+    "items" : {
+      "id": "No.",
+      "firstName": "FirstName",
+      "lastName": "LastName",
+      "positionType": "Position type",
+      "comments": "Interviewer's comments",
+      "uploadCv": "Candidate's CV (PDF only)",
+      "showCv": "Candidate's CV",
+      "noCv": "CV was not uploaded"
+    },
+    "button": {
+      "create": "Add candidate",
+      "save": "Save data",
+      "cancel": "Cancel edit",
+      "change": "Change data",
+      "remove": "Remove candidate",
+      "load": "Download CV"
+    }
   }
 }

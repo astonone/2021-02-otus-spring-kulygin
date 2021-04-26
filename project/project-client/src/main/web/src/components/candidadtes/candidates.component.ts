@@ -1,4 +1,9 @@
 import {Component, OnInit} from '@angular/core';
+import {PageEvent} from "@angular/material/paginator";
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
+import {SharedService} from "../../services/shared.service";
+import {CandidateDto} from "../../models/candidate-dto";
+import {CandidateService} from "../../services/candidate-service";
 
 @Component({
     selector: 'candidates',
@@ -10,10 +15,168 @@ import {Component, OnInit} from '@angular/core';
 
 export class CandidatesComponent implements OnInit {
 
-    constructor() {
+    public totalSize: number = 0;
+    public totalPageSize: number = 0;
+    public currentPageSize: number = 0;
+    public page: number = 0;
+    public pageSize: number = 10;
+    public pageSizeOptions: number[] = [5, 10, 25, 100];
+
+    public files: any;
+
+    // MatPaginator Output
+    public pageEvent: PageEvent;
+
+    public dataSource: CandidateDto[] = [];
+
+    public newCandidate: CandidateDto = new CandidateDto(null, null, null, null, null, null);
+    public backupCandidate: CandidateDto = new CandidateDto(null, null, null, null, null, null);
+
+    // Snackbar options
+    private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+    private verticalPosition: MatSnackBarVerticalPosition = 'top';
+
+    constructor(private candidateService: CandidateService,
+                private snackBar: MatSnackBar) {
     }
 
     ngOnInit(): void {
-
+        this.loadCandidates(this.page, this.pageSize);
     }
+
+    private loadCandidates(page: number, pageSize: number): void {
+        this.candidateService.getAll(page, pageSize).subscribe(data => {
+            this.totalSize = data.totalSize;
+            this.totalPageSize = data.totalPageSize;
+            this.currentPageSize = data.currentPageSize;
+            this.page = data.page;
+            this.pageSize = data.pageSize;
+            this.dataSource = data.candidates;
+        });
+    }
+
+    public updatePage($event: PageEvent): PageEvent {
+        if (this.totalSize > this.currentPageSize) {
+            this.loadCandidates($event.pageIndex, $event.pageSize);
+        }
+        return $event;
+    }
+
+    public makeEdit(element: CandidateDto): void {
+        element.isEdit = true;
+        this.newCandidate = CandidateDto.createNewObjectFromDto(element);
+        this.backupCandidate = CandidateDto.createNewObjectFromDto(element);
+    }
+
+    public remove(element: CandidateDto): void {
+        this.candidateService.removeById(element.id).subscribe(() => {
+            this.removeFromDataSourceById(element);
+            if (element.id) {
+                this.currentPageSize--;
+                this.totalSize--;
+            }
+        }, error => {
+            this.openSnackBar(error.error.message);
+        })
+    }
+
+    private removeFromDataSourceById(element: CandidateDto): void {
+        let index = this.getElementIndexInDataSource(element);
+
+        this.dataSource.splice(index, 1);
+    }
+
+    private openSnackBar(snackBarText: string): void {
+        this.snackBar.open(snackBarText, 'End now', {
+            duration: 2000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+        });
+    }
+
+    public isReadyToUpdate(element: CandidateDto): boolean {
+        return !SharedService.isBlank(this.newCandidate.firstName) &&
+            !SharedService.isBlank(this.newCandidate.lastName) &&
+            !SharedService.isBlank(this.newCandidate.claimingPosition);
+    }
+
+    public cancelEdit(element: CandidateDto): void {
+        element.isEdit = false;
+        if (!element.id) {
+            this.dataSource.splice(this.dataSource.findIndex(e => e === element), 1);
+        } else {
+            element.firstName = this.backupCandidate.firstName;
+            element.lastName = this.backupCandidate.lastName;
+            element.claimingPosition = this.backupCandidate.claimingPosition;
+            element.interviewerComment = this.backupCandidate.interviewerComment;
+            this.newCandidate = new CandidateDto(null, null, null, null, null, null);
+            this.backupCandidate = new CandidateDto(null, null, null, null, null, null);
+        }
+    }
+
+    public update(element: CandidateDto): void {
+        let finalData = this.createFormData();
+
+        this.candidateService.save(finalData).subscribe(data => {
+            this.newCandidate = new CandidateDto(null, null, null, null, null, null);
+            this.backupCandidate = new CandidateDto(null, null, null, null, null, null);
+            this.files = null;
+            this.loadCandidates(this.page, this.pageSize);
+        }, error => {
+            this.openSnackBar(error.error.message);
+        })
+    }
+
+    private createFormData(): FormData {
+        let formData = new FormData();
+
+        const json = JSON.stringify(this.newCandidate.toObject());
+        const blob = new Blob([json], {
+            type: 'application/json'
+        });
+
+        if (this.files) {
+            let files: FileList = this.files;
+            formData.append('uploadedFile', files[0]);
+            formData.append('candidateDto', blob);
+        } else {
+            formData.append('candidateDto', blob);
+        }
+
+        return formData;
+    }
+
+    private getElementIndexInDataSource(element: CandidateDto) {
+        return this.dataSource.map(function (item) {
+            return item.id
+        }).indexOf(element.id)
+    }
+
+    public create(): void {
+        let candidate = new CandidateDto(null, null, null, null, null, null);
+        candidate.isEdit = true;
+        candidate.isNew = true;
+        this.dataSource.push(candidate);
+    }
+
+    public selectFile(event: any) {
+        this.files = null;
+        let target = event.target || event.srcElement;
+        this.files = target.files;
+    }
+
+    public onClickDownloadPdf(element: CandidateDto) {
+        let base64String = element.cvFile;
+        let fileName = element.firstName + element.lastName;
+        this.downloadPdf(base64String, fileName);
+    }
+
+    private downloadPdf(base64String, fileName) {
+        const source = `data:application/pdf;base64,${base64String}`;
+        const link = document.createElement("a");
+        link.href = source;
+        link.download = `${fileName}.pdf`
+        link.click();
+    }
+
 }

@@ -23,7 +23,7 @@
                 </mat-panel-description>
             </mat-expansion-panel-header>
 
-            <button mat-raised-button color="primary" class="new-entity-button" [disabled]="!isReadyToUpdate(element)"
+            <button mat-raised-button color="primary" class="new-entity-button" [disabled]="!isReadyToUpdate()"
                     *ngIf="element.isEdit"
                     (click)="update(element)">
                 {{'interviewers.button.save' | translate}}

@@ -17,5 +17,6 @@ public class CandidateDto {
     private String claimingPosition;
     private String interviewerComment;
     private String pathToCvFile;
+    private byte[] cvFile;
 
 }

@@ -37,4 +37,8 @@ export class SharedService {
 
     public isUserLogged = () => true;
 
+    public static isBlank(str: string): boolean {
+        return (!str || /^\s*$/.test(str));
+    }
+
 }

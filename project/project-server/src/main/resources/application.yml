@@ -12,3 +12,7 @@ mongock:
   runner-type: InitializingBean
   change-logs-scan-package:
     - ru.otus.kulygin.changelogs
+
+file:
+  storage:
+    path: ${user.home}/interviewer-stor/

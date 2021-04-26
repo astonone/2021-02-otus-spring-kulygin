@@ -3,6 +3,7 @@ import {InterviewerDto} from "../../models/Interviewer-dto";
 import {InterviewersService} from "../../services/interviewers-service";
 import {PageEvent} from "@angular/material/paginator";
 import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
+import {SharedService} from "../../services/shared.service";
 
 @Component({
     selector: 'interviewers',
@@ -27,6 +28,7 @@ export class InterviewersComponent implements OnInit {
     public dataSource: InterviewerDto[] = [];
 
     public newInterviewer: InterviewerDto = new InterviewerDto(null, null, null, null);
+    public backupInterviewer: InterviewerDto = new InterviewerDto(null, null, null, null);
 
     // Snackbar options
     private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
@@ -61,6 +63,7 @@ export class InterviewersComponent implements OnInit {
     public makeEdit(element: InterviewerDto): void {
         element.isEdit = true;
         this.newInterviewer = InterviewerDto.createNewObjectFromDto(element);
+        this.backupInterviewer = InterviewerDto.createNewObjectFromDto(element);
     }
 
     public remove(element: InterviewerDto): void {
@@ -90,13 +93,9 @@ export class InterviewersComponent implements OnInit {
     }
 
     public isReadyToUpdate(element: InterviewerDto): boolean {
-        return !InterviewersComponent.isBlank(this.newInterviewer.firstName) &&
-            !InterviewersComponent.isBlank(this.newInterviewer.lastName) &&
-            !InterviewersComponent.isBlank(this.newInterviewer.positionType);
-    }
-
-    private static isBlank(str: string): boolean {
-        return (!str || /^\s*$/.test(str));
+        return !SharedService.isBlank(this.newInterviewer.firstName) &&
+            !SharedService.isBlank(this.newInterviewer.lastName) &&
+            !SharedService.isBlank(this.newInterviewer.positionType);
     }
 
     public cancelEdit(element: InterviewerDto): void {
@@ -104,16 +103,18 @@ export class InterviewersComponent implements OnInit {
         if (!element.id) {
             this.dataSource.splice(this.dataSource.findIndex(e => e === element), 1);
         } else {
-            element.firstName = this.newInterviewer.firstName;
-            element.lastName = this.newInterviewer.lastName;
-            element.positionType = this.newInterviewer.positionType;
+            element.firstName = this.backupInterviewer.firstName;
+            element.lastName = this.backupInterviewer.lastName;
+            element.positionType = this.backupInterviewer.positionType;
             this.newInterviewer = new InterviewerDto(null, null, null, null);
+            this.backupInterviewer = new InterviewerDto(null, null, null, null);
         }
     }
 
     public update(element: InterviewerDto): void {
         this.interviewerService.save(this.newInterviewer).subscribe(data => {
             this.newInterviewer = new InterviewerDto(null, null, null, null);
+            this.backupInterviewer = new InterviewerDto(null, null, null, null);
             if (this.dataSource.length + 1 <= this.currentPageSize) {
                 this.updateDataSource(element, data);
                 element.isEdit = false;
