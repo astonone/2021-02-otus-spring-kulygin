@@ -52,12 +52,17 @@ class AuthorServiceImplTest {
     @Test
     @DisplayName("add author to database")
     public void shouldInsertAuthor() {
+        val authorDto = AuthorDto.builder()
+                .firstName(FOR_INSERT_AUTHOR_FIRST_NAME)
+                .lastName(FOR_INSERT_AUTHOR_LAST_NAME)
+                .build();
+
         val author = Author.builder()
                 .firstName(FOR_INSERT_AUTHOR_FIRST_NAME)
                 .lastName(FOR_INSERT_AUTHOR_LAST_NAME)
                 .build();
 
-        authorService.save(author);
+        authorService.save(authorDto);
 
         verify(authorRepository).save(author);
     }

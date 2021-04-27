@@ -51,12 +51,15 @@ class GenreServiceImplTest {
     @Test
     @DisplayName("add genre to database")
     public void shouldInsertGenre() {
-        val genre = Genre.builder()
-                .id(FOR_INSERT_GENRE_ID)
+        val genreDto = GenreDto.builder()
                 .name(FOR_INSERT_GENRE_NAME)
                 .build();
 
-        genreService.save(genre);
+        val genre = Genre.builder()
+                .name(FOR_INSERT_GENRE_NAME)
+                .build();
+
+        genreService.save(genreDto);
 
         verify(genreRepository).save(genre);
     }

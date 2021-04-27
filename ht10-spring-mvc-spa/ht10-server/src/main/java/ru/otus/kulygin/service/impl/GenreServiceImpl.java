@@ -28,8 +28,18 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public GenreDto save(Genre genre) {
-        return mappingService.map(genreRepository.save(genre), GenreDto.class);
+    public GenreDto save(GenreDto genreDto) {
+        Genre forSave = Genre.builder().build();
+        Optional<Genre> genreById = Optional.empty();
+        if (genreDto.getId() != null) {
+            genreById = genreRepository.findById(genreDto.getId());
+            if (genreById.isEmpty()) {
+                throw new GenreDoesNotExistException();
+            }
+        }
+        forSave.setId(genreById.map(Genre::getId).orElse(null));
+        forSave.setName(genreDto.getName());
+        return mappingService.map(genreRepository.save(forSave), GenreDto.class);
     }
 
     @Override

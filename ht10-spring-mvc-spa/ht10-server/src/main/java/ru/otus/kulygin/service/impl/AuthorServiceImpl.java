@@ -28,8 +28,19 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public AuthorDto save(Author author) {
-        return mappingService.map(authorRepository.save(author), AuthorDto.class);
+    public AuthorDto save(AuthorDto authorDto) {
+        Author forSave = Author.builder().build();
+        Optional<Author> authorById = Optional.empty();
+        if (authorDto.getId() != null) {
+            authorById = authorRepository.findById(authorDto.getId());
+            if (authorById.isEmpty()) {
+                throw new AuthorDoesNotExistException();
+            }
+        }
+        forSave.setId(authorById.map(Author::getId).orElse(null));
+        forSave.setFirstName(authorDto.getFirstName());
+        forSave.setLastName(authorDto.getLastName());
+        return mappingService.map(authorRepository.save(forSave), AuthorDto.class);
     }
 
     @Override

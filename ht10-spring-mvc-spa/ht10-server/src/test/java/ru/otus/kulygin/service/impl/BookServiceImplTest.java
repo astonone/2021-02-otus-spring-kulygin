@@ -7,12 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.kulygin.domain.Book;
-import ru.otus.kulygin.domain.Comment;
+import ru.otus.kulygin.dto.AuthorDto;
 import ru.otus.kulygin.dto.BookDto;
+import ru.otus.kulygin.dto.GenreDto;
 import ru.otus.kulygin.exception.BookDoesNotExistException;
-import ru.otus.kulygin.exception.CommentDoesNotExistException;
+import ru.otus.kulygin.repository.AuthorRepository;
 import ru.otus.kulygin.repository.BookRepository;
-import ru.otus.kulygin.repository.CommentRepository;
+import ru.otus.kulygin.repository.GenreRepository;
 import ru.otus.kulygin.service.BookService;
 import ru.otus.kulygin.service.impl.mapping.MappingService;
 
@@ -21,7 +22,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = BookServiceImpl.class)
 @DisplayName(value = "BookServiceImpl should ")
@@ -31,7 +33,7 @@ class BookServiceImplTest {
     public static final String NOT_EXISTED_BOOK_ID = "6";
 
     public static final String FOR_INSERT_BOOK_ID = "11";
-    public static final String EXISTED_COMMENT_ID = "1";
+    public static final String MOCK_ID = "1";
 
     @Autowired
     private BookService bookService;
@@ -43,7 +45,10 @@ class BookServiceImplTest {
     private BookRepository bookRepository;
 
     @MockBean
-    private CommentRepository commentRepository;
+    private GenreRepository genreRepository;
+
+    @MockBean
+    private AuthorRepository authorRepository;
 
     @Test
     @DisplayName("should return expected books count")
@@ -58,11 +63,20 @@ class BookServiceImplTest {
     @DisplayName("add book to database")
     public void shouldInsertBook() {
         val book = Book.builder()
-                .id(FOR_INSERT_BOOK_ID)
+                .build();
+        val bookDto = BookDto.builder()
+                .genre(GenreDto.builder()
+                        .id(MOCK_ID)
+                        .build())
+                .author(AuthorDto.builder()
+                        .id(MOCK_ID)
+                        .build())
                 .build();
 
-        bookService.save(book);
+        bookService.save(bookDto);
 
+        verify(genreRepository).findById(MOCK_ID);
+        verify(authorRepository).findById(MOCK_ID);
         verify(bookRepository).save(book);
     }
 
@@ -117,51 +131,6 @@ class BookServiceImplTest {
 
         assertThatThrownBy(() -> bookService.deleteById(NOT_EXISTED_BOOK_ID))
                 .isInstanceOf(BookDoesNotExistException.class);
-    }
-
-    @Test
-    @DisplayName("should add comment to book")
-    public void shouldAddCommentToBook() {
-        val book = Optional.of(Book.builder().id(FOR_INSERT_BOOK_ID).build());
-        when(bookRepository.findById(FOR_INSERT_BOOK_ID)).thenReturn(book);
-        when(mappingService.map(book.get(), BookDto.class)).thenReturn(BookDto.builder().build());
-
-        bookService.addCommentToBook("vasya", "lol", book.get());
-
-        verify(commentRepository).save(any(Comment.class));
-        verify(bookRepository).findById(FOR_INSERT_BOOK_ID);
-        verify(mappingService).map(book.get(), BookDto.class);
-    }
-
-    @Test
-    @DisplayName("should remove comment from book")
-    public void shouldRemoveCommentFromBook() {
-        val book = Book.builder()
-                .id(FOR_INSERT_BOOK_ID)
-                .build();
-        val comment = Optional.of(Comment.builder()
-                .book(book)
-                .build());
-        when(bookRepository.findById(FOR_INSERT_BOOK_ID)).thenReturn(Optional.of(book));
-        when(mappingService.map(book, BookDto.class)).thenReturn(BookDto.builder().build());
-
-        when(commentRepository.findById(EXISTED_COMMENT_ID)).thenReturn(comment);
-
-        bookService.removeCommentFromBook(EXISTED_COMMENT_ID);
-
-        verify(commentRepository).findById(EXISTED_COMMENT_ID);
-        verify(commentRepository).deleteById(EXISTED_COMMENT_ID);
-        verify(bookRepository).findById(FOR_INSERT_BOOK_ID);
-        verify(mappingService).map(book, BookDto.class);
-    }
-
-    @Test
-    @DisplayName("should not remove comment from book because comment does not exist")
-    public void shouldNotCorrectDeleteCommentByIdBecauseCommentDoesNotExist() {
-        when(commentRepository.findById(EXISTED_COMMENT_ID)).thenReturn(Optional.empty());
-
-        assertThatThrownBy(() -> bookService.removeCommentFromBook(EXISTED_COMMENT_ID))
-                .isInstanceOf(CommentDoesNotExistException.class);
     }
 
 }

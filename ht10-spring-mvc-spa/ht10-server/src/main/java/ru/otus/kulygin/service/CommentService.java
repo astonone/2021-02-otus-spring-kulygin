@@ -1,6 +1,7 @@
 package ru.otus.kulygin.service;
 
 import ru.otus.kulygin.domain.Comment;
+import ru.otus.kulygin.dto.BookDto;
 import ru.otus.kulygin.dto.CommentDto;
 
 import java.util.List;
@@ -15,5 +16,9 @@ public interface CommentService {
     void deleteById(String id);
 
     List<CommentDto> findAllByBookId(String bookId);
+
+    BookDto addCommentToBook(String commentatorName, String text, String bookId);
+
+    BookDto removeCommentFromBook(String commentId, String id);
 
 }

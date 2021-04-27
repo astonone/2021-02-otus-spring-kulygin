@@ -6,9 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import ru.otus.kulygin.domain.Book;
 import ru.otus.kulygin.domain.Comment;
+import ru.otus.kulygin.dto.BookDto;
 import ru.otus.kulygin.dto.CommentDto;
+import ru.otus.kulygin.exception.BookDoesNotExistException;
 import ru.otus.kulygin.exception.CommentDoesNotExistException;
+import ru.otus.kulygin.repository.BookRepository;
 import ru.otus.kulygin.repository.CommentRepository;
 import ru.otus.kulygin.service.CommentService;
 import ru.otus.kulygin.service.impl.mapping.MappingService;
@@ -18,8 +22,9 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest(classes = CommentServiceImpl.class)
 @DisplayName(value = "CommentServiceImpl should ")
@@ -37,6 +42,9 @@ class CommentServiceImplTest {
 
     @MockBean
     private CommentRepository commentRepository;
+
+    @MockBean
+    private BookRepository bookRepository;
 
     @Test
     @DisplayName("get comment by id")
@@ -97,6 +105,52 @@ class CommentServiceImplTest {
 
         verify(commentRepository).findAllByBook_Id(BOOK_WITH_COMMENT_ID);
         verify(mappingService).mapAsList(comments, CommentDto.class);
+    }
+
+    @Test
+    @DisplayName("should add comment to book")
+    public void shouldAddCommentToBook() {
+        when(bookRepository.findById(BOOK_WITH_COMMENT_ID)).thenReturn(Optional.of(Book.builder().build()));
+        when(mappingService.map(any(Book.class), eq(BookDto.class))).thenReturn(BookDto.builder().build());
+
+        commentService.addCommentToBook("vasya", "lol", BOOK_WITH_COMMENT_ID);
+
+        verify(commentRepository).save(any(Comment.class));
+        verify(bookRepository, times(2)).findById(BOOK_WITH_COMMENT_ID);
+        verify(mappingService).map(any(Book.class), eq(BookDto.class));
+    }
+
+    @Test
+    @DisplayName("should remove comment from book")
+    public void shouldRemoveCommentFromBook() {
+        when(bookRepository.findById(BOOK_WITH_COMMENT_ID)).thenReturn(Optional.of(Book.builder().build()));
+        when(commentRepository.findById(EXISTED_COMMENT_ID)).thenReturn(Optional.of(Comment.builder().build()));
+        when(mappingService.map(any(Book.class), eq(BookDto.class))).thenReturn(BookDto.builder().build());
+
+        commentService.removeCommentFromBook(EXISTED_COMMENT_ID, BOOK_WITH_COMMENT_ID);
+
+        verify(commentRepository).deleteById(EXISTED_COMMENT_ID);
+        verify(bookRepository, times(2)).findById(BOOK_WITH_COMMENT_ID);
+        verify(mappingService).map(any(Book.class), eq(BookDto.class));
+    }
+
+    @Test
+    @DisplayName("should not remove comment from book because comment does not exist")
+    public void shouldNotCorrectDeleteCommentByIdBecauseCommentDoesNotExist() {
+        when(bookRepository.findById(BOOK_WITH_COMMENT_ID)).thenReturn(Optional.of(Book.builder().build()));
+        when(commentRepository.findById(EXISTED_COMMENT_ID)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> commentService.removeCommentFromBook(EXISTED_COMMENT_ID, BOOK_WITH_COMMENT_ID))
+                .isInstanceOf(CommentDoesNotExistException.class);
+    }
+
+    @Test
+    @DisplayName("should not remove comment from book because book does not exist")
+    public void shouldNotCorrectDeleteCommentByIdBecauseBookDoesNotExist() {
+        when(bookRepository.findById(BOOK_WITH_COMMENT_ID)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> commentService.removeCommentFromBook(EXISTED_COMMENT_ID, BOOK_WITH_COMMENT_ID))
+                .isInstanceOf(BookDoesNotExistException.class);
     }
 
 }

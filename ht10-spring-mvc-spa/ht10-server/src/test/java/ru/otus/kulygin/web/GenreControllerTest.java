@@ -6,11 +6,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
-import ru.otus.kulygin.domain.Genre;
 import ru.otus.kulygin.dto.GenreDto;
+import ru.otus.kulygin.exception.GenreDoesNotExistException;
 
 import java.util.Collections;
-import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -72,16 +71,12 @@ public class GenreControllerTest extends BaseControllerTest {
                 .name("Драма")
                 .build();
 
-        val genreForSave = Genre.builder()
-                .name("Драма")
-                .build();
-
         val genreSaved = GenreDto.builder()
                 .id("1")
                 .name("Драма")
                 .build();
 
-        when(genreService.save(genreForSave)).thenReturn(genreSaved);
+        when(genreService.save(genreDto)).thenReturn(genreSaved);
 
         mockMvc.perform(post(GENRE_API)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -99,23 +94,12 @@ public class GenreControllerTest extends BaseControllerTest {
                 .name("Драма")
                 .build();
 
-        val genreForSave = Genre.builder()
-                .id("1")
-                .name("Драма")
-                .build();
-
-        val genreForSaveDto = GenreDto.builder()
-                .id("1")
-                .name("Драма")
-                .build();
-
         val genreSaved = GenreDto.builder()
                 .id("1")
                 .name("Драма")
                 .build();
 
-        when(genreService.getById(genreDto.getId())).thenReturn(Optional.of(genreForSaveDto));
-        when(genreService.save(genreForSave)).thenReturn(genreSaved);
+        when(genreService.save(genreDto)).thenReturn(genreSaved);
 
         mockMvc.perform(post(GENRE_API)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -132,6 +116,8 @@ public class GenreControllerTest extends BaseControllerTest {
                 .id("1")
                 .name("Драма")
                 .build();
+
+        when(genreService.save(genreForSaveDto)).thenThrow(GenreDoesNotExistException.class);
 
         mockMvc.perform(post(GENRE_API)
                 .contentType(MediaType.APPLICATION_JSON)

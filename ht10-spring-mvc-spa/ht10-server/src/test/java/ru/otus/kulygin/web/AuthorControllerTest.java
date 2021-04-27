@@ -6,11 +6,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
-import ru.otus.kulygin.domain.Author;
 import ru.otus.kulygin.dto.AuthorDto;
+import ru.otus.kulygin.exception.AuthorDoesNotExistException;
 
 import java.util.Collections;
-import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -76,18 +75,13 @@ public class AuthorControllerTest extends BaseControllerTest {
                 .lastName("Pushkin")
                 .build();
 
-        val authorForSave = Author.builder()
-                .firstName("Alexander")
-                .lastName("Pushkin")
-                .build();
-
         val authorSaved = AuthorDto.builder()
                 .id("1")
                 .firstName("Alexander")
                 .lastName("Pushkin")
                 .build();
 
-        when(authorService.save(authorForSave)).thenReturn(authorSaved);
+        when(authorService.save(authorDto)).thenReturn(authorSaved);
 
         mockMvc.perform(post(AUTHOR_API)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -107,24 +101,13 @@ public class AuthorControllerTest extends BaseControllerTest {
                 .lastName("Pushkin")
                 .build();
 
-        val authorForSave = Author.builder()
-                .firstName("Alex")
-                .lastName("Pushkin")
-                .build();
-
-        val authorExisted = AuthorDto.builder()
-                .firstName("Alexander")
-                .lastName("Pushkin")
-                .build();
-
         val authorSaved = AuthorDto.builder()
                 .id("1")
                 .firstName("Alex")
                 .lastName("Pushkin")
                 .build();
 
-        when(authorService.getById(authorDto.getId())).thenReturn(Optional.of(authorExisted));
-        when(authorService.save(authorForSave)).thenReturn(authorSaved);
+        when(authorService.save(authorDto)).thenReturn(authorSaved);
 
         mockMvc.perform(post(AUTHOR_API)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -143,6 +126,8 @@ public class AuthorControllerTest extends BaseControllerTest {
                 .firstName("Alex")
                 .lastName("Pushkin")
                 .build();
+
+        when(authorService.save(authorDto)).thenThrow(AuthorDoesNotExistException.class);
 
         mockMvc.perform(post(AUTHOR_API)
                 .contentType(MediaType.APPLICATION_JSON)

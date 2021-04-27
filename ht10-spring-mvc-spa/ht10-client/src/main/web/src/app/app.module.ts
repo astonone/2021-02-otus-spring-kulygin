@@ -18,6 +18,9 @@ import {SharedService} from "./services/shared.service";
 /*Components*/
 import {HomeComponent} from './components/home/home.component';
 import {CommentsComponent} from './components/comments/comments.component';
+import {GenreComponent} from "./components/genre/genre.component";
+import {AuthorComponent} from "./components/author/author.component";
+import {BookComponent} from "./components/book/book.component";
 
 @NgModule({
     imports: [
@@ -31,11 +34,17 @@ import {CommentsComponent} from './components/comments/comments.component';
     declarations: [
         AppComponent,
         HomeComponent,
+        GenreComponent,
+        AuthorComponent,
+        BookComponent,
         CommentsComponent
     ],
     entryComponents: [],
     providers: [
         HomeComponent,
+        GenreComponent,
+        AuthorComponent,
+        BookComponent,
         CommentsComponent,
         AuthorService,
         GenreService,

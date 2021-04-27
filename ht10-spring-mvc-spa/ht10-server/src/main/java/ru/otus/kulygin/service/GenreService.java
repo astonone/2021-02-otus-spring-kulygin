@@ -1,6 +1,5 @@
 package ru.otus.kulygin.service;
 
-import ru.otus.kulygin.domain.Genre;
 import ru.otus.kulygin.dto.GenreDto;
 
 import java.util.List;
@@ -10,7 +9,7 @@ public interface GenreService {
 
     long count();
 
-    GenreDto save(Genre genre);
+    GenreDto save(GenreDto genreDto);
 
     Optional<GenreDto> getById(String id);
 
