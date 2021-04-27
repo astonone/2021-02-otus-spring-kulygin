@@ -92,5 +92,11 @@
       "remove": "Remove candidate",
       "load": "Download CV"
     }
+  },
+  "interviews": {
+    "empty": "You do not have any created interviews"
+  },
+  "templates": {
+    "empty": "You do not have any created templates"
   }
 }

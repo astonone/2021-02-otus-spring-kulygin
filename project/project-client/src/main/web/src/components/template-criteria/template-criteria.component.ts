@@ -61,6 +61,7 @@ export class TemplateCriteriaComponent implements OnInit {
     }
 
     public makeEdit(element: InterviewTemplateCriteriaDto): void {
+        this.cancelEditingOtherElements();
         element.isEdit = true;
         this.newCriteria = new InterviewTemplateCriteriaDto(element.id, element.name, element.positionType, null, null);
         this.criteriaTable.renderRows();
@@ -122,10 +123,21 @@ export class TemplateCriteriaComponent implements OnInit {
     }
 
     public create(): void {
+        this.cancelEditingOtherElements();
         let criteria = new InterviewTemplateCriteriaDto(null, null, null, null, null);
         criteria.isEdit = true;
         this.dataSource.push(criteria);
         this.criteriaTable.renderRows();
+    }
+
+    private cancelEditingOtherElements():void {
+        function isEditing(element, index, array) {
+            return (element.isEdit);
+        }
+        let filtered = this.dataSource.filter(isEditing);
+        if (filtered.length > 0) {
+            this.cancelEdit(filtered[0]);
+        }
     }
 
 }

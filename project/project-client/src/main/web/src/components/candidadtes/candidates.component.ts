@@ -63,6 +63,7 @@ export class CandidatesComponent implements OnInit {
     }
 
     public makeEdit(element: CandidateDto): void {
+        this.cancelEditingOtherElements();
         element.isEdit = true;
         this.newCandidate = CandidateDto.createNewObjectFromDto(element);
         this.backupCandidate = CandidateDto.createNewObjectFromDto(element);
@@ -94,7 +95,7 @@ export class CandidatesComponent implements OnInit {
         });
     }
 
-    public isReadyToUpdate(element: CandidateDto): boolean {
+    public isReadyToUpdate(): boolean {
         return !SharedService.isBlank(this.newCandidate.firstName) &&
             !SharedService.isBlank(this.newCandidate.lastName) &&
             !SharedService.isBlank(this.newCandidate.claimingPosition);
@@ -114,7 +115,7 @@ export class CandidatesComponent implements OnInit {
         }
     }
 
-    public update(element: CandidateDto): void {
+    public update(): void {
         let finalData = this.createFormData();
 
         this.candidateService.save(finalData).subscribe(data => {
@@ -153,10 +154,21 @@ export class CandidatesComponent implements OnInit {
     }
 
     public create(): void {
+        this.cancelEditingOtherElements();
         let candidate = new CandidateDto(null, null, null, null, null, null);
         candidate.isEdit = true;
         candidate.isNew = true;
         this.dataSource.push(candidate);
+    }
+
+    private cancelEditingOtherElements():void {
+        function isEditing(element, index, array) {
+            return (element.isEdit);
+        }
+        let filtered = this.dataSource.filter(isEditing);
+        if (filtered.length > 0) {
+            this.cancelEdit(filtered[0]);
+        }
     }
 
     public selectFile(event: any) {

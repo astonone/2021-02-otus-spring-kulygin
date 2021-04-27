@@ -61,6 +61,7 @@ export class InterviewersComponent implements OnInit {
     }
 
     public makeEdit(element: InterviewerDto): void {
+        this.cancelEditingOtherElements();
         element.isEdit = true;
         this.newInterviewer = InterviewerDto.createNewObjectFromDto(element);
         this.backupInterviewer = InterviewerDto.createNewObjectFromDto(element);
@@ -92,7 +93,7 @@ export class InterviewersComponent implements OnInit {
         });
     }
 
-    public isReadyToUpdate(element: InterviewerDto): boolean {
+    public isReadyToUpdate(): boolean {
         return !SharedService.isBlank(this.newInterviewer.firstName) &&
             !SharedService.isBlank(this.newInterviewer.lastName) &&
             !SharedService.isBlank(this.newInterviewer.positionType);
@@ -139,10 +140,21 @@ export class InterviewersComponent implements OnInit {
     }
 
     public create(): void {
+        this.cancelEditingOtherElements();
         let interviewer = new InterviewerDto(null, null, null, null);
         interviewer.isEdit = true;
         interviewer.isNew = true;
         this.dataSource.push(interviewer);
+    }
+
+    private cancelEditingOtherElements():void {
+        function isEditing(element, index, array) {
+            return (element.isEdit);
+        }
+        let filtered = this.dataSource.filter(isEditing);
+        if (filtered.length > 0) {
+            this.cancelEdit(filtered[0]);
+        }
     }
 
 }
