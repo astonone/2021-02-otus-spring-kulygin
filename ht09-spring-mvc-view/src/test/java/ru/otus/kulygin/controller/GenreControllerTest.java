@@ -57,26 +57,16 @@ public class GenreControllerTest extends BaseControllerTest {
     @Test
     @DisplayName(value = "edit genre")
     public void shouldEditGenre() throws Exception {
-        val genre = GenreDto.builder()
-                .id("1")
-                .name("Triller")
-                .build();
-
         mockMvc.perform(post("/edit-genre")
-                .flashAttr("genre", genre))
+                .flashAttr("genre", GenreDto.builder().build()))
                 .andExpect(status().is3xxRedirection());
     }
 
     @Test
     @DisplayName(value = "create genre")
     public void shouldCreateGenre() throws Exception {
-        val genre = GenreDto.builder()
-                .id("1")
-                .name("Triller")
-                .build();
-
         mockMvc.perform(post("/create-genre")
-                .flashAttr("genre", genre))
+                .flashAttr("genre", GenreDto.builder().build()))
                 .andExpect(status().is3xxRedirection());
     }
 

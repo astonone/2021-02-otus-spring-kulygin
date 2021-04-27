@@ -5,9 +5,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.MvcResult;
-import ru.otus.kulygin.domain.Author;
-import ru.otus.kulygin.domain.Book;
-import ru.otus.kulygin.domain.Genre;
 import ru.otus.kulygin.dto.AuthorDto;
 import ru.otus.kulygin.dto.BookDto;
 import ru.otus.kulygin.dto.GenreDto;
@@ -43,16 +40,7 @@ public class BookControllerTest extends BaseControllerTest {
                 .firstName("Alexander")
                 .lastName("Pushkin")
                 .build();
-        val author = Author.builder()
-                .id("1")
-                .firstName("Alexander")
-                .lastName("Pushkin")
-                .build();
         val genreDto = GenreDto.builder()
-                .id("1")
-                .name("Triller")
-                .build();
-        val genre = Genre.builder()
                 .id("1")
                 .name("Triller")
                 .build();
@@ -65,16 +53,7 @@ public class BookControllerTest extends BaseControllerTest {
                 .comments(new ArrayList<>())
                 .build();
 
-        val book = Book.builder()
-                .id("1")
-                .title("Capitan's daughter")
-                .genre(genre)
-                .author(author)
-                .build();
-        when(genreService.getById("1")).thenReturn(Optional.of(genreDto));
-        when(authorService.getById("1")).thenReturn(Optional.of(authorDto));
         when(bookService.getById("1")).thenReturn(Optional.of(bookDto));
-        when(mappingService.map(bookDto, Book.class)).thenReturn(book);
 
         MvcResult result = mockMvc.perform(get("/edit-book?id=1"))
                 .andExpect(status().isOk())
@@ -94,56 +73,16 @@ public class BookControllerTest extends BaseControllerTest {
     @Test
     @DisplayName(value = "edit book")
     public void shouldEditBook() throws Exception {
-        val authorDto = AuthorDto.builder()
-                .id("1")
-                .firstName("Alexander")
-                .lastName("Pushkin")
-                .build();
-        val genreDto = GenreDto.builder()
-                .id("1")
-                .name("Triller")
-                .build();
-        val bookDto = BookDto.builder()
-                .id("1")
-                .title("Capitan's daughter")
-                .genre(genreDto)
-                .author(authorDto)
-                .comments(new ArrayList<>())
-                .build();
-        when(genreService.getById("1")).thenReturn(Optional.of(genreDto));
-        when(authorService.getById("1")).thenReturn(Optional.of(authorDto));
-        when(bookService.getById("1")).thenReturn(Optional.of(bookDto));
-
         mockMvc.perform(post("/edit-book")
-                .flashAttr("bookDto", bookDto))
+                .flashAttr("bookDto", BookDto.builder().build()))
                 .andExpect(status().is3xxRedirection());
     }
 
     @Test
     @DisplayName(value = "create book")
     public void shouldCreateBook() throws Exception {
-        val authorDto = AuthorDto.builder()
-                .id("1")
-                .firstName("Alexander")
-                .lastName("Pushkin")
-                .build();
-        val genreDto = GenreDto.builder()
-                .id("1")
-                .name("Triller")
-                .build();
-        val bookDto = BookDto.builder()
-                .id("1")
-                .title("Capitan's daughter")
-                .genre(genreDto)
-                .author(authorDto)
-                .comments(new ArrayList<>())
-                .build();
-        when(genreService.getById("1")).thenReturn(Optional.of(genreDto));
-        when(authorService.getById("1")).thenReturn(Optional.of(authorDto));
-        when(bookService.getById("1")).thenReturn(Optional.of(bookDto));
-
         mockMvc.perform(post("/create-book")
-                .flashAttr("bookDto", bookDto))
+                .flashAttr("bookDto", BookDto.builder().build()))
                 .andExpect(status().is3xxRedirection());
     }
 

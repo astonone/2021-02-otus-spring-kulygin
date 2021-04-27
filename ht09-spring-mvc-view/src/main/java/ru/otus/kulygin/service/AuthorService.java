@@ -1,6 +1,5 @@
 package ru.otus.kulygin.service;
 
-import ru.otus.kulygin.domain.Author;
 import ru.otus.kulygin.dto.AuthorDto;
 
 import java.util.List;
@@ -10,7 +9,7 @@ public interface AuthorService {
 
     long count();
 
-    void save(Author author);
+    void save(AuthorDto authorDto);
 
     Optional<AuthorDto> getById(String id);
 

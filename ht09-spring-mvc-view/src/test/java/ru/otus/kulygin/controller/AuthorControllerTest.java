@@ -59,28 +59,16 @@ public class AuthorControllerTest extends BaseControllerTest {
     @Test
     @DisplayName(value = "edit author")
     public void shouldEditAuthor() throws Exception {
-        val author = AuthorDto.builder()
-                .id("1")
-                .firstName("Alexander")
-                .lastName("Pushkin")
-                .build();
-
         mockMvc.perform(post("/edit-author")
-                .flashAttr("author", author))
+                .flashAttr("author", AuthorDto.builder().build()))
                 .andExpect(status().is3xxRedirection());
     }
 
     @Test
     @DisplayName(value = "create author")
     public void shouldCreateAuthor() throws Exception {
-        val author = AuthorDto.builder()
-                .id("1")
-                .firstName("Alexander")
-                .lastName("Pushkin")
-                .build();
-
         mockMvc.perform(post("/create-author")
-                .flashAttr("author", author))
+                .flashAttr("author", AuthorDto.builder().build()))
                 .andExpect(status().is3xxRedirection());
     }
 

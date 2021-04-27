@@ -28,8 +28,8 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public void save(Genre genre) {
-        genreRepository.save(genre);
+    public void save(GenreDto genreDto) {
+        genreRepository.save(mappingService.map(genreDto, Genre.class));
     }
 
     @Override

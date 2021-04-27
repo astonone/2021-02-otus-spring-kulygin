@@ -1,4 +1,4 @@
-package ru.otus.kulygin.servicce.impl;
+package ru.otus.kulygin.service.impl;
 
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
@@ -11,7 +11,6 @@ import ru.otus.kulygin.dto.GenreDto;
 import ru.otus.kulygin.exception.GenreDoesNotExistException;
 import ru.otus.kulygin.repository.GenreRepository;
 import ru.otus.kulygin.service.GenreService;
-import ru.otus.kulygin.service.impl.GenreServiceImpl;
 import ru.otus.kulygin.service.impl.mapping.MappingService;
 
 import java.util.Collections;
@@ -52,14 +51,12 @@ class GenreServiceImplTest {
     @Test
     @DisplayName("add genre to database")
     public void shouldInsertGenre() {
-        val genre = Genre.builder()
-                .id(FOR_INSERT_GENRE_ID)
-                .name(FOR_INSERT_GENRE_NAME)
-                .build();
+        val genreDto = GenreDto.builder().build();
+        when(mappingService.map(genreDto, Genre.class)).thenReturn(Genre.builder().build());
 
-        genreService.save(genre);
+        genreService.save(genreDto);
 
-        verify(genreRepository).save(genre);
+        verify(genreRepository).save(any(Genre.class));
     }
 
     @Test

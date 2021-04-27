@@ -5,10 +5,14 @@ import org.springframework.stereotype.Service;
 import ru.otus.kulygin.domain.Book;
 import ru.otus.kulygin.domain.Comment;
 import ru.otus.kulygin.dto.BookDto;
+import ru.otus.kulygin.exception.AuthorDoesNotExistException;
 import ru.otus.kulygin.exception.BookDoesNotExistException;
 import ru.otus.kulygin.exception.CommentDoesNotExistException;
+import ru.otus.kulygin.exception.GenreDoesNotExistException;
+import ru.otus.kulygin.repository.AuthorRepository;
 import ru.otus.kulygin.repository.BookRepository;
 import ru.otus.kulygin.repository.CommentRepository;
+import ru.otus.kulygin.repository.GenreRepository;
 import ru.otus.kulygin.service.BookService;
 import ru.otus.kulygin.service.impl.mapping.MappingService;
 
@@ -19,11 +23,15 @@ import java.util.Optional;
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
+    private final GenreRepository genreRepository;
+    private final AuthorRepository authorRepository;
     private final CommentRepository commentRepository;
     private final MappingService mappingService;
 
-    public BookServiceImpl(BookRepository bookRepository, CommentRepository commentRepository, MappingService mappingService) {
+    public BookServiceImpl(BookRepository bookRepository, GenreRepository genreRepository, AuthorRepository authorRepository, CommentRepository commentRepository, MappingService mappingService) {
         this.bookRepository = bookRepository;
+        this.genreRepository = genreRepository;
+        this.authorRepository = authorRepository;
         this.commentRepository = commentRepository;
         this.mappingService = mappingService;
     }
@@ -34,7 +42,17 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void save(Book book) {
+    public void save(BookDto bookDto) {
+        Book book = Book.builder()
+                .id(bookDto.getId())
+                .title(bookDto.getTitle())
+                .build();
+        val genre = genreRepository.findById(bookDto.getGenre().getId());
+        book.setGenre(genre
+                .orElseThrow(() -> new GenreDoesNotExistException("Genre with id=" + bookDto.getGenre().getId() + " has not found")));
+        val author = authorRepository.findById(bookDto.getAuthor().getId());
+        book.setAuthor(author
+                .orElseThrow(() -> new AuthorDoesNotExistException("Author with id=" + bookDto.getAuthor().getId() + " has not found")));
         bookRepository.save(book);
     }
 
@@ -58,7 +76,9 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDto addCommentToBook(String commentatorName, String text, Book book) {
+    public BookDto addCommentToBook(String commentatorName, String text, String bookId) {
+        val book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new BookDoesNotExistException("Book with id=" + bookId + " has not found"));
         val comment = Comment.builder()
                 .commentatorName(commentatorName)
                 .text(text)

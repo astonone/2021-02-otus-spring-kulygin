@@ -1,4 +1,4 @@
-package ru.otus.kulygin.servicce.impl;
+package ru.otus.kulygin.service.impl;
 
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
@@ -11,7 +11,6 @@ import ru.otus.kulygin.dto.AuthorDto;
 import ru.otus.kulygin.exception.AuthorDoesNotExistException;
 import ru.otus.kulygin.repository.AuthorRepository;
 import ru.otus.kulygin.service.AuthorService;
-import ru.otus.kulygin.service.impl.AuthorServiceImpl;
 import ru.otus.kulygin.service.impl.mapping.MappingService;
 
 import java.util.Collections;
@@ -29,8 +28,6 @@ class AuthorServiceImplTest {
     public static final String NOT_EXISTED_AUTHOR_ID = "6";
 
     public static final String FOR_INSERT_AUTHOR_ID = "11";
-    public static final String FOR_INSERT_AUTHOR_FIRST_NAME = "Ася";
-    public static final String FOR_INSERT_AUTHOR_LAST_NAME = "Казанцева";
 
     @Autowired
     private AuthorService authorService;
@@ -53,14 +50,12 @@ class AuthorServiceImplTest {
     @Test
     @DisplayName("add author to database")
     public void shouldInsertAuthor() {
-        val author = Author.builder()
-                .firstName(FOR_INSERT_AUTHOR_FIRST_NAME)
-                .lastName(FOR_INSERT_AUTHOR_LAST_NAME)
-                .build();
+        val authorDto = AuthorDto.builder().build();
+        when(mappingService.map(authorDto, Author.class)).thenReturn(Author.builder().build());
 
-        authorService.save(author);
+        authorService.save(authorDto);
 
-        verify(authorRepository).save(author);
+        verify(authorRepository).save(any(Author.class));
     }
 
     @Test

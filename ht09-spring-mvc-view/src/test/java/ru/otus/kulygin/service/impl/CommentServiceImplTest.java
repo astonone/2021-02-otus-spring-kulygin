@@ -1,4 +1,4 @@
-package ru.otus.kulygin.servicce.impl;
+package ru.otus.kulygin.service.impl;
 
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
@@ -11,7 +11,6 @@ import ru.otus.kulygin.dto.CommentDto;
 import ru.otus.kulygin.exception.CommentDoesNotExistException;
 import ru.otus.kulygin.repository.CommentRepository;
 import ru.otus.kulygin.service.CommentService;
-import ru.otus.kulygin.service.impl.CommentServiceImpl;
 import ru.otus.kulygin.service.impl.mapping.MappingService;
 
 import java.util.Collections;
