@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Authors</title>
+    <style type="text/css">
+        .main-container {
+            padding: 15px 15px 15px 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .btn-action {
+            width: fit-content;
+            margin-bottom: 15px !important;
+        }
+
+        .btn-create-link {
+            width: fit-content;
+        }
+    </style>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <ul class="nav navbar-nav">
+        <li><a>Библиотека</a></li>
+        <li><a th:href="@{/}" href="book-list.html">Книги</a></li>
+        <li class="active"><a href="#">Авторы</a></li>
+        <li><a th:href="@{/genre-list}" href="genre-list.html">Жанры</a></li>
+    </ul>
+</nav>
+<div class="main-container">
+    <div class="alert alert-info" role="alert" th:if="${authors.isEmpty()}">
+        В библиотеке на данный момент отсутствуют авторы
+    </div>
+    <a th:href="@{/create-author}" href="author-create.html" class="btn-create-link">
+        <button class="btn btn-success btn-action">Создать</button>
+    </a>
+    <div class="panel panel-default" th:if="${!authors.isEmpty()}">
+        <!-- Default panel contents -->
+        <div class="panel-heading">Доступные авторы</div>
+
+        <!-- Table -->
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Имя</th>
+                <th>Фамилия</th>
+                <th>Действиe</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="author : ${authors}">
+                <td th:text="${author.id}">1</td>
+                <td th:text="${author.firstName}">Alexander</td>
+                <td th:text="${author.lastName}">Pushkin</td>
+                <td>
+                    <a th:href="@{/edit-author(id=${author.id})}" href="author-edit.html">
+                        <button class="btn btn-primary btn-action">Редактировать</button>
+                    </a>
+                    <form th:action="@{/delete-author(id=${author.id})}" method="post" th:object="${author}">
+                        <button class="btn btn-warning btn-action" type="submit" value="Submit">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Comments</title>
+    <style type="text/css">
+        .main-container {
+            padding: 15px 15px 15px 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .btn-action {
+            width: fit-content;
+            margin-bottom: 15px !important;
+        }
+
+        .btn-create-link {
+            width: fit-content;
+        }
+    </style>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <ul class="nav navbar-nav">
+        <li><a>Библиотека</a></li>
+        <li><a th:href="@{/}" href="book-list.html">Книги</a></li>
+        <li class="active"><a href="#">Комментарии</a></li>
+    </ul>
+</nav>
+<div class="main-container">
+    <div class="alert alert-info" role="alert" th:if="${comments.isEmpty()}">
+        Пока никто не оставил комментариев к этой книге
+    </div>
+    <a th:href="@{/book-comment-create(id=${bookId})}" href="book-comment-create.html" class="btn-create-link">
+        <button class="btn btn-success btn-action">Написать комментарий</button>
+    </a>
+    <div class="panel panel-default" th:if="${!comments.isEmpty()}">
+        <!-- Default panel contents -->
+        <div class="panel-heading">Комментарии к книге</div>
+
+        <!-- Table -->
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Имя</th>
+                <th>Текст</th>
+                <th>Действие</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="comment : ${comments}">
+                <td th:text="${comment.id}">1</td>
+                <td th:text="${comment.commentatorName}">Ivan</td>
+                <td th:text="${comment.text}">Wow</td>
+                <td>
+                    <form th:action="@{/delete-comment(commentId=${comment.id}, bookId=${bookId})}" method="post"
+                          th:object="${comment}">
+                        <button class="btn btn-warning btn-action" type="submit" value="Submit">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
