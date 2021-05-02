@@ -57,7 +57,7 @@ public class InterviewTemplateServiceImpl implements InterviewTemplateService {
         }
         forSave.setId(templateById.map(InterviewTemplate::getId).orElse(null));
         forSave.setPositionName(templateDto.getPositionName());
-        forSave.setCriteriaList(new ArrayList<>());
+        forSave.setCriterias(new ArrayList<>());
         return mappingService.map(interviewTemplateRepository.save(forSave), InterviewTemplateDto.class);
     }
 
@@ -74,7 +74,7 @@ public class InterviewTemplateServiceImpl implements InterviewTemplateService {
             throw new InterviewTemplateDoesNotExistException();
         }
         final InterviewTemplate interviewTemplate = interviewTemplateRepository.findById(templateId).get();
-        interviewTemplate.getCriteriaList().add(mappingService.map(criteria, InterviewTemplateCriteria.class));
+        interviewTemplate.getCriterias().add(mappingService.map(criteria, InterviewTemplateCriteria.class));
         return mappingService.map(interviewTemplateRepository.save(interviewTemplate), InterviewTemplateDto.class);
     }
 
@@ -87,7 +87,7 @@ public class InterviewTemplateServiceImpl implements InterviewTemplateService {
             throw new InterviewTemplateCriteriaDoesNotExist();
         }
         final InterviewTemplate interviewTemplate = interviewTemplateRepository.findById(templateId).get();
-        interviewTemplate.getCriteriaList().removeIf(criteria -> criteria.getId().equals(criteriaId));
+        interviewTemplate.getCriterias().removeIf(criteria -> criteria.getId().equals(criteriaId));
         return mappingService.map(interviewTemplateRepository.save(interviewTemplate), InterviewTemplateDto.class);
     }
 

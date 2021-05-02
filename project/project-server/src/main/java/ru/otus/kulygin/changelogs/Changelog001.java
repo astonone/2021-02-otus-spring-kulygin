@@ -499,7 +499,7 @@ public class Changelog001 {
 
         val template = InterviewTemplate.builder()
                 .positionName("Java Junior Developer")
-                .criteriaList(java_junior_developer)
+                .criterias(java_junior_developer)
                 .build();
 
         interviewTemplateRepository.save(template);

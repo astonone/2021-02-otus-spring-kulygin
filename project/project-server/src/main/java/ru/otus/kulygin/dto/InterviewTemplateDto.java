@@ -15,6 +15,6 @@ public class InterviewTemplateDto {
 
     private String id;
     private String positionName;
-    private List<InterviewTemplateCriteriaDto> criteriaList;
+    private List<InterviewTemplateCriteriaDto> criterias;
 
 }

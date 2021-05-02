@@ -19,6 +19,6 @@ public class InterviewTemplate {
     @Id
     private String id;
     private String positionName;
-    private List<InterviewTemplateCriteria> criteriaList;
+    private List<InterviewTemplateCriteria> criterias;
 
 }

@@ -97,6 +97,17 @@
     "empty": "You do not have any created interviews"
   },
   "templates": {
-    "empty": "You do not have any created templates"
+    "empty": "You do not have any created templates",
+    "items" : {
+      "positionName": "Position Name",
+      "criterias": "Criteria list"
+    },
+    "button": {
+      "create": "Add template",
+      "save": "Save data",
+      "cancel": "Cancel edit",
+      "change": "Change data",
+      "remove": "Remove template"
+    }
   }
 }
