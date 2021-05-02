@@ -72,7 +72,7 @@
                 </div>
             </div>
             <div class="header-control-label-panel">
-                <button mat-button [matMenuTriggerFor]="themes">
+                <button mat-button [matMenuTriggerFor]="themes" *ngIf="!shared.isMobile()">
                     <mat-icon>more_vert</mat-icon>
                 </button>
                 <mat-menu #themes="matMenu">
