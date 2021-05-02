@@ -4,12 +4,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.otus.kulygin.domain.Interviewer;
 import ru.otus.kulygin.dto.ErrorDto;
 import ru.otus.kulygin.dto.InterviewerDto;
+import ru.otus.kulygin.exception.InterviewerDoesNotExistException;
 import ru.otus.kulygin.service.InterviewerService;
-
-import java.util.Optional;
 
 import static ru.otus.kulygin.enumeration.ApplicationErrorsEnum.INTERVIEWER_NOT_FOUND;
 import static ru.otus.kulygin.enumeration.ApplicationErrorsEnum.RELATED_ENTITY;
@@ -26,25 +24,17 @@ public class InterviewerController {
 
     @GetMapping
     public ResponseEntity<?> getAllPageable(@RequestParam("page") Integer page,
-                                                        @RequestParam("pageSize") Integer pageSize) {
+                                            @RequestParam("pageSize") Integer pageSize) {
         return new ResponseEntity<>(interviewerService.findAll(PageRequest.of(page, pageSize)), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<?> save(@RequestBody InterviewerDto interviewerDto) {
-        Interviewer forSave = Interviewer.builder().build();
-        Optional<InterviewerDto> interviewerById = Optional.empty();
-        if (interviewerDto.getId() != null) {
-            interviewerById = interviewerService.getById(interviewerDto.getId());
-            if (interviewerById.isEmpty()) {
-                return new ResponseEntity<>(new ErrorDto(INTERVIEWER_NOT_FOUND.getCode(), INTERVIEWER_NOT_FOUND.getMessage()), HttpStatus.NOT_FOUND);
-            }
+        try {
+            return new ResponseEntity<>(interviewerService.save(interviewerDto), HttpStatus.OK);
+        } catch (InterviewerDoesNotExistException e) {
+            return new ResponseEntity<>(new ErrorDto(INTERVIEWER_NOT_FOUND.getCode(), INTERVIEWER_NOT_FOUND.getMessage()), HttpStatus.NOT_FOUND);
         }
-        forSave.setId(interviewerById.map(InterviewerDto::getId).orElse(null));
-        forSave.setFirstName(interviewerDto.getFirstName());
-        forSave.setLastName(interviewerDto.getLastName());
-        forSave.setPositionType(interviewerDto.getPositionType());
-        return new ResponseEntity<>(interviewerService.save(forSave), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")

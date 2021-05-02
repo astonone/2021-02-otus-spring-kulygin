@@ -5,14 +5,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.otus.kulygin.domain.Candidate;
 import ru.otus.kulygin.dto.CandidateDto;
 import ru.otus.kulygin.dto.ErrorDto;
+import ru.otus.kulygin.exception.CandidateDoesNotExistException;
 import ru.otus.kulygin.exception.FileWritingException;
 import ru.otus.kulygin.exception.WrongCvFileFormatException;
 import ru.otus.kulygin.service.CandidateService;
-
-import java.util.Optional;
 
 import static ru.otus.kulygin.enumeration.ApplicationErrorsEnum.*;
 
@@ -35,21 +33,10 @@ public class CandidateController {
     @PostMapping
     public ResponseEntity<?> save(@RequestPart(value = "candidateDto") CandidateDto candidateDto,
                                   @RequestPart(value = "uploadedFile", required = false) MultipartFile uploadedFile) {
-        Candidate forSave = Candidate.builder().build();
-        Optional<CandidateDto> candidateById = Optional.empty();
-        if (candidateDto.getId() != null) {
-            candidateById = candidateService.getById(candidateDto.getId());
-            if (candidateById.isEmpty()) {
-                return new ResponseEntity<>(new ErrorDto(CANDIDATE_NOT_FOUND.getCode(), CANDIDATE_NOT_FOUND.getMessage()), HttpStatus.NOT_FOUND);
-            }
-        }
-        forSave.setId(candidateById.map(CandidateDto::getId).orElse(null));
-        forSave.setFirstName(candidateDto.getFirstName());
-        forSave.setLastName(candidateDto.getLastName());
-        forSave.setClaimingPosition(candidateDto.getClaimingPosition());
-        forSave.setInterviewerComment(candidateDto.getInterviewerComment());
         try {
-            return new ResponseEntity<>(candidateService.save(forSave, uploadedFile), HttpStatus.OK);
+            return new ResponseEntity<>(candidateService.save(candidateDto, uploadedFile), HttpStatus.OK);
+        } catch (CandidateDoesNotExistException e) {
+            return new ResponseEntity<>(new ErrorDto(CANDIDATE_NOT_FOUND.getCode(), CANDIDATE_NOT_FOUND.getMessage()), HttpStatus.NOT_FOUND);
         } catch (FileWritingException e) {
             return new ResponseEntity<>(new ErrorDto(FILE_WRITING_ERROR.getCode(), FILE_WRITING_ERROR.getMessage()), HttpStatus.NOT_FOUND);
         } catch (WrongCvFileFormatException e) {

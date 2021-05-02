@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.otus.kulygin.domain.Candidate;
 import ru.otus.kulygin.dto.CandidateDto;
 import ru.otus.kulygin.dto.pageable.CandidatePageableDto;
+import ru.otus.kulygin.exception.CandidateDoesNotExistException;
 import ru.otus.kulygin.exception.FileWritingException;
 import ru.otus.kulygin.exception.WrongCvFileFormatException;
 import ru.otus.kulygin.repository.CandidateRepository;
@@ -52,19 +53,34 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public CandidateDto save(Candidate candidate, MultipartFile uploadedFile) throws FileWritingException, WrongCvFileFormatException {
+    public CandidateDto save(CandidateDto candidateDto, MultipartFile uploadedFile) throws FileWritingException, WrongCvFileFormatException {
+        Candidate forSave = Candidate.builder().build();
+        Optional<Candidate> candidateById = Optional.empty();
+        if (candidateDto.getId() != null) {
+            candidateById = candidateRepository.findById(candidateDto.getId());
+            if (candidateById.isEmpty()) {
+                throw new CandidateDoesNotExistException();
+            }
+        }
+        forSave.setId(candidateById.map(Candidate::getId).orElse(null));
+        forSave.setFirstName(candidateDto.getFirstName());
+        forSave.setLastName(candidateDto.getLastName());
+        forSave.setClaimingPosition(candidateDto.getClaimingPosition());
+        forSave.setInterviewerComment(candidateDto.getInterviewerComment());
+
         if (uploadedFile != null) {
-            if (candidate.getId() != null) {
-                deletePreviousCvFileIfExists(candidate.getId());
+            if (candidateDto.getId() != null) {
+                deletePreviousCvFileIfExists(candidateDto.getId());
             }
             if (!getFileExtension(uploadedFile).equalsIgnoreCase(PDF)) {
                 throw new WrongCvFileFormatException();
             }
             String filePath = getFinalPath(uploadedFile);
             fileService.writeFile(filePath, uploadedFile);
-            candidate.setPathToCvFile(filePath);
+            forSave.setPathToCvFile(filePath);
         }
-        return mappingService.map(candidateRepository.save(candidate), CandidateDto.class);
+
+        return mappingService.map(candidateRepository.save(forSave), CandidateDto.class);
     }
 
     private void deletePreviousCvFileIfExists(String id) {
@@ -77,11 +93,6 @@ public class CandidateServiceImpl implements CandidateService {
 
     private String getFileExtension(MultipartFile multipartFile) {
         return multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf(DOT) + 1);
-    }
-
-    @Override
-    public Optional<CandidateDto> getById(String id) {
-        return candidateRepository.findById(id).map(candidate -> mappingService.map(candidate, CandidateDto.class));
     }
 
     @Override

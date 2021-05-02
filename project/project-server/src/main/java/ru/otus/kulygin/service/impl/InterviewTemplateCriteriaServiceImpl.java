@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.otus.kulygin.domain.InterviewTemplateCriteria;
 import ru.otus.kulygin.dto.InterviewTemplateCriteriaDto;
 import ru.otus.kulygin.dto.pageable.InterviewTemplateCriteriaPageableDto;
+import ru.otus.kulygin.exception.InterviewTemplateCriteriaDoesNotExist;
 import ru.otus.kulygin.repository.InterviewTemplateCriteriaRepository;
 import ru.otus.kulygin.service.InterviewTemplateCriteriaService;
 import ru.otus.kulygin.service.impl.util.MappingService;
@@ -38,13 +39,21 @@ public class InterviewTemplateCriteriaServiceImpl implements InterviewTemplateCr
     }
 
     @Override
-    public InterviewTemplateCriteriaDto save(InterviewTemplateCriteria criteria) {
-        return mappingService.map(interviewTemplateCriteriaRepository.save(criteria), InterviewTemplateCriteriaDto.class);
-    }
-
-    @Override
-    public Optional<InterviewTemplateCriteriaDto> getById(String id) {
-        return interviewTemplateCriteriaRepository.findById(id).map(criteria -> mappingService.map(criteria, InterviewTemplateCriteriaDto.class));
+    public InterviewTemplateCriteriaDto save(InterviewTemplateCriteriaDto criteriaDto) {
+        InterviewTemplateCriteria forSave = InterviewTemplateCriteria.builder().build();
+        Optional<InterviewTemplateCriteria> criteriaById = Optional.empty();
+        if (criteriaDto.getId() != null) {
+            criteriaById = interviewTemplateCriteriaRepository.findById(criteriaDto.getId());
+            if (criteriaById.isEmpty()) {
+                throw new InterviewTemplateCriteriaDoesNotExist();
+            }
+        }
+        forSave.setId(criteriaById.map(InterviewTemplateCriteria::getId).orElse(null));
+        forSave.setName(criteriaDto.getName());
+        forSave.setPositionType(criteriaDto.getPositionType());
+        forSave.setMark(criteriaDto.getMark());
+        forSave.setInterviewerComment(criteriaDto.getInterviewerComment());
+        return mappingService.map(interviewTemplateCriteriaRepository.save(forSave), InterviewTemplateCriteriaDto.class);
     }
 
     @Override

@@ -7,7 +7,8 @@ public enum ApplicationErrorsEnum {
     CANDIDATE_NOT_FOUND(3L, "Candidate by id has not found"),
     FILE_WRITING_ERROR(3L, "Error via file writing"),
     WRONG_FILE_FORMAT_EXCEPTION(4L, "Incorrect file format! Should be only PDF"),
-    RELATED_ENTITY(4L, "");
+    INTERVIEWER_TEMPLATE_NOT_FOUND(5L, "Interview template by id has not found"),
+    RELATED_ENTITY(6L, "");
 
     private final Long code;
     private final String message;

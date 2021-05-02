@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.otus.kulygin.domain.Interviewer;
 import ru.otus.kulygin.dto.InterviewerDto;
 import ru.otus.kulygin.dto.pageable.InterviewerPageableDto;
+import ru.otus.kulygin.exception.InterviewerDoesNotExistException;
 import ru.otus.kulygin.repository.InterviewerRepository;
 import ru.otus.kulygin.service.InterviewerService;
 import ru.otus.kulygin.service.impl.util.MappingService;
@@ -38,13 +39,20 @@ public class InterviewerServiceImpl implements InterviewerService {
     }
 
     @Override
-    public InterviewerDto save(Interviewer interviewer) {
-        return mappingService.map(interviewerRepository.save(interviewer), InterviewerDto.class);
-    }
-
-    @Override
-    public Optional<InterviewerDto> getById(String id) {
-        return interviewerRepository.findById(id).map(interviewer -> mappingService.map(interviewer, InterviewerDto.class));
+    public InterviewerDto save(InterviewerDto interviewerDto) {
+        Interviewer forSave = Interviewer.builder().build();
+        Optional<Interviewer> interviewerById = Optional.empty();
+        if (interviewerDto.getId() != null) {
+            interviewerById = interviewerRepository.findById(interviewerDto.getId());
+            if (interviewerById.isEmpty()) {
+                throw new InterviewerDoesNotExistException();
+            }
+        }
+        forSave.setId(interviewerById.map(Interviewer::getId).orElse(null));
+        forSave.setFirstName(interviewerDto.getFirstName());
+        forSave.setLastName(interviewerDto.getLastName());
+        forSave.setPositionType(interviewerDto.getPositionType());
+        return mappingService.map(interviewerRepository.save(forSave), InterviewerDto.class);
     }
 
     @Override
