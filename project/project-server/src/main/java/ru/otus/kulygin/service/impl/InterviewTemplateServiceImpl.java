@@ -69,6 +69,13 @@ public class InterviewTemplateServiceImpl implements InterviewTemplateService {
     }
 
     @Override
+    public InterviewTemplateDto getById(String id) {
+        return interviewTemplateRepository.findById(id)
+                .map(template -> mappingService.map(template, InterviewTemplateDto.class))
+                .orElseThrow(InterviewTemplateDoesNotExistException::new);
+    }
+
+    @Override
     public InterviewTemplateDto addCriteria(String templateId, InterviewTemplateCriteriaDto criteria) {
         if (!interviewTemplateRepository.existsById(templateId)) {
             throw new InterviewTemplateDoesNotExistException();

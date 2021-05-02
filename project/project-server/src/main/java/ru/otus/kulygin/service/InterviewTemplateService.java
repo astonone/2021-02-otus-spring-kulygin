@@ -17,4 +17,6 @@ public interface InterviewTemplateService {
 
     InterviewTemplateDto deleteCriteria(String templateId, String criteriaId);
 
+    InterviewTemplateDto getById(String id);
+
 }

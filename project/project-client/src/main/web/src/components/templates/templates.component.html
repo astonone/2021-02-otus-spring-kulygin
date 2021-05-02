@@ -72,6 +72,12 @@
                                [(ngModel)]="newTemplate.positionName">
                     </mat-form-field>
                 </mat-list-item>
+                <mat-list-item role="listitem" class="item-input-element" *ngIf="!element.isNew">
+                    <button mat-raised-button color="link" class="new-entity-button" *ngIf="element.isEdit"
+                            (click)="openEditCriterias(element)">
+                        {{'templates.button.editCriterias' | translate}}
+                    </button>
+                </mat-list-item>
             </mat-list>
 
         </mat-expansion-panel>

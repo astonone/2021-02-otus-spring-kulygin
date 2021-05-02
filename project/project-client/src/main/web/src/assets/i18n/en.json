@@ -107,7 +107,23 @@
       "save": "Save data",
       "cancel": "Cancel edit",
       "change": "Change data",
-      "remove": "Remove template"
+      "remove": "Remove template",
+      "editCriterias": "Edit criteria list"
+    }
+  },
+  "edit-criterias": {
+    "empty-global": "You do not have any created template criterias",
+    "empty-template": "Your template do not have added template criterias",
+    "table-info-global": "Here placed global template criterias",
+    "table-info-template": "Here placed your template criterias",
+    "filter": "Filter",
+    "added": "Criteria successfully added to your interview template",
+    "removed": "Criteria successfully removed from your interview template",
+    "table" : {
+      "id": "No.",
+      "name": "Criteria name",
+      "positionType": "Position type",
+      "actions": "Actions"
     }
   }
 }

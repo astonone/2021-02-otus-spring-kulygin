@@ -9,6 +9,7 @@ import {routing} from './app.routing';
 
 import {MainUiModule} from './modules/main-ui/main-ui.module';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 
 /*Services*/
 import {SharedService} from "./services/shared.service";
@@ -26,8 +27,7 @@ import {LoginComponent} from "./components/login/login.component";
 import {SignUpComponent} from "./components/sign-up/sign-up.component";
 import {TemplatesComponent} from "./components/templates/templates.component";
 import {TemplateCriteriaComponent} from "./components/template-criteria/template-criteria.component";
-
-import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
+import {EditCriteriasComponent} from "./components/edit-criterias/edit-criterias.component";
 
 export function TranslationLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http);
@@ -54,7 +54,8 @@ export function TranslationLoaderFactory(http: HttpClient) {
         LoginComponent,
         SignUpComponent,
         TemplatesComponent,
-        TemplateCriteriaComponent
+        TemplateCriteriaComponent,
+        EditCriteriasComponent
     ],
     entryComponents: [],
     providers: [
@@ -66,6 +67,7 @@ export function TranslationLoaderFactory(http: HttpClient) {
         SignUpComponent,
         TemplatesComponent,
         TemplateCriteriaComponent,
+        EditCriteriasComponent,
         SharedService,
         InterviewersService,
         InterviewTemplateCriteriaService,

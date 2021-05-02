@@ -1,0 +1,99 @@
+<div class="template-tables">
+    <div class="global-criterias">
+        <p class="table-info">{{'edit-criterias.table-info-global' | translate}}</p>
+
+        <mat-paginator [length]="totalSize"
+                       [pageSize]="pageSize"
+                       [pageSizeOptions]="pageSizeOptions"
+                       (page)="pageEvent = updatePage($event)">
+        </mat-paginator>
+
+        <p class="empty-table" *ngIf="globalCriteriaDataSource.data.length === 0">{{'criterias.empty' | translate}}</p>
+
+        <mat-form-field *ngIf="globalCriteriaDataSource.data.length !== 0" class="filter">
+            <mat-label>{{'edit-criterias.filter' | translate}}</mat-label>
+            <input matInput (keyup)="applyFilter($event)">
+        </mat-form-field>
+
+        <table mat-table [dataSource]="globalCriteriaDataSource" *ngIf="globalCriteriaDataSource.data.length > 0"
+               class="mat-elevation-z8 criterias-table">
+
+            <!-- name Column -->
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> {{'edit-criterias.table.name' | translate}} </th>
+                <td mat-cell *matCellDef="let element">
+                    <div>
+                        {{element.name}}
+                    </div>
+                </td>
+            </ng-container>
+
+            <!-- positionType Column -->
+            <ng-container matColumnDef="positionType">
+                <th mat-header-cell *matHeaderCellDef> {{'edit-criterias.table.positionType' | translate}} </th>
+                <td mat-cell *matCellDef="let element">
+                    <div>
+                        {{element.positionType}}
+                    </div>
+                </td>
+            </ng-container>
+
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> {{'edit-criterias.table.actions' | translate}} </th>
+                <td mat-cell *matCellDef="let element">
+                    <div>
+                        <img class="action-element" src="assets/image/actions/add.png"
+                             (click)="addCriteria(element)">
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+    <div class="template-criterias">
+        <p class="table-info">{{'edit-criterias.table-info-template' | translate}}</p>
+
+        <p class="empty-table" *ngIf="templateCriteriaDataSource.length === 0">{{'edit-criterias.empty-template' | translate}}</p>
+
+        <table mat-table [dataSource]="templateCriteriaDataSource" *ngIf="templateCriteriaDataSource.length > 0"
+               class="mat-elevation-z8 criterias-table">
+
+            <!-- name Column -->
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> {{'edit-criterias.table.name' | translate}} </th>
+                <td mat-cell *matCellDef="let element">
+                    <div>
+                        {{element.name}}
+                    </div>
+                </td>
+            </ng-container>
+
+            <!-- positionType Column -->
+            <ng-container matColumnDef="positionType">
+                <th mat-header-cell *matHeaderCellDef> {{'edit-criterias.table.positionType' | translate}} </th>
+                <td mat-cell *matCellDef="let element">
+                    <div>
+                        {{element.positionType}}
+                    </div>
+                </td>
+            </ng-container>
+
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> {{'edit-criterias.table.actions' | translate}} </th>
+                <td mat-cell *matCellDef="let element">
+                    <div>
+                        <img class="action-element" src="assets/image/actions/remove.png"
+                             (click)="removeCriteria(element)">
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+</div>

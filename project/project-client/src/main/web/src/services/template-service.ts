@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {TemplatePageableDto} from "../models/pageable/template-pageable-dto";
 import {TemplateDto} from "../models/template-dto";
+import {InterviewTemplateCriteriaDto} from "../models/interview-template-criteria-dto";
 
 
 @Injectable({
@@ -15,6 +16,9 @@ export class TemplateService {
     private GET_ALL: string;
     private readonly SAVE: string;
     private DELETE: string;
+    private GET_BY_ID: string;
+    private ADD_CRITERIA: string;
+    private REMOVE_CRITERIA: string;
 
     constructor(private sharedService: SharedService,
                 private http: HttpClient) {
@@ -23,6 +27,9 @@ export class TemplateService {
         this.GET_ALL = this.SERVICE + '?page={page}&pageSize={pageSize}';
         this.SAVE = this.SERVICE;
         this.DELETE = this.SERVICE + '{id}';
+        this.GET_BY_ID = this.SERVICE + '{id}';
+        this.ADD_CRITERIA = this.SERVICE + '{templateId}/criteria';
+        this.REMOVE_CRITERIA = this.SERVICE + '{templateId}/criteria/{criteriaId}';
     }
 
     public getAll(page: number, pageSize: number): Observable<TemplatePageableDto> {
@@ -40,6 +47,26 @@ export class TemplateService {
         const regExpId = /{id}/gi;
         const url = this.DELETE.replace(regExpId, id);
         return this.http.delete<Observable<Object>>(url);
+    }
+
+    public getById(id: string): Observable<TemplateDto> {
+        const regExpId = /{id}/gi;
+        const url = this.GET_BY_ID.replace(regExpId, id);
+        return this.http.get<TemplateDto>(url);
+    }
+
+    public addCriteria(templateId: string, criteria: InterviewTemplateCriteriaDto): Observable<TemplateDto> {
+        const regExpId = /{templateId}/gi;
+        const url = this.ADD_CRITERIA.replace(regExpId, templateId);
+        return this.http.post<TemplateDto>(url, InterviewTemplateCriteriaDto.createNewObjectFromDto(criteria).toObject());
+    }
+
+    public removeCriteria(templateId: string, criteriaId: string): Observable<TemplateDto> {
+        const regExpId = /{templateId}/gi;
+        const regExpId2 = /{criteriaId}/gi;
+        let url = this.REMOVE_CRITERIA.replace(regExpId, templateId);
+        url = url.replace(regExpId2, criteriaId);
+        return this.http.delete<TemplateDto>(url);
     }
 
 }

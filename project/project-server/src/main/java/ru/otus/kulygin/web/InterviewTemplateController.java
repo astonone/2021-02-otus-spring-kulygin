@@ -38,6 +38,15 @@ public class InterviewTemplateController {
         }
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<?> getById(@PathVariable String id) {
+        try {
+            return new ResponseEntity<>(interviewTemplateService.getById(id), HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(new ErrorDto(INTERVIEWER_TEMPLATE_NOT_FOUND.getCode(), INTERVIEWER_TEMPLATE_NOT_FOUND.getMessage()), HttpStatus.NOT_FOUND);
+        }
+    }
+
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteById(@PathVariable String id) {
         try {

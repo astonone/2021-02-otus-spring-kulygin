@@ -4,6 +4,8 @@ import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition}
 import {SharedService} from "../../services/shared.service";
 import {TemplateDto} from "../../models/template-dto";
 import {TemplateService} from "../../services/template-service";
+import {TranslateService} from "@ngx-translate/core";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'templates',
@@ -35,7 +37,9 @@ export class TemplatesComponent implements OnInit {
     private verticalPosition: MatSnackBarVerticalPosition = 'top';
 
     constructor(private templateService: TemplateService,
-                private snackBar: MatSnackBar) {
+                private snackBar: MatSnackBar,
+                private translateService: TranslateService,
+                private router: Router) {
     }
 
     ngOnInit(): void {
@@ -154,4 +158,11 @@ export class TemplatesComponent implements OnInit {
         }
     }
 
+    public openEditCriterias(element: TemplateDto) {
+        this.goto('edit-criterias/' + element.id);
+    }
+
+    private goto(route: string): void {
+        this.router.navigate([this.translateService.getDefaultLang() + '/' + route]);
+    }
 }
