@@ -1,19 +1,19 @@
 #Project
-Проектная работа
+Project work
 
->Цель: реализовать собственный проект с применением Spring.<br><br>
-Проект должен быть сделан на основе Spring Boot, включать работу с DB с иcпользованием Spring Data репозиториев и/или Spring JDBC.<br>
-Проект должен иметь UI построенный на современных принципах разработки Web-приложений (AJAX и/или SPA).<br>
-Приложение должно содержать механизмы аутентификации и авторизации с использованием Spring Security.<br>
-Асинхронные части могут быть реализованы с помощью Spring Integration.<br>
-Пaкeтные обработки, утилиты поддержки должны быть реализованы с помощью Spring Batch + Spring Shell.<br>
-Проект должен быть cloud-ready.
+>Purpose: to implement my own project using Spring.<br><br>
+The project must be made based on Spring Boot, include DB using Spring Data repositories and/or Spring JDBC.<br>
+The project must have the UI built on the modern principles of Web-applications development (AJAX and/or SPA). <br>
+The application must contain the mechanisms of authentication and authorization using the Spring Security. <br>
+Asynchronous parts can be implemented using Spring Integration.<br>
+Batch processing, support utilities must be implemented using Spring Batch + Spring Shell.<br>
+The project must be cloud-ready.
 
-Тема работы:
+Job topic:
 
-Приложение для помощи HR и Software Engineer, проводящих собеседования.<br>
+An application to help HR and Software Engineer interviewers.<br>
 
-1. Приложение позволяет хранить анкеты кандидатов для собеседования.<br>
-2. Создавать шаблоны для собеседования на конкретную позицию, с заданными критериями.<br>
-3. Создавать интервью на основе созданного шаблона и оценивать кандидата во время собеседования.<br>
-4. Просматривать отчеты о проведенных и предстоящих интервью с оценками по предварительно заданным критериям и комментариями от проводящего собеседование.<br>
+1. The application allows you to store candidate questionnaires for the interview.<br>
+2. Create templates for an interview for a specific position, with specified criteria.<br>
+3. Create an interview based on the created template and evaluate the candidate during the interview.<br>
+4. View reports on conducted and upcoming interviews with evaluations according to pre-set criteria and comments from the interviewer.<br>
