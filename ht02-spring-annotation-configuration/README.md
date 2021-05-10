@@ -1,22 +1,22 @@
 #ht02-spring-annotation-configuration
-Домашнее задание
+Homework
 
->Приложение по проведению тестирования студентов (с самим тестированием)<br>
-Цель: конфигурировать Spring-приложения современным способом, как это и делается в современном мире<br>
-Результат: готовое современное приложение на чистом Spring<br>
+>Student testing application<br>
+Purpose: to configure Spring applications in a modern way, as it is done in the modern world<br>
+Result: finished modern application in pure Spring<br>
 
-Новый функционал:
+New functionality:
 
-Программа должна спросить у пользователя фамилию и имя, спросить 5 вопросов из CSV-файла и вывести результат тестирования.
+The program should ask the user's name and surname, ask 5 questions from a CSV-file and output the test result.
 
-Выполняется на основе предыдущего домашнего задания + , собственно, сам функционал тестирования.
+Executed on the basis of the previous homework.
 
-Требования:
-1. Переписать конфигурацию в виде Java + Annotation-based конфигурации.
-2. Добавить функционал тестирования студента.
-3. Добавьте файл настроек для приложения тестирования студентов.
-4. В конфигурационный файл можно поместить путь до CSV-файла, количество правильных ответов для зачёта - на Ваше усмотрение.
-5. Если Вы пишите интеграционные тесты, то не забудьте добавить аналогичный файл и для тестов.
-6. Scanner, PrintStream и другие стандартные типы в контекст класть не нужно!
-7. Ввод-вывод на английском языке.
-8. Помним, "без фанатизма" :)
+Requirements:
+1. Rewrite the configuration as a Java + Annotation-based configuration.
+2. Add student testing functionality.
+3. Add a configuration file for the student testing application.
+4. You can put the path to the CSV file in the configuration file, the number of correct answers for credit is at your discretion.
+5. If you are writing integration tests, be sure to add a similar file for the tests as well.
+6. Scanner, PrintStream and other standard types do not need to be put in the context!
+7. I/O in English.
+8. Remember, "no fanaticism" :)

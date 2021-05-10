@@ -1,22 +1,23 @@
 #ht05-spring-jdbc
-Домашнее задание
+Homework
 
->Создать приложение хранящее информацию о книгах в библиотеке<br>
-Цель: использовать возможности Spring JDBC и spring-boot-starter-jdbc для подключения к реляционным базам данных<br>
-Результат: приложение с хранением данных в реляционной БД, которое в дальнейшем будем развивать<br>
-Это домашнее задание выполняется НЕ на основе предыдущего.
+>Create an application that stores information about books in the library<br>
+Purpose: use Spring JDBC and spring-boot-starter-jdbc capabilities to connect to relational databases<br>
+Result: an application with data storage in a relational database, which we will develop<br>
 
-Необходимо:
-1. Использовать Spring JDBC и реляционную базу (H2 или настоящую реляционную БД). Настоятельно рекомендуем использовать NamedParametersJdbcTemplate
-2. Предусмотреть таблицы авторов, книг и жанров.
-3. Предполагается отношение многие-к-одному (у книги один автор и жанр). Опциональное усложнение - отношения многие-ко-многим (у книги может быть много авторов и/или жанров).
-4. Интерфейс выполняется на Spring Shell (CRUD книги обязателен, операции с авторами и жанрами - как будет удобно).
-5. Скрипт создания таблиц и скрипт заполнения данными должны автоматически запускаться с помощью spring-boot-starter-jdbc.
-6. Покрыть тестами, насколько это возможно.
+This homework is NOT based on the previous one.
 
-Рекомендации к выполнению работы:
+Requirements:
+1. Use Spring JDBC and a relational database (H2 or true relational database). We strongly recommend using NamedParametersJdbcTemplate
+2. Provide tables of authors, books, and genres.
+3. Assume a many-to-one relationship (book has one author and genre). Optional complication - many-to-many relation (book can have many authors and/or genres).
+4. The interface is done in Spring Shell (CRUD of the book is required, author and genre operations are optional).
+5. The table creation script and data filling script should automatically run with spring-boot-starter-jdbc.
+6. Cover with tests as much as possible.
 
-1. НЕ делать AbstractDao.
-2. НЕ делать наследования в тестах
+Recommendations for doing the work:
 
-Это домашнее задание является основой для следующих.
+1. Do NOT do AbstractDao.
+2. DO NOT do inheritance in tests.
+
+This homework is the basis for the following.

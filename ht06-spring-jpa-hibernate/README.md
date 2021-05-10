@@ -1,17 +1,18 @@
 #ht06-spring-jpa-hibernate
-Домашнее задание
+Homework
 
->Переписать приложение для хранения книг на ORM<br>
-Цель: полноценно работать с JPA + Hibernate для подключения к реляционным БД посредством ORM-фреймворка<br>
-Результат: Высокоуровневое приложение с JPA-маппингом сущностей<br>
-Домашнее задание выполняется переписыванием предыдущего на JPA.
+>To rewrite book storage application on ORM<br>
+Purpose: to work fully with JPA + Hibernate to connect to relational databases via ORM framework<br>
+Result: High-level application with JPA entity mapping<br>
 
-Необходимо:
-1. Использовать JPA, Hibernate только в качестве JPA-провайдера.
-2. Для решения проблемы N+1 можно использовать специфические для Hibernate аннотации @Fetch и @BatchSize.
-3. Добавить сущность "комментария к книге", реализовать CRUD для новой сущности.
-4. Покрыть репозитории тестами, используя H2 базу данных и соответствующий H2 Hibernate-диалект для тестов.
-5. Не забудьте отключить DDL через Hibernate
-6. @Transactional рекомендуется ставить только на методы сервиса.
+Homework is done by rewriting the previous one in JPA.
 
-Это домашнее задание будет использоваться в качестве основы для других ДЗ Данная работа не засчитывает предыдущую!
+Requirements:
+1. Use JPA, Hibernate only as a JPA provider.
+2. Hibernate-specific @Fetch and @BatchSize annotations can be used to solve the N+1 problem.
+3. Add a "book comment" entity, implement CRUD for the new entity.
+4. Cover repositories with tests, using H2 database and appropriate H2 Hibernate dialect for tests.
+5. Don't forget to disable DDL via Hibernate
+6. It is recommended to put @Transactional only on service methods.
+
+This homework will be used as a basis for other DDLs. This work does not pass the previous one!

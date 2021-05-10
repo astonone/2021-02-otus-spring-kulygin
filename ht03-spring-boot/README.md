@@ -1,20 +1,22 @@
 #ht03-spring-boot
-Домашнее задание
+Homework
 
->Перенести приложение для тестирования студентов на Spring Boot<br>
-Цель: использовать возможности Spring Boot, чтобы разрабатывать современные приложения, так, как их сейчас и разрабатывают.<br>
-Результат: Production-ready приложение на Spring Boot<br>
-Это домашнее задание выполняется на основе предыдущего.
+>Transfer student testing application to Spring Boot<br>
+Purpose: to use the possibilities of Spring Boot to develop modern applications, the way they are developed now.<br>
+Result: Production-ready application on Spring Boot<br>
 
-1. Создать проект, используя Spring Boot Initializr (https://start.spring.io)
-2. Перенести приложение проведения опросов из прошлого домашнего задания.
-3. Перенести все свойства в application.yml
-4. Локализовать выводимые сообщения и вопросы (в CSV-файле). MesageSource должен быть из автоконфигурации Spring Boot.
-5. Сделать собственный баннер для приложения.
-6. Перенести тесты и использовать spring-boot-test-starter для тестирования
+This homework assignment builds on the previous one.
 
-*Опционально:
-- использовать ANSI-цвета для баннера.
-- если Ваш язык отличается от русского и английского - локализовать в нём.
+Requirements:
+1. Create a project using Spring Boot Initializr (https://start.spring.io)
+2. Transfer the survey application from the last homework assignment.
+3. Transfer all the properties to the application.yml
+4. Localize the output messages and questions (in a CSV file). MesageSource should be from Spring Boot autoconfiguration.
+5. Make your own banner for the application.
+6. Transfer tests and use spring-boot-test-starter to test
 
-Коммитить wrapper или нет в репозиторий - решать Вам.
+*Optional:
+- use ANSI colors for the banner.
+- If your language is different from Russian and English - localize in it.
+
+Whether or not to commit the wrapper to the repository is up to you.

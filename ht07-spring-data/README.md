@@ -1,16 +1,15 @@
 #ht07-spring-data
-Домашнее задание
+Homework
 
->Цель: максимально просто писать слой репозиториев с применением современных подходов<br>
-Результат: приложение со слоем репозиториев на Spring Data JPA
+>Purpose: make it as easy as possible to write a repository layer using modern approaches<br>
+Result: an application with a repository layer in Spring Data JPA
 
-Домашнее задание выполняется переписыванием предыдущего на JPA.
+Homework is done by rewriting the previous one in JPA.
 
-Требования:
+Requirements:
+1. Rewrite all the book repositories to Spring Data JPA repositories.
+2. Use spring-boot-starter-data-jpa.
+3. Custom repository methods (or with tricky @Query) cover tests using H2.
+4. It is recommended to put @Transactional on service methods, not repository methods.
 
-1. Переписать все репозитории по работе с книгами на Spring Data JPA репозитории.
-2. Используйте spring-boot-starter-data-jpa.
-3. Кастомные методы репозиториев (или с хитрым @Query) покрыть тестами, используя H2.
-4. @Transactional рекомендуется ставить на методы сервисов, а не репозиториев.
-
-Это домашнее задание будет использоваться в качестве основы для других ДЗ Данная работа не засчитывает предыдущую!
+This homework will be used as a basis for other homework. This work does not pass the previous one!

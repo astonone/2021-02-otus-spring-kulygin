@@ -1,17 +1,16 @@
 #ht09-spring-mvc-view
-Домашнее задание
+Homework
 
->CRUD приложение с Web UI и хранением данных в БД<br>
-Цель: разрабатывать полноценные классические Web-приложения<br>
-Результат: Web-приложение полностью на стеке Spring
+>CRUD application with Web UI and data storage in the database<br>
+Purpose: to develop full-fledged classic Web-applications<br>
+Result: Web-application completely on the Spring stack
 
-Необходимо:
+Requirements:
+1. Create an application with storing entities in the database (you can take the library and DAO/repositories from the past classes)
+2. Use classic View on Thymeleaf, classic Controllers.
+3. For books (main entity) all CRUD operations should be available on UI. CRUD of other entities is optional.
 
-1. Создать приложение с хранением сущностей в БД (можно взять библиотеку и DAO/репозитории из прошлых занятий)
-2. Использовать классический View на Thymeleaf, classic Controllers.
-3. Для книг (главной сущности) на UI должны быть доступные все CRUD операции. CRUD остальных сущностей - по желанию/необходимости.
+Localization is NOT necessary - it's strictly optional.
+This assignment does NOT pass for previous assignments!
 
-Локализацию делать НЕ нужно - она строго опциональна.
-Данное задание НЕ засчитывает предыдущие!
-
-Это домашнее задание частично будет использоваться в дальнейшем
+This homework will partially be used in the future

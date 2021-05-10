@@ -1,16 +1,18 @@
 #ht10-spring-mvc-spa
-Домашнее задание
+Homework
 
->Переписать приложение с использованием AJAX и REST-контроллеров<br>
-Цель: использовать Spring MVC для разработки современных AJAX/SPA приложений c помощью Spring MVC Результат: современное приложение на стеке Spring
+>Rewrite an application using AJAX and REST controllers<br>
+Purpose: use Spring MVC to develop modern AJAX/SPA applications using Spring MVC<br>
+Result: modern application on the Spring stack
 
-Домашнее задание выполняется на основе предыдущего.
+Homework is based on the previous assignment.
 
-1. Переписать приложение с классических View на AJAX архитектуру и REST-контроллеры.
-2. Минимум: получение одной сущности и отображение её на странице с помощью XmlHttpRequest, fetch api или jQuery
-3. Опционально максимум: полноценное SPA приложение на React/Vue/Angular, только REST-контроллеры.
-В случае разработки SPA - рекомендуется вынести репозиторий с front-end. Используйте proxy при разработке (настройки CORS не должно быть).
+Requirements:
+1. Rewrite the application from classic View to AJAX architecture and REST controllers.
+2. Minimum: get one entity and display it on a page using XmlHttpRequest, fetch api or jQuery
+   Optional maximum: a full-fledged SPA application on React/Vue/Angular, REST controllers only.
+   In case of SPA development - it is recommended to take out repository with front-end. Use proxy when developing (there should be no CORS setup).
 
-Данное задание, выполненное в виде SPA засчитывает ДЗ №9 (Занятие №15). Если Вы хотите засчитать, то обязательно пришлите ссылку в чат соответствующего предыдущего занятия.
+This assignment, done as a SPA pass as HT #9 (Class #15). If you want to set off, be sure to send the link in the chat room of the corresponding previous class.
 
-Данное ДЗ будет использоваться в дальнейшем
+This HT will be used in the future

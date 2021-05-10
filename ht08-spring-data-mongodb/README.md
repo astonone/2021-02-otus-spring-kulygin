@@ -1,19 +1,18 @@
 #ht08-spring-data-mongodb
-Домашнее задание
+Homework
 
->Использовать MongoDB и spring-data для хранения информации о книгах<br>
-Цель: После выполнения ДЗ вы сможете использовать Spring Data MongoDB и саму MongoDB для разработки приложений с хранением данных в нереляционной БД.<br>
-Результат: Приложение с использованием MongoDB
+>Use MongoDB and spring-data to store book information<br>
+Purpose: After completing the HT, you will be able to use Spring Data MongoDB and MongoDB itself to develop applications that store data in a non-relational database.<br>
+Result: Application using MongoDB
 
-Задание может выполняться на основе предыдущего, а может быть выполнено самостоятельно
+The assignment can be based on the previous one, or it can be done independently
 
-Требования:
+Requirements:
+1. Use Spring Data MongoDB repositories, and if there is not enough functionality, then *Operations
+2. Tests can be implemented with Flapdoodle Embedded MongoDB
+3. Hibernate, as well as JPA, and spring-boot-starter-data-jpa should not remain in dependencies if the HT is executed based on the previous one.
+4. How to store books, authors, genres, and comments is up to you. But the structure transferred from a relational database will not always be suitable for MongoDB.
 
-1. Использовать Spring Data MongoDB репозитории, а если не хватает функциональности, то и *Operations
-2. Тесты можно реализовать с помощью Flapdoodle Embedded MongoDB
-3. Hibernate, равно, как и JPA, и spring-boot-starter-data-jpa не должно остаться в зависимостях, если ДЗ выполняется на основе предыдущего.
-4. Как хранить книги, авторов, жанры и комментарии решать Вам. Но перенесённая с реляционной базы структура не всегда будет подходить для MongoDB.
+This assignment does NOT pass against previous assignments!
 
-Данное задание НЕ засчитывает предыдущие!
-
-Это задание может использоваться в дальнейшем, а может не использоваться - на Ваше дальнейшее усмотрение
+This assignment may or may not be used in the future - at your further discretion
