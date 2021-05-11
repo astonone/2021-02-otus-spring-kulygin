@@ -18,4 +18,5 @@ Student: Viktor Kulygin
 |[ht08-spring-data-mongo-db](https://github.com/astonone/2021-02-otus-spring-kulygin/tree/main/ht08-spring-data-mongodb)|Spring Data Key-Value to connect to Key-Value databases (and even SynchronizedMap);MondoDB;MongoDB with Spring Data MongoDB.|
 |Web|
 |[ht09-spring-mvc-view](https://github.com/astonone/2021-02-otus-spring-kulygin/tree/main/ht09-spring-mvc-view)|develop classic Web applications in Spring MVC;develop View layer in Thymeleaf.|
-|[ht10-spring-mvc-spa](https://github.com/astonone/2021-02-otus-spring-kulygin/tree/main/ht10-spring-mvc-spa)|Create complex classic applications using Spring Web Flow; create modern applications, as based on AJAX architecture and jQuery, as well as SPA-applications in Vue, React and Angular.|
+|[ht10-spring-mvc-spa](https://github.com/astonone/2021-02-otus-spring-kulygin/tree/main/ht10-spring-mvc-spa)|create complex classic applications using Spring Web Flow; create modern applications, as based on AJAX architecture and jQuery, as well as SPA-applications in Vue, React and Angular.|
+|[ht11-spring-webflux](https://github.com/astonone/2021-02-otus-spring-kulygin/tree/main/ht11-spring-webflux)|create modern reactive Web applications using Spring WebFlux.|
