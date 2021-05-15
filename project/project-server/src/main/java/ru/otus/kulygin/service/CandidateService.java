@@ -11,6 +11,8 @@ public interface CandidateService {
 
     CandidatePageableDto findAll(Pageable pageable);
 
+    CandidatePageableDto findAll();
+
     CandidateDto save(CandidateDto candidateDto, MultipartFile uploadedFile) throws FileWritingException, WrongCvFileFormatException;
 
     void deleteById(String id);

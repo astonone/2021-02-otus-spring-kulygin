@@ -30,6 +30,7 @@
     "@ngx-translate/core": "^12.1.2",
     "@ngx-translate/http-loader": "^4.0.0",
     "core-js": "^3.6.5",
+    "ngx-material-timepicker": "^5.5.3",
     "rxjs": "6.5.5",
     "zone.js": "^0.10.3"
   },

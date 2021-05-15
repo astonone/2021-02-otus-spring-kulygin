@@ -13,6 +13,7 @@ import {InterviewTemplateCriteriaDto} from "../models/interview-template-criteri
 export class TemplateService {
 
     private readonly SERVICE: string;
+    private GET_ALL_PAGEABLE: string;
     private GET_ALL: string;
     private readonly SAVE: string;
     private DELETE: string;
@@ -24,7 +25,8 @@ export class TemplateService {
                 private http: HttpClient) {
 
         this.SERVICE = this.sharedService.getServerURL() + '/interview-template/';
-        this.GET_ALL = this.SERVICE + '?page={page}&pageSize={pageSize}';
+        this.GET_ALL_PAGEABLE = this.SERVICE + '?page={page}&pageSize={pageSize}';
+        this.GET_ALL = this.SERVICE;
         this.SAVE = this.SERVICE;
         this.DELETE = this.SERVICE + '{id}';
         this.GET_BY_ID = this.SERVICE + '{id}';
@@ -32,11 +34,15 @@ export class TemplateService {
         this.REMOVE_CRITERIA = this.SERVICE + '{templateId}/criteria/{criteriaId}';
     }
 
-    public getAll(page: number, pageSize: number): Observable<TemplatePageableDto> {
+    public getAllPageable(page: number, pageSize: number): Observable<TemplatePageableDto> {
         const regExpPage = /{page}/gi;
         const regExpPageSize = /{pageSize}/gi;
-        const url = this.GET_ALL.replace(regExpPage, page.toString()).replace(regExpPageSize, pageSize.toString());
+        const url = this.GET_ALL_PAGEABLE.replace(regExpPage, page.toString()).replace(regExpPageSize, pageSize.toString());
         return this.http.get<TemplatePageableDto>(url);
+    }
+
+    public getAll(): Observable<TemplatePageableDto> {
+        return this.http.get<TemplatePageableDto>(this.GET_ALL);
     }
 
     public save(template: TemplateDto): Observable<TemplateDto> {

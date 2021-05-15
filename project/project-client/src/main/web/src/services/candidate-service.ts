@@ -12,6 +12,7 @@ import {CandidateDto} from "../models/candidate-dto";
 export class CandidateService {
 
     private readonly SERVICE: string;
+    private GET_ALL_PAGEABLE: string;
     private GET_ALL: string;
     private readonly SAVE: string;
     private DELETE: string;
@@ -20,16 +21,21 @@ export class CandidateService {
                 private http: HttpClient) {
 
         this.SERVICE = this.sharedService.getServerURL() + '/candidate/';
-        this.GET_ALL = this.SERVICE + '?page={page}&pageSize={pageSize}';
+        this.GET_ALL_PAGEABLE = this.SERVICE + '?page={page}&pageSize={pageSize}';
+        this.GET_ALL = this.SERVICE;
         this.SAVE = this.SERVICE;
         this.DELETE = this.SERVICE + '{id}';
     }
 
-    public getAll(page: number, pageSize: number): Observable<CandidatePageableDto> {
+    public getAllPageable(page: number, pageSize: number): Observable<CandidatePageableDto> {
         const regExpPage = /{page}/gi;
         const regExpPageSize = /{pageSize}/gi;
-        const url = this.GET_ALL.replace(regExpPage, page.toString()).replace(regExpPageSize, pageSize.toString());
+        const url = this.GET_ALL_PAGEABLE.replace(regExpPage, page.toString()).replace(regExpPageSize, pageSize.toString());
         return this.http.get<CandidatePageableDto>(url);
+    }
+
+    public getAll(): Observable<CandidatePageableDto> {
+        return this.http.get<CandidatePageableDto>(this.GET_ALL);
     }
 
     public save(finalData: FormData): Observable<CandidateDto> {

@@ -11,4 +11,6 @@ public interface InterviewTemplateRepository extends MongoRepository<InterviewTe
     @Query("{criterias: {$elemMatch: {_id:?0}}}")
     List<InterviewTemplate> findAllByCriteriaId(String criteriaId);
 
+    InterviewTemplate findByPositionName(String positionName);
+
 }

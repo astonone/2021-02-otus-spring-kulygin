@@ -39,6 +39,15 @@ public class InterviewerServiceImpl implements InterviewerService {
     }
 
     @Override
+    public InterviewerPageableDto findAll() {
+        val interviewers = interviewerRepository.findAll();
+
+        return InterviewerPageableDto.builder()
+                .interviewers(mappingService.mapAsList(interviewers, InterviewerDto.class))
+                .build();
+    }
+
+    @Override
     public InterviewerDto save(InterviewerDto interviewerDto) {
         Interviewer forSave = Interviewer.builder().build();
         Optional<Interviewer> interviewerById = Optional.empty();

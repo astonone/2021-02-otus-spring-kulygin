@@ -8,6 +8,8 @@ public interface InterviewerService {
 
     InterviewerPageableDto findAll(Pageable pageable);
 
+    InterviewerPageableDto findAll();
+
     InterviewerDto save(InterviewerDto interviewerDto);
 
     void deleteById(String id);

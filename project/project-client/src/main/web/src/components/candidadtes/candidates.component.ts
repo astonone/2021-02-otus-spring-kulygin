@@ -45,7 +45,7 @@ export class CandidatesComponent implements OnInit {
     }
 
     private loadCandidates(page: number, pageSize: number): void {
-        this.candidateService.getAll(page, pageSize).subscribe(data => {
+        this.candidateService.getAllPageable(page, pageSize).subscribe(data => {
             this.totalSize = data.totalSize;
             this.totalPageSize = data.totalPageSize;
             this.currentPageSize = data.currentPageSize;

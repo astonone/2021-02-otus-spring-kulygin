@@ -9,6 +9,8 @@ public interface InterviewTemplateService {
 
     InterviewTemplatePageableDto findAll(Pageable pageable);
 
+    InterviewTemplatePageableDto findAll();
+
     InterviewTemplateDto save(InterviewTemplateDto interviewTemplateDto);
 
     void deleteById(String id);

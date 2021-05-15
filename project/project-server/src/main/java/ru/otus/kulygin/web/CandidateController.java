@@ -25,9 +25,13 @@ public class CandidateController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllPageable(@RequestParam("page") Integer page,
-                                            @RequestParam("pageSize") Integer pageSize) {
-        return new ResponseEntity<>(candidateService.findAll(PageRequest.of(page, pageSize)), HttpStatus.OK);
+    public ResponseEntity<?> getAllPageable(@RequestParam(name = "page", required = false) Integer page,
+                                            @RequestParam(name = "pageSize", required = false) Integer pageSize) {
+        if (page != null && pageSize != null) {
+            return new ResponseEntity<>(candidateService.findAll(PageRequest.of(page, pageSize)), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(candidateService.findAll(), HttpStatus.OK);
+        }
     }
 
     @PostMapping

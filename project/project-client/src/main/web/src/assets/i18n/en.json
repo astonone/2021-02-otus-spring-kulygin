@@ -18,7 +18,30 @@
     }
   },
   "home": {
-    "empty": "You do not have any scheduled interviews"
+    "empty": "You do not have any scheduled interviews",
+    "interviewer": "Interviewer",
+    "candidate": "Candidate",
+    "claimingPosition": "Claiming position",
+    "template": "Interview template",
+    "dateTime": "Date and Time",
+    "date": "Date",
+    "time": "Time",
+    "status": "Status",
+    "mark": "Total mark",
+    "comment": "Comment",
+    "salary": "Claiming salary",
+    "decision": "Total decision",
+    "showCv": "Candidate's CV",
+    "noCv": "CV was not uploaded",
+    "button": {
+      "create": "Add interview",
+      "save": "Save data",
+      "cancel": "Cancel edit",
+      "change": "Change data",
+      "remove": "Remove interview",
+      "load": "Download CV",
+      "start": "Start interview"
+    }
   },
   "login": {
     "main-text": "Please sign in",
@@ -94,7 +117,30 @@
     }
   },
   "interviews": {
-    "empty": "You do not have any created interviews"
+    "empty": "You do not have any created interviews",
+    "interviewer": "Interviewer",
+    "candidate": "Candidate",
+    "claimingPosition": "Claiming position",
+    "template": "Interview template",
+    "dateTime": "Date and Time",
+    "date": "Date",
+    "time": "Time",
+    "status": "Status",
+    "mark": "Total mark",
+    "comment": "Comment",
+    "salary": "Claiming salary",
+    "decision": "Total decision",
+    "showCv": "Candidate's CV",
+    "noCv": "CV was not uploaded",
+    "button": {
+      "create": "Add interview",
+      "save": "Save data",
+      "cancel": "Cancel edit",
+      "change": "Change data",
+      "remove": "Remove interview",
+      "load": "Download CV",
+      "start": "Start interview"
+    }
   },
   "templates": {
     "empty": "You do not have any created templates",

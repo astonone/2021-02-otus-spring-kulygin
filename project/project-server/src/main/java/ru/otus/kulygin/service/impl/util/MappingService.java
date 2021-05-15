@@ -7,7 +7,9 @@ import ma.glasnost.orika.impl.ConfigurableMapper;
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;
 import ru.otus.kulygin.domain.Candidate;
+import ru.otus.kulygin.domain.Interview;
 import ru.otus.kulygin.dto.CandidateDto;
+import ru.otus.kulygin.dto.InterviewDto;
 
 import javax.annotation.PostConstruct;
 import java.io.FileInputStream;
@@ -41,6 +43,28 @@ public class MappingService extends ConfigurableMapper {
                                 e.printStackTrace();
                             }
                             dto.setCvFile(bytes);
+                        }
+                    }
+                })
+                .byDefault()
+                .register();
+
+        factory.classMap(Interview.class, InterviewDto.class)
+                .customize(new CustomMapper<>() {
+                    @Override
+                    public void mapAtoB(Interview obj, InterviewDto dto, MappingContext context) {
+                        super.mapAtoB(obj, dto, context);
+
+                        if (obj != null && obj.getCandidate() != null && obj.getCandidate().getPathToCvFile() != null) {
+                            InputStream in;
+                            byte[] bytes = new byte[0];
+                            try {
+                                in = new FileInputStream(obj.getCandidate().getPathToCvFile());
+                                bytes = IOUtils.toByteArray(in);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            dto.getCandidate().setCvFile(bytes);
                         }
                     }
                 })

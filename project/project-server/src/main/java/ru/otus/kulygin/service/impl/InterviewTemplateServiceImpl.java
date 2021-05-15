@@ -46,6 +46,15 @@ public class InterviewTemplateServiceImpl implements InterviewTemplateService {
     }
 
     @Override
+    public InterviewTemplatePageableDto findAll() {
+        val templates = interviewTemplateRepository.findAll();
+
+        return InterviewTemplatePageableDto.builder()
+                .templates(mappingService.mapAsList(templates, InterviewTemplateDto.class))
+                .build();
+    }
+
+    @Override
     public InterviewTemplateDto save(InterviewTemplateDto templateDto) {
         InterviewTemplate forSave = InterviewTemplate.builder().build();
         Optional<InterviewTemplate> templateById = Optional.empty();

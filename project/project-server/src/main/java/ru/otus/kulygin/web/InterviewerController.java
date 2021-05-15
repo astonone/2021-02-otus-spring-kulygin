@@ -23,9 +23,13 @@ public class InterviewerController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllPageable(@RequestParam("page") Integer page,
-                                            @RequestParam("pageSize") Integer pageSize) {
-        return new ResponseEntity<>(interviewerService.findAll(PageRequest.of(page, pageSize)), HttpStatus.OK);
+    public ResponseEntity<?> getAllPageable(@RequestParam(name = "page", required = false) Integer page,
+                                            @RequestParam(name = "pageSize", required = false) Integer pageSize) {
+        if (page != null && pageSize != null) {
+            return new ResponseEntity<>(interviewerService.findAll(PageRequest.of(page, pageSize)), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(interviewerService.findAll(), HttpStatus.OK);
+        }
     }
 
     @PostMapping

@@ -17,6 +17,7 @@ import {InterviewersService} from "./services/interviewers-service";
 import {InterviewTemplateCriteriaService} from "./services/interview-template-criteria-service";
 import {CandidateService} from "./services/candidate-service";
 import {TemplateService} from "./services/template-service";
+import {InterviewService} from "./services/interview-service";
 
 /*Components*/
 import {HomeComponent} from './components/home/home.component';
@@ -72,7 +73,8 @@ export function TranslationLoaderFactory(http: HttpClient) {
         InterviewersService,
         InterviewTemplateCriteriaService,
         CandidateService,
-        TemplateService
+        TemplateService,
+        InterviewService
     ],
     bootstrap: [AppComponent]
 })

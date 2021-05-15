@@ -47,7 +47,7 @@ export class TemplatesComponent implements OnInit {
     }
 
     private loadTemplates(page: number, pageSize: number): void {
-        this.templateService.getAll(page, pageSize).subscribe(data => {
+        this.templateService.getAllPageable(page, pageSize).subscribe(data => {
             this.totalSize = data.totalSize;
             this.totalPageSize = data.totalPageSize;
             this.currentPageSize = data.currentPageSize;

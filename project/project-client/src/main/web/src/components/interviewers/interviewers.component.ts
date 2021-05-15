@@ -43,7 +43,7 @@ export class InterviewersComponent implements OnInit {
     }
 
     private loadInterviewers(page: number, pageSize: number): void {
-        this.interviewerService.getAll(page, pageSize).subscribe(data => {
+        this.interviewerService.getAllPageable(page, pageSize).subscribe(data => {
             this.totalSize = data.totalSize;
             this.totalPageSize = data.totalPageSize;
             this.currentPageSize = data.currentPageSize;

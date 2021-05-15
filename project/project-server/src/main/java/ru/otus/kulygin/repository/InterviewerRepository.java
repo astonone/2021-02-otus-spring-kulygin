@@ -8,4 +8,7 @@ import ru.otus.kulygin.domain.Interviewer;
 public interface InterviewerRepository extends MongoRepository<Interviewer, String> {
     @Override
     Page<Interviewer> findAll(Pageable pageable);
+
+    Interviewer findByFirstNameAndLastName(String firstname, String lastname);
+
 }

@@ -26,7 +26,7 @@ public class CascadeInterviewTemplateCriteriaOperationsMongoEventListener extend
         if (interviewTemplateRepository.existByCriteriaId(id)) {
             throw new RuntimeException("Criteria has related templates");
         }
-        // TODO нужно также проверить сущность Interview
+        // TODO нужно также проверить сущность Interview и еще сделать отдельный листенер на каскадный апдейт для изменения кандидата и интервьювера
     }
 
     @Override
@@ -44,7 +44,7 @@ public class CascadeInterviewTemplateCriteriaOperationsMongoEventListener extend
         if (!interviewTemplates.isEmpty()) {
             interviewTemplateRepository.saveAll(interviewTemplates);
         }
-        // TODO нужно также проверить сущность Interview
+        // TODO нужно также проверить сущность Interview и еще сделать отдельный листенер на каскадный апдейт для изменения кандидата и интервьювера
     }
 
 }

@@ -24,9 +24,13 @@ public class InterviewTemplateController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllPageable(@RequestParam("page") Integer page,
-                                            @RequestParam("pageSize") Integer pageSize) {
-        return new ResponseEntity<>(interviewTemplateService.findAll(PageRequest.of(page, pageSize)), HttpStatus.OK);
+    public ResponseEntity<?> getAllPageable(@RequestParam(name = "page", required = false) Integer page,
+                                            @RequestParam(name = "pageSize", required = false) Integer pageSize) {
+        if (page != null && pageSize != null) {
+            return new ResponseEntity<>(interviewTemplateService.findAll(PageRequest.of(page, pageSize)), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(interviewTemplateService.findAll(), HttpStatus.OK);
+        }
     }
 
     @PostMapping
@@ -34,7 +38,7 @@ public class InterviewTemplateController {
         try {
             return new ResponseEntity<>(interviewTemplateService.save(templateDto), HttpStatus.OK);
         } catch (InterviewTemplateDoesNotExistException e) {
-            return new ResponseEntity<>(new ErrorDto(INTERVIEWER_TEMPLATE_NOT_FOUND.getCode(), INTERVIEWER_TEMPLATE_NOT_FOUND.getMessage()), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ErrorDto(INTERVIEW_TEMPLATE_NOT_FOUND.getCode(), INTERVIEW_TEMPLATE_NOT_FOUND.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -43,7 +47,7 @@ public class InterviewTemplateController {
         try {
             return new ResponseEntity<>(interviewTemplateService.getById(id), HttpStatus.OK);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(new ErrorDto(INTERVIEWER_TEMPLATE_NOT_FOUND.getCode(), INTERVIEWER_TEMPLATE_NOT_FOUND.getMessage()), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ErrorDto(INTERVIEW_TEMPLATE_NOT_FOUND.getCode(), INTERVIEW_TEMPLATE_NOT_FOUND.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -62,7 +66,7 @@ public class InterviewTemplateController {
         try {
             return new ResponseEntity<>(interviewTemplateService.addCriteria(templateId, criteria), HttpStatus.OK);
         } catch (InterviewTemplateDoesNotExistException e) {
-            return new ResponseEntity<>(new ErrorDto(INTERVIEWER_TEMPLATE_NOT_FOUND.getCode(), INTERVIEWER_TEMPLATE_NOT_FOUND.getMessage()), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ErrorDto(INTERVIEW_TEMPLATE_NOT_FOUND.getCode(), INTERVIEW_TEMPLATE_NOT_FOUND.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -71,7 +75,7 @@ public class InterviewTemplateController {
         try {
             return new ResponseEntity<>(interviewTemplateService.deleteCriteria(templateId, criteriaId), HttpStatus.OK);
         } catch (InterviewTemplateDoesNotExistException e) {
-            return new ResponseEntity<>(new ErrorDto(INTERVIEWER_TEMPLATE_NOT_FOUND.getCode(), INTERVIEWER_TEMPLATE_NOT_FOUND.getMessage()), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ErrorDto(INTERVIEW_TEMPLATE_NOT_FOUND.getCode(), INTERVIEW_TEMPLATE_NOT_FOUND.getMessage()), HttpStatus.NOT_FOUND);
         } catch (InterviewTemplateCriteriaDoesNotExist e) {
             return new ResponseEntity<>(new ErrorDto(CRITERIA_NOT_FOUND.getCode(), CRITERIA_NOT_FOUND.getMessage()), HttpStatus.NOT_FOUND);
         }

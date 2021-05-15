@@ -53,6 +53,15 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
+    public CandidatePageableDto findAll() {
+        val candidates = candidateRepository.findAll();
+
+        return CandidatePageableDto.builder()
+                .candidates(mappingService.mapAsList(candidates, CandidateDto.class))
+                .build();
+    }
+
+    @Override
     public CandidateDto save(CandidateDto candidateDto, MultipartFile uploadedFile) throws FileWritingException, WrongCvFileFormatException {
         Candidate forSave = Candidate.builder().build();
         Optional<Candidate> candidateById = Optional.empty();
@@ -78,6 +87,8 @@ public class CandidateServiceImpl implements CandidateService {
             String filePath = getFinalPath(uploadedFile);
             fileService.writeFile(filePath, uploadedFile);
             forSave.setPathToCvFile(filePath);
+        } else {
+            forSave.setPathToCvFile(candidateById.map(Candidate::getPathToCvFile).orElse(null));
         }
 
         return mappingService.map(candidateRepository.save(forSave), CandidateDto.class);

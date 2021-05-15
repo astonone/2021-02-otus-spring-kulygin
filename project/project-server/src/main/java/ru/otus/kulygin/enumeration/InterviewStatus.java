@@ -1,8 +1,19 @@
 package ru.otus.kulygin.enumeration;
 
 public enum InterviewStatus {
-    PLANNED,
-    IN_PROGRESS,
-    FINISHED_APPROVED,
-    FINISHED_DECLINED
+
+    PLANNED("PLANNED"),
+    IN_PROGRESS("IN_PROGRESS"),
+    FINISHED("FINISHED");
+
+    private final String code;
+
+    InterviewStatus(String code) {
+        this.code = code;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
 }

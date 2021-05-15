@@ -5,20 +5,17 @@ import com.github.cloudyrock.mongock.ChangeSet;
 import lombok.val;
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.ClassPathResource;
-import ru.otus.kulygin.domain.Candidate;
-import ru.otus.kulygin.domain.InterviewTemplate;
-import ru.otus.kulygin.domain.InterviewTemplateCriteria;
-import ru.otus.kulygin.domain.Interviewer;
-import ru.otus.kulygin.repository.CandidateRepository;
-import ru.otus.kulygin.repository.InterviewTemplateCriteriaRepository;
-import ru.otus.kulygin.repository.InterviewTemplateRepository;
-import ru.otus.kulygin.repository.InterviewerRepository;
+import ru.otus.kulygin.domain.*;
+import ru.otus.kulygin.enumeration.DecisionStatus;
+import ru.otus.kulygin.enumeration.InterviewStatus;
+import ru.otus.kulygin.repository.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 @ChangeLog(order = "001")
@@ -442,6 +439,7 @@ public class Changelog001 {
                 .firstName("Ирина")
                 .lastName("Кулыгина")
                 .claimingPosition("Java Developer")
+                .interviewerComment("Должен быть толковый джун")
                 .pathToCvFile(storagePath + "Irina_Kulygina_-_Java_Developer.pdf")
                 .build();
 
@@ -503,6 +501,29 @@ public class Changelog001 {
                 .build();
 
         interviewTemplateRepository.save(template);
+    }
+
+    @ChangeSet(order = "005", id = "2021-15-05--001-insert-interview--vkulygin", author = "viktor.kulygin")
+    public void insertInterview(InterviewRepository interviewRepository, InterviewTemplateRepository interviewTemplateRepository,
+                                CandidateRepository candidateRepository, InterviewerRepository interviewerRepository) {
+
+        val interviewTemplate = interviewTemplateRepository.findByPositionName("Java Junior Developer");
+        val candidate = candidateRepository.findByFirstNameAndLastName("Ирина", "Кулыгина");
+        val interviewer = interviewerRepository.findByFirstNameAndLastName("Джон", "Петрович");
+
+        val interview = Interview.builder()
+                .candidate(candidate)
+                .interviewer(interviewer)
+                .interviewTemplate(interviewTemplate)
+                .interviewDateTime(LocalDateTime.of(2021, 8, 25, 14, 30))
+                .interviewStatus(InterviewStatus.PLANNED)
+                .totalMark(0.0)
+                .totalComment("")
+                .desiredSalary("2000 €")
+                .decisionStatus(DecisionStatus.NOT_APPLICABLE)
+                .build();
+
+        interviewRepository.save(interview);
     }
 
 }

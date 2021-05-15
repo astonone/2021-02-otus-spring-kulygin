@@ -4,4 +4,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import ru.otus.kulygin.domain.Candidate;
 
 public interface CandidateRepository extends MongoRepository<Candidate, String> {
+
+    Candidate findByFirstNameAndLastName(String firstname, String lastname);
+
 }
