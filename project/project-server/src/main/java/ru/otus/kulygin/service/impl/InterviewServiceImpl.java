@@ -5,10 +5,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.otus.kulygin.domain.Interview;
 import ru.otus.kulygin.dto.InterviewDto;
+import ru.otus.kulygin.dto.InterviewTemplateCriteriaDto;
 import ru.otus.kulygin.dto.pageable.InterviewPageableDto;
 import ru.otus.kulygin.enumeration.DecisionStatus;
 import ru.otus.kulygin.enumeration.InterviewStatus;
+import ru.otus.kulygin.exception.InterviewDecisionException;
 import ru.otus.kulygin.exception.InterviewDoesNotExistException;
+import ru.otus.kulygin.exception.InterviewStatusException;
+import ru.otus.kulygin.exception.InterviewTemplateCriteriaDoesNotExist;
 import ru.otus.kulygin.repository.CandidateRepository;
 import ru.otus.kulygin.repository.InterviewRepository;
 import ru.otus.kulygin.repository.InterviewTemplateRepository;
@@ -17,6 +21,7 @@ import ru.otus.kulygin.service.InterviewService;
 import ru.otus.kulygin.service.impl.util.MappingService;
 
 import java.util.Optional;
+import java.util.stream.DoubleStream;
 
 @Service
 public class InterviewServiceImpl implements InterviewService {
@@ -87,10 +92,17 @@ public class InterviewServiceImpl implements InterviewService {
         forSave.setInterviewer(interviewerRepository.findById(interviewDto.getInterviewer().getId()).orElse(null));
         forSave.setInterviewDateTime(interviewDto.getInterviewDateTime());
         forSave.setInterviewTemplate(interviewTemplateRepository.findById(interviewDto.getInterviewTemplate().getId()).orElse(null));
+        interviewById.ifPresent(interview -> forSave.getInterviewTemplate().setCriterias(interview.getInterviewTemplate().getCriterias()));
+        if (forSave.getId() == null && !InterviewStatus.valueOf(interviewDto.getInterviewStatus()).equals(InterviewStatus.PLANNED)) {
+            throw new InterviewStatusException();
+        }
         forSave.setInterviewStatus(InterviewStatus.valueOf(interviewDto.getInterviewStatus()));
         forSave.setDesiredSalary(interviewDto.getDesiredSalary());
         forSave.setTotalMark(interviewDto.getTotalMark());
         forSave.setTotalComment(interviewDto.getTotalComment());
+        if (forSave.getId() == null && !DecisionStatus.valueOf(interviewDto.getDecisionStatus()).equals(DecisionStatus.NOT_APPLICABLE)) {
+            throw new InterviewDecisionException();
+        }
         forSave.setDecisionStatus(DecisionStatus.valueOf(interviewDto.getDecisionStatus()));
         return mappingService.map(interviewRepository.save(forSave), InterviewDto.class);
     }
@@ -100,6 +112,39 @@ public class InterviewServiceImpl implements InterviewService {
         if (interviewRepository.existsById(id)) {
             interviewRepository.deleteById(id);
         }
+    }
+
+    @Override
+    public InterviewDto getById(String id) {
+        return interviewRepository.findById(id)
+                .map(interview -> mappingService.map(interview, InterviewDto.class))
+                .orElseThrow(InterviewDoesNotExistException::new);
+    }
+
+    @Override
+    public InterviewDto updateCriteria(String interviewId, String criteriaId, Integer mark) {
+        val interview = interviewRepository.findById(interviewId).orElseThrow(InterviewDoesNotExistException::new);
+        val templateCriteria = interview.getInterviewTemplate().getCriterias().stream()
+                .filter(criteria -> criteria.getId().equals(criteriaId))
+                .findAny().orElseThrow(InterviewTemplateCriteriaDoesNotExist::new);
+        templateCriteria.setMark(mark);
+        val totalMarksSum = interview.getInterviewTemplate().getCriterias().stream()
+                .flatMapToDouble(criteria -> DoubleStream.of(criteria.getMark()))
+                .sum();
+        val totalMarksCount = interview.getInterviewTemplate().getCriterias().size();
+        val total = totalMarksSum / (totalMarksCount * 5);
+        interview.setTotalMark((double) Math.round(total * 100) / 100);
+        return mappingService.map(interviewRepository.save(interview), InterviewDto.class);
+    }
+
+    @Override
+    public InterviewDto updateCriteriaComment(String interviewId, String criteriaId, InterviewTemplateCriteriaDto criteria) {
+        val interview = interviewRepository.findById(interviewId).orElseThrow(InterviewDoesNotExistException::new);
+        val templateCriteria = interview.getInterviewTemplate().getCriterias().stream()
+                .filter(c -> c.getId().equals(criteriaId))
+                .findAny().orElseThrow(InterviewTemplateCriteriaDoesNotExist::new);
+        templateCriteria.setInterviewerComment(criteria.getInterviewerComment());
+        return mappingService.map(interviewRepository.save(interview), InterviewDto.class);
     }
 
 }

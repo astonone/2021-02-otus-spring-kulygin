@@ -40,7 +40,9 @@
       "change": "Change data",
       "remove": "Remove interview",
       "load": "Download CV",
-      "start": "Start interview"
+      "start": "Start interview",
+      "continue": "Continue interview",
+      "details": "See details"
     }
   },
   "login": {
@@ -139,7 +141,9 @@
       "change": "Change data",
       "remove": "Remove interview",
       "load": "Download CV",
-      "start": "Start interview"
+      "start": "Start interview",
+      "continue": "Continue interview",
+      "details": "See details"
     }
   },
   "templates": {
@@ -170,6 +174,28 @@
       "name": "Criteria name",
       "positionType": "Position type",
       "actions": "Actions"
+    }
+  },
+  "interview": {
+    "started": "Interview was started",
+    "criteriaComment": "Comment from interviewer",
+    "criteriaMark": "Mark from interviewer",
+    "generalInfo": "General info",
+    "questions": "Questions",
+    "total": "Total",
+    "interviewer": "Interviewer",
+    "candidate": "Candidate",
+    "claimingPosition": "Claiming position",
+    "template": "Interview template",
+    "mark": "Total mark",
+    "comment": "Total comment",
+    "salary": "Claiming salary",
+    "decision": "Total decision",
+    "showCv": "Candidate's CV",
+    "noCv": "CV was not uploaded",
+    "button": {
+      "load": "Download CV",
+      "finish": "Finish interview and go to main"
     }
   }
 }

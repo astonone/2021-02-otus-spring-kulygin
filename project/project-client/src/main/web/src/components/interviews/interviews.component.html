@@ -21,6 +21,12 @@
                 <mat-panel-description>
                     {{!element.isNew ? element.interviewer.firstName + ' ' + element.interviewer.lastName + ':' +
                     element.candidate.firstName + ' ' + element.candidate.lastName : ''}}
+                    <div *ngIf="!shared.isMobile()" class="status-header" [ngClass]="{'status-planned': element.interviewStatus === 'PLANNED',
+                 'status-progress': element.interviewStatus === 'IN_PROGRESS',
+                 'status-finished': element.interviewStatus === 'FINISHED'}">{{element.interviewStatus}}</div>
+                    <div *ngIf="!shared.isMobile()" class="status-header" [ngClass]="{'status-planned': element.decisionStatus === 'SHOULD_BE_HIRED',
+                 'status-progress': element.decisionStatus === 'NOT_APPLICABLE',
+                 'status-finished': element.decisionStatus === 'SHOULD_NOT_BE_HIRED'}">{{element.decisionStatus}}</div>
                 </mat-panel-description>
             </mat-expansion-panel-header>
 
@@ -36,7 +42,7 @@
             </button>
 
             <button mat-raised-button color="accent" class="new-entity-button" *ngIf="!element.isEdit"
-                    (click)="makeEdit(element)">
+                    (click)="makeEdit(element)" [disabled]="element.interviewStatus === 'FINISHED'">
                 {{'interviews.button.change' | translate}}
             </button>
 
@@ -66,13 +72,23 @@
                 <mat-list-item role="listitem">{{'interviews.salary' | translate}}
                     : {{element.desiredSalary}}</mat-list-item>
                 <mat-list-item role="listitem">{{'interviews.status' | translate}}
-                    : {{element.interviewStatus}}</mat-list-item>
+                    :
+                    <div [ngClass]="{'status-planned': element.interviewStatus === 'PLANNED',
+                 'status-progress': element.interviewStatus === 'IN_PROGRESS',
+                 'status-finished': element.interviewStatus === 'FINISHED'}">{{element.interviewStatus}}</div>
+                </mat-list-item>
                 <mat-list-item role="listitem">{{'interviews.mark' | translate}}
-                    : {{element.totalMark}}</mat-list-item>
+                    : <div [ngClass]="{'status-planned': element.totalMark >= 0.70,
+                 'status-progress': element.totalMark >= 0.50 && element.totalMark < 0.70,
+                 'status-finished': element.totalMark < 0.50}">{{element.totalMark}}</div></mat-list-item>
                 <mat-list-item role="listitem">{{'interviews.comment' | translate}}
                     : {{element.totalComment}}</mat-list-item>
-                <mat-list-item role="listitem">{{'interviews.decision' | translate}}
-                    : {{element.decisionStatus}}</mat-list-item>
+                <mat-list-item role="listitem">{{'home.decision' | translate}}
+                    :
+                    <div [ngClass]="{'status-planned': element.decisionStatus === 'SHOULD_BE_HIRED',
+                 'status-progress': element.decisionStatus === 'NOT_APPLICABLE',
+                 'status-finished': element.decisionStatus === 'SHOULD_NOT_BE_HIRED'}">{{element.decisionStatus}}</div>
+                </mat-list-item>
             </mat-list>
 
             <mat-list role="list" *ngIf="element.isEdit" class="item-change-element">
@@ -99,7 +115,8 @@
                 <mat-list-item role="listitem" class="item-input-element">
                     <mat-form-field appearance="fill" class="table-row">
                         <mat-label>{{'interviews.template' | translate}}</mat-label>
-                        <mat-select [(ngModel)]="newInterviewer.interviewTemplate" [compareWith]="objectComparisonFunction">
+                        <mat-select [(ngModel)]="newInterviewer.interviewTemplate"
+                                    [compareWith]="objectComparisonFunction">
                             <mat-option *ngFor="let template of templates" [value]="template">
                                 {{template.positionName}}
                             </mat-option>
@@ -160,8 +177,19 @@
                 </mat-list-item>
             </mat-list>
 
-            <button mat-raised-button color="primary" class="new-entity-button">
-                {{'interviews.button.start' | translate}}
+            <button mat-raised-button color="primary" class="new-entity-button"
+                    (click)="goto('interview/' + element.id)" *ngIf="element.interviewStatus === 'PLANNED'">
+                {{'home.button.start' | translate}}
+            </button>
+
+            <button mat-raised-button color="primary" class="new-entity-button"
+                    (click)="goto('interview/' + element.id)" *ngIf="element.interviewStatus === 'IN_PROGRESS'">
+                {{'home.button.continue' | translate}}
+            </button>
+
+            <button mat-raised-button color="primary" class="new-entity-button"
+                    (click)="goto('interview/' + element.id)" *ngIf="element.interviewStatus === 'FINISHED'">
+                {{'home.button.details' | translate}}
             </button>
 
         </mat-expansion-panel>

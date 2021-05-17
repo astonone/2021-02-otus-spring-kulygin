@@ -26,6 +26,51 @@
     height: calc(100vh - 64px);
 }
 
+.status-planned {
+    padding-left: 15px;
+    padding-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    border-radius: 5px 5px 5px 5px;
+    background: green;
+    color: white;
+}
+
+.status-progress {
+    padding-left: 15px;
+    padding-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    border-radius: 5px 5px 5px 5px;
+    background: yellow;
+    color: black;
+}
+
+.status-finished {
+    padding-left: 15px;
+    padding-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    border-radius: 5px 5px 5px 5px;
+    background: red;
+    color: white;
+}
+
+.status-header {
+    padding-left: 15px;
+    padding-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+}
+
 @media screen and (max-device-width: 768px) {
 
 }

@@ -31,6 +31,9 @@ import {TemplateCriteriaComponent} from "./components/template-criteria/template
 import {EditCriteriasComponent} from "./components/edit-criterias/edit-criterias.component";
 import {InterviewComponent} from "./components/interview/interview.component";
 
+/*Components UI*/
+import {RateStarsComponent} from "./components/ui/rate-stars/rate-stars.component";
+
 export function TranslationLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http);
 }
@@ -58,7 +61,8 @@ export function TranslationLoaderFactory(http: HttpClient) {
         TemplatesComponent,
         TemplateCriteriaComponent,
         EditCriteriasComponent,
-        InterviewComponent
+        InterviewComponent,
+        RateStarsComponent
     ],
     entryComponents: [],
     providers: [
@@ -72,6 +76,7 @@ export function TranslationLoaderFactory(http: HttpClient) {
         TemplateCriteriaComponent,
         EditCriteriasComponent,
         InterviewComponent,
+        RateStarsComponent,
         SharedService,
         InterviewersService,
         InterviewTemplateCriteriaService,

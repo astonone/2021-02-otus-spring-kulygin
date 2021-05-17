@@ -2,6 +2,7 @@ package ru.otus.kulygin.service;
 
 import org.springframework.data.domain.Pageable;
 import ru.otus.kulygin.dto.InterviewDto;
+import ru.otus.kulygin.dto.InterviewTemplateCriteriaDto;
 import ru.otus.kulygin.dto.pageable.InterviewPageableDto;
 
 public interface InterviewService {
@@ -16,4 +17,9 @@ public interface InterviewService {
 
     void deleteById(String id);
 
+    InterviewDto getById(String id);
+
+    InterviewDto updateCriteria(String interviewId, String criteriaId, Integer mark);
+
+    InterviewDto updateCriteriaComment(String interviewId, String criteriaId, InterviewTemplateCriteriaDto criteria);
 }

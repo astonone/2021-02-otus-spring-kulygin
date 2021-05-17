@@ -1,0 +1,113 @@
+<div class="interview">
+
+    <h4 class="info-label" *ngIf="currentInterview.interviewStatus === interviewStatusProgress"> {{'interview.started' | translate}}</h4>
+
+    <h5 class="info-label"> {{'interview.generalInfo' | translate}}</h5>
+
+    <mat-list role="list">
+        <mat-list-item role="listitem">{{'interview.candidate' | translate}}
+            : {{currentInterview.candidate.firstName + ' ' + currentInterview.candidate.lastName}}</mat-list-item>
+        <mat-list-item role="listitem">{{'interview.interviewer' | translate}}
+            : {{currentInterview.interviewer.firstName + ' ' + currentInterview.interviewer.lastName}}</mat-list-item>
+        <mat-list-item role="listitem">{{'interview.showCv' | translate}}
+            <button mat-raised-button color="link" (click)="onClickDownloadPdf(currentInterview.candidate)"
+                    *ngIf="currentInterview.candidate.cvFile"
+                    class="new-entity-button">
+                {{'interview.button.load' | translate}}
+            </button>
+            <mat-label *ngIf="!currentInterview.candidate.cvFile">: {{'interview.noCv' | translate}}</mat-label>
+        </mat-list-item>
+        <mat-list-item role="listitem">{{'interview.claimingPosition' | translate}}
+            : {{currentInterview.candidate.claimingPosition}}</mat-list-item>
+        <mat-list-item role="listitem">{{'interview.template' | translate}}
+            : {{currentInterview.interviewTemplate.positionName}}</mat-list-item>
+        <mat-list-item role="listitem">{{'interview.salary' | translate}}
+            : {{currentInterview.desiredSalary}}</mat-list-item>
+        <mat-list-item role="listitem">{{'home.status' | translate}}
+            : {{currentInterview.interviewStatus}}</mat-list-item>
+    </mat-list>
+
+    <h5 class="info-label"> {{'interview.questions' | translate}}</h5>
+
+    <div *ngFor="let criteria of currentInterview.interviewTemplate.criterias" class="criterias-element">
+        <div class="criteria-item">
+            <div class="criteria-item-element">
+                {{criteria.name}}
+            </div>
+            <div class="criteria-item-element">
+                <rate-stars [criteria]="criteria" [interviewId]="currentInterviewId"
+                            (totalMark)="getMark($event)"
+                            (criteriaMark)="getCriteriaMark($event, criteria)"
+                            *ngIf="!isViewMode"></rate-stars>
+            </div>
+            <div class="criteria-item-element">
+                <mat-form-field appearance="outline" class="text-element" *ngIf="!isViewMode">
+                    <mat-label>{{'interview.criteriaComment' | translate}}</mat-label>
+                    <input matInput type="text" placeholder="{{'interview.criteriaComment' | translate}}"
+                           [(ngModel)]="criteria.interviewerComment" (focusout)="onFocusOutEvent($event, criteria)">
+                </mat-form-field>
+            </div>
+            <mat-list role="list" *ngIf="isViewMode">
+                <mat-list-item role="listitem">{{'interview.criteriaMark' | translate}}
+                    : {{criteria.mark}}</mat-list-item>
+                <mat-list-item role="listitem">{{'interview.criteriaComment' | translate}}
+                    : {{criteria.interviewerComment}}</mat-list-item>
+            </mat-list>
+        </div>
+    </div>
+
+    <h5 class="info-label"> {{'interview.total' | translate}}</h5>
+
+    <mat-list role="list" *ngIf="!isViewMode">
+        <mat-list-item role="listitem" class="item-input-element">{{'interview.mark' | translate}}
+            :
+            <div [ngClass]="{'status-planned': currentInterview.totalMark >= 0.70,
+                 'status-progress': currentInterview.totalMark >= 0.50 && currentInterview.totalMark < 0.70,
+                 'status-finished': currentInterview.totalMark < 0.50}">{{currentInterview.totalMark}}</div>
+        </mat-list-item>
+        <mat-list-item role="listitem" class="item-input-element">
+            <mat-form-field appearance="fill" class="text-element">
+                <mat-label>{{'interview.comment' | translate}}</mat-label>
+                <textarea matInput type="text" placeholder="{{'interview.comment' | translate}}"
+                          [(ngModel)]="currentInterview.totalComment"></textarea>
+            </mat-form-field>
+        </mat-list-item>
+        <mat-list-item role="listitem" class="item-input-element">
+            <mat-form-field appearance="fill" class="table-row text-element">
+                <mat-label>{{'interview.decision' | translate}}</mat-label>
+                <mat-select [(ngModel)]="currentInterview.decisionStatus">
+                    <mat-option *ngFor="let decision of decisions" [value]="decision">
+                        {{decision}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </mat-list-item>
+    </mat-list>
+    <mat-list role="list" *ngIf="isViewMode">
+        <mat-list-item role="listitem">{{'interview.mark' | translate}}
+            :
+            <div [ngClass]="{'status-planned': currentInterview.totalMark >= 0.70,
+                 'status-progress': currentInterview.totalMark >= 0.50 && currentInterview.totalMark < 0.70,
+                 'status-finished': currentInterview.totalMark < 0.50}">{{currentInterview.totalMark}}</div>
+        </mat-list-item>
+        <mat-list-item role="listitem">{{'interview.comment' | translate}}
+            : {{currentInterview.totalComment}}</mat-list-item>
+        <mat-list-item role="listitem">{{'home.decision' | translate}}
+            :
+            <div [ngClass]="{'status-planned': currentInterview.decisionStatus === 'SHOULD_BE_HIRED',
+                 'status-progress': currentInterview.decisionStatus === 'NOT_APPLICABLE',
+                 'status-finished': currentInterview.decisionStatus === 'SHOULD_NOT_BE_HIRED'}">{{currentInterview.decisionStatus}}</div>
+        </mat-list-item>
+    </mat-list>
+
+    <div>
+        <button mat-raised-button color="primary" class="new-entity-button"
+                *ngIf="currentInterview.interviewStatus === interviewStatusProgress"
+                (click)="save()"
+                [disabled]="isReadyForFinish()">
+            {{'interview.button.finish' | translate}}
+        </button>
+    </div>
+
+
+</div>

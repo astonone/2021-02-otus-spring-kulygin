@@ -15,7 +15,7 @@ public class InterviewTemplateCriteria {
     private String id;
     private String name;
     private String positionType;
-    private Integer mark;
+    private Integer mark = 0;
     private String interviewerComment;
 
 }

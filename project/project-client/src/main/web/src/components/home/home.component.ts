@@ -9,6 +9,9 @@ import {InterviewService} from "../../services/interview-service";
 import {InterviewersService} from "../../services/interviewers-service";
 import {CandidateService} from "../../services/candidate-service";
 import {TemplateService} from "../../services/template-service";
+import {TranslateService} from "@ngx-translate/core";
+import {Router} from "@angular/router";
+import {SharedService} from "../../services/shared.service";
 
 @Component({
     selector: 'home',
@@ -56,7 +59,9 @@ export class HomeComponent implements OnInit {
                 private interviewersService: InterviewersService,
                 private candidateService: CandidateService,
                 private templateService: TemplateService,
-                private snackBar: MatSnackBar) {
+                private snackBar: MatSnackBar,
+                private translateService: TranslateService,
+                private router: Router) {
     }
 
     ngOnInit(): void {
@@ -141,7 +146,9 @@ export class HomeComponent implements OnInit {
 
     public isReadyToUpdate(): boolean {
         return this.newInterviewer.candidate.firstName !== null && this.newInterviewer.interviewer.firstName !== null &&
-            this.newInterviewer.interviewTemplate.positionName !== null;
+            this.newInterviewer.interviewTemplate.positionName !== null &&
+            !SharedService.isBlank(this.newInterviewer.interviewDate) &&
+            !SharedService.isBlank(this.newInterviewer.interviewTime);
     }
 
     public cancelEdit(element: InterviewDto): void {
@@ -211,6 +218,10 @@ export class HomeComponent implements OnInit {
 
     public objectComparisonFunction = function (option: any, value: any): boolean {
         return option.id === value.id;
+    }
+
+    public goto(route: string): void {
+        this.router.navigate([this.translateService.getDefaultLang() + '/' + route]);
     }
 
 }

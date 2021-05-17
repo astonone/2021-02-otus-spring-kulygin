@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {PageEvent} from "@angular/material/paginator";
 import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
-import {SharedService} from "../../services/shared.service";
 import {InterviewDto} from "../../models/interview-dto";
 import {InterviewService} from "../../services/interview-service";
 import {CandidateDto} from "../../models/candidate-dto";
@@ -10,6 +9,9 @@ import {InterviewersService} from "../../services/interviewers-service";
 import {CandidateService} from "../../services/candidate-service";
 import {TemplateDto} from "../../models/template-dto";
 import {TemplateService} from "../../services/template-service";
+import {TranslateService} from "@ngx-translate/core";
+import {Router} from "@angular/router";
+import {SharedService} from "../../services/shared.service";
 
 @Component({
     selector: 'interviews',
@@ -55,7 +57,10 @@ export class InterviewsComponent implements OnInit {
                 private interviewersService: InterviewersService,
                 private candidateService: CandidateService,
                 private templateService: TemplateService,
-                private snackBar: MatSnackBar) {
+                private snackBar: MatSnackBar,
+                private translateService: TranslateService,
+                private router: Router,
+                public shared: SharedService) {
     }
 
     ngOnInit(): void {
@@ -140,7 +145,9 @@ export class InterviewsComponent implements OnInit {
 
     public isReadyToUpdate(): boolean {
         return this.newInterviewer.candidate.firstName !== null && this.newInterviewer.interviewer.firstName !== null &&
-            this.newInterviewer.interviewTemplate.positionName !== null;
+            this.newInterviewer.interviewTemplate.positionName !== null &&
+            !SharedService.isBlank(this.newInterviewer.interviewDate) &&
+            !SharedService.isBlank(this.newInterviewer.interviewTime);
     }
 
     public cancelEdit(element: InterviewDto): void {
@@ -170,6 +177,12 @@ export class InterviewsComponent implements OnInit {
 
     public update(element: InterviewDto): void {
         this.newInterviewer.buildDateAndTime();
+        if (this.newInterviewer.interviewStatus === null) {
+            this.newInterviewer.interviewStatus = 'PLANNED';
+        }
+        if (this.newInterviewer.decisionStatus === null) {
+            this.newInterviewer.decisionStatus = 'NOT_APPLICABLE';
+        }
         this.interviewService.save(this.newInterviewer).subscribe(data => {
             this.newInterviewer = new InterviewDto(null, null, null, null, null, null, null, null, null, null);
             this.backupInterviewer = new InterviewDto(null, null, null, null, null, null, null, null, null, null);
@@ -181,6 +194,8 @@ export class InterviewsComponent implements OnInit {
             } else {
                 this.loadInterviews(this.page, this.pageSize);
             }
+        }, error => {
+            this.openSnackBar(error.error.message);
         })
     }
 
@@ -234,6 +249,10 @@ export class InterviewsComponent implements OnInit {
 
     public objectComparisonFunction = function (option: any, value: any): boolean {
         return option.id === value.id;
+    }
+
+    public goto(route: string): void {
+        this.router.navigate([this.translateService.getDefaultLang() + '/' + route]);
     }
 
 }
