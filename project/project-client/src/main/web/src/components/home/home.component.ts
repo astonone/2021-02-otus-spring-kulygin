@@ -20,6 +20,8 @@ import {TemplateService} from "../../services/template-service";
 
 export class HomeComponent implements OnInit {
 
+    private readonly status = 'PLANNED';
+
     public totalSize: number = 0;
     public totalPageSize: number = 0;
     public currentPageSize: number = 0;
@@ -65,7 +67,7 @@ export class HomeComponent implements OnInit {
     }
 
     private loadInterviews(page: number, pageSize: number): void {
-        this.interviewService.getAll(page, pageSize).subscribe(data => {
+        this.interviewService.getAllByStatus(this.status, page, pageSize).subscribe(data => {
             this.totalSize = data.totalSize;
             this.totalPageSize = data.totalPageSize;
             this.currentPageSize = data.currentPageSize;
@@ -167,26 +169,13 @@ export class HomeComponent implements OnInit {
         }
     }
 
-    public update(element: InterviewDto): void {
+    public update(): void {
         this.newInterviewer.buildDateAndTime();
         this.interviewService.save(this.newInterviewer).subscribe(data => {
             this.newInterviewer = new InterviewDto(null, null, null, null, null, null, null, null, null, null);
             this.backupInterviewer = new InterviewDto(null, null, null, null, null, null, null, null, null, null);
-            if (this.dataSource.length + 1 <= this.currentPageSize) {
-                this.updateDataSource(element, data);
-                element.isEdit = false;
-                this.totalSize++;
-                this.currentPageSize++;
-            } else {
-                this.loadInterviews(this.page, this.pageSize);
-            }
+            this.loadInterviews(this.page, this.pageSize);
         })
-    }
-
-    private updateDataSource(element: any, interviewer: InterviewDto): void {
-        let index = this.getElementIndexInDataSource(element);
-
-        this.dataSource.splice(index, 1, interviewer);
     }
 
     private getElementIndexInDataSource(element: InterviewDto) {

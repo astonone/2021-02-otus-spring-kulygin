@@ -31,6 +31,13 @@ public class InterviewController {
         }
     }
 
+    @GetMapping("status")
+    public ResponseEntity<?> getAllByStatus(@RequestParam("status") String status,
+                                            @RequestParam("page") Integer page,
+                                            @RequestParam("pageSize") Integer pageSize) {
+        return new ResponseEntity<>(interviewService.findAllByInterviewStatus(PageRequest.of(page, pageSize), status), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<?> save(@RequestBody InterviewDto interviewDto) {
         try {

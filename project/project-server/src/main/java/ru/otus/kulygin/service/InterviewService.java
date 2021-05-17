@@ -10,6 +10,8 @@ public interface InterviewService {
 
     InterviewPageableDto findAll();
 
+    InterviewPageableDto findAllByInterviewStatus(Pageable pageable, String status);
+
     InterviewDto save(InterviewDto interviewDto);
 
     void deleteById(String id);

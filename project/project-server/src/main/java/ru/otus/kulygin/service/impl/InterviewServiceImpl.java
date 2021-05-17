@@ -59,6 +59,20 @@ public class InterviewServiceImpl implements InterviewService {
     }
 
     @Override
+    public InterviewPageableDto findAllByInterviewStatus(Pageable pageable, String status) {
+        val interviews = interviewRepository.findAllByInterviewStatus(InterviewStatus.valueOf(status), pageable);
+
+        return InterviewPageableDto.builder()
+                .page(interviews.getPageable().getPageNumber())
+                .pageSize(interviews.getPageable().getPageSize())
+                .currentPageSize(interviews.getContent().size())
+                .totalSize(interviews.getTotalElements())
+                .totalPageSize(interviews.getTotalPages())
+                .interviews(mappingService.mapAsList(interviews.getContent(), InterviewDto.class))
+                .build();
+    }
+
+    @Override
     public InterviewDto save(InterviewDto interviewDto) {
         Interview forSave = Interview.builder().build();
         Optional<Interview> interviewById = Optional.empty();

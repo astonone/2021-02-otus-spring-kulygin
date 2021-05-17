@@ -29,6 +29,7 @@ import {SignUpComponent} from "./components/sign-up/sign-up.component";
 import {TemplatesComponent} from "./components/templates/templates.component";
 import {TemplateCriteriaComponent} from "./components/template-criteria/template-criteria.component";
 import {EditCriteriasComponent} from "./components/edit-criterias/edit-criterias.component";
+import {InterviewComponent} from "./components/interview/interview.component";
 
 export function TranslationLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http);
@@ -56,7 +57,8 @@ export function TranslationLoaderFactory(http: HttpClient) {
         SignUpComponent,
         TemplatesComponent,
         TemplateCriteriaComponent,
-        EditCriteriasComponent
+        EditCriteriasComponent,
+        InterviewComponent
     ],
     entryComponents: [],
     providers: [
@@ -69,6 +71,7 @@ export function TranslationLoaderFactory(http: HttpClient) {
         TemplatesComponent,
         TemplateCriteriaComponent,
         EditCriteriasComponent,
+        InterviewComponent,
         SharedService,
         InterviewersService,
         InterviewTemplateCriteriaService,

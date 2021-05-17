@@ -13,6 +13,7 @@ export class InterviewService {
 
     private readonly SERVICE: string;
     private GET_ALL: string;
+    private GET_ALL_BY_STATUS: string;
     private readonly SAVE: string;
     private DELETE: string;
 
@@ -21,6 +22,7 @@ export class InterviewService {
 
         this.SERVICE = this.sharedService.getServerURL() + '/interview/';
         this.GET_ALL = this.SERVICE + '?page={page}&pageSize={pageSize}';
+        this.GET_ALL_BY_STATUS = this.SERVICE + '/status/?status={status}&page={page}&pageSize={pageSize}';
         this.SAVE = this.SERVICE;
         this.DELETE = this.SERVICE + '{id}';
     }
@@ -29,6 +31,14 @@ export class InterviewService {
         const regExpPage = /{page}/gi;
         const regExpPageSize = /{pageSize}/gi;
         const url = this.GET_ALL.replace(regExpPage, page.toString()).replace(regExpPageSize, pageSize.toString());
+        return this.http.get<InterviewPageableDto>(url);
+    }
+
+    public getAllByStatus(status: string, page: number, pageSize: number): Observable<InterviewPageableDto> {
+        const regExpPage = /{page}/gi;
+        const regExpPageSize = /{pageSize}/gi;
+        const regExpStatus = /{status}/gi;
+        const url = this.GET_ALL_BY_STATUS.replace(regExpStatus, status).replace(regExpPage, page.toString()).replace(regExpPageSize, pageSize.toString());
         return this.http.get<InterviewPageableDto>(url);
     }
 

@@ -8,6 +8,7 @@ import {SignUpComponent} from "./components/sign-up/sign-up.component";
 import {TemplatesComponent} from "./components/templates/templates.component";
 import {TemplateCriteriaComponent} from "./components/template-criteria/template-criteria.component";
 import {EditCriteriasComponent} from "./components/edit-criterias/edit-criterias.component";
+import {InterviewComponent} from "./components/interview/interview.component";
 
 const appRoutes: Routes = [
     {path: ':lang/home', component: HomeComponent},
@@ -19,6 +20,7 @@ const appRoutes: Routes = [
     {path: ':lang/login', component: LoginComponent},
     {path: ':lang/sign-up', component: SignUpComponent},
     {path: ':lang/edit-criterias/:id', component: EditCriteriasComponent},
+    {path: ':lang/interview/:id', component: InterviewComponent},
     {path: '**', redirectTo: 'en/home'}
 ];
 

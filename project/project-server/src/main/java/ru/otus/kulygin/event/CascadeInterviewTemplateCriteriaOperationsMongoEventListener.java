@@ -5,8 +5,10 @@ import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventLis
 import org.springframework.data.mongodb.core.mapping.event.AfterSaveEvent;
 import org.springframework.data.mongodb.core.mapping.event.BeforeDeleteEvent;
 import org.springframework.stereotype.Component;
+import ru.otus.kulygin.domain.Interview;
 import ru.otus.kulygin.domain.InterviewTemplate;
 import ru.otus.kulygin.domain.InterviewTemplateCriteria;
+import ru.otus.kulygin.repository.InterviewRepository;
 import ru.otus.kulygin.repository.InterviewTemplateRepository;
 
 import java.util.Collection;
@@ -15,9 +17,11 @@ import java.util.Collection;
 public class CascadeInterviewTemplateCriteriaOperationsMongoEventListener extends AbstractMongoEventListener<InterviewTemplateCriteria> {
 
     private final InterviewTemplateRepository interviewTemplateRepository;
+    private final InterviewRepository interviewRepository;
 
-    public CascadeInterviewTemplateCriteriaOperationsMongoEventListener(InterviewTemplateRepository interviewTemplateRepository) {
+    public CascadeInterviewTemplateCriteriaOperationsMongoEventListener(InterviewTemplateRepository interviewTemplateRepository, InterviewRepository interviewRepository) {
         this.interviewTemplateRepository = interviewTemplateRepository;
+        this.interviewRepository = interviewRepository;
     }
 
     @Override
@@ -26,7 +30,9 @@ public class CascadeInterviewTemplateCriteriaOperationsMongoEventListener extend
         if (interviewTemplateRepository.existByCriteriaId(id)) {
             throw new RuntimeException("Criteria has related templates");
         }
-        // TODO нужно также проверить сущность Interview и еще сделать отдельный листенер на каскадный апдейт для изменения кандидата и интервьювера
+        if (interviewRepository.existByCriteriaId(id)) {
+            throw new RuntimeException("Criteria has related interviews");
+        }
     }
 
     @Override
@@ -44,7 +50,19 @@ public class CascadeInterviewTemplateCriteriaOperationsMongoEventListener extend
         if (!interviewTemplates.isEmpty()) {
             interviewTemplateRepository.saveAll(interviewTemplates);
         }
-        // TODO нужно также проверить сущность Interview и еще сделать отдельный листенер на каскадный апдейт для изменения кандидата и интервьювера
+        val interviews = interviewRepository.findAllByCriteriaId(criteria.getId());
+        interviews.stream()
+                .map(Interview::getInterviewTemplate)
+                .map(InterviewTemplate::getCriterias)
+                .flatMap(Collection::stream)
+                .filter(cr -> cr.getId().equals(criteria.getId()))
+                .forEach(cr -> {
+                    cr.setName(criteria.getName());
+                    cr.setPositionType(criteria.getPositionType());
+                });
+        if (!interviews.isEmpty()) {
+            interviewRepository.saveAll(interviews);
+        }
     }
 
 }
