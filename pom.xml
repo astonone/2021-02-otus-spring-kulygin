@@ -20,6 +20,7 @@
         <module>ht09-spring-mvc-view</module>
         <module>ht10-spring-mvc-spa</module>
         <module>ht11-spring-webflux</module>
+        <module>ht12-spring-security</module>
     </modules>
 
     <properties>
