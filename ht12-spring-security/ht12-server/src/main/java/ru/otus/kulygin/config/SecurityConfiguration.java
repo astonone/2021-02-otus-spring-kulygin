@@ -14,10 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private static final String[] pages = {"/", "home", "book/:id/comments", "/login", "/sign-up"};
-    private static final String[] urls = {"/api/user/", "/api/user/login"};
-    private static final String[] resources = {"/assets/*.png", "/assets/image/*.png", "/*.js", "/*.css", "/*.html"};
-
     private final UserDetailsService userDetailsService;
 
     public SecurityConfiguration(UserDetailsService userDetailsService) {
@@ -47,9 +43,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
-                .antMatchers(pages).permitAll()
-                .antMatchers(urls).permitAll()
-                .antMatchers(resources).permitAll()
+                .antMatchers("/", "home", "book/:id/comments", "/login", "/sign-up", "/page-not-found").permitAll()
+                .antMatchers("/api/user/", "/api/user/login").permitAll()
+                .antMatchers("/assets/*.png", "/assets/image/*.png", "/*.js", "/*.css", "/*.html").permitAll()
                 .anyRequest()
                 .fullyAuthenticated()
                 .and()

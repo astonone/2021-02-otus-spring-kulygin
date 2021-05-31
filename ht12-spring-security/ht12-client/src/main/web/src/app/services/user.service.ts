@@ -1,8 +1,10 @@
 import {Injectable} from '@angular/core';
-import {SharedService} from "./shared.service";
+import {LocalStorageService} from "./local-storage.service";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {UserDto} from "../models/user-dto";
+import {Router} from "@angular/router";
+import {SharedService} from "./shared.service";
 
 @Injectable({
     providedIn: 'root'
@@ -18,9 +20,11 @@ export class UserService {
     private readonly DELETE: string;
     private readonly SAVE: string;
 
-    constructor(private shared: SharedService,
-                private http: HttpClient) {
-        this.SERVER_URL = this.shared.getServerURL();
+    constructor(private localStorageService: LocalStorageService,
+                private shared: SharedService,
+                private http: HttpClient,
+                private router: Router) {
+        this.SERVER_URL = this.localStorageService.getServerURL();
         this.USER_LOGIN = this.SERVER_URL + '/user/login';
         this.USER_AUTHENTICATE = this.SERVER_URL + '/user/authenticate';
         this.GET_BY_ID = this.SERVER_URL + '/user/{id}';
@@ -29,23 +33,23 @@ export class UserService {
     }
 
     public setUserToken(token: string): void {
-        this.shared.getStorage().setItem('token', token);
+        this.localStorageService.getStorage().setItem('token', token);
     }
 
     public getUserToken(): string {
-        return this.shared.getStorage().getItem('token');
+        return this.localStorageService.getStorage().getItem('token');
     }
 
     public setLoggedUser(user: UserDto): void {
         if (user.id !== null) {
-            this.shared.getStorage().setItem('loggedUser', JSON.stringify(UserDto.createNewObjectFromDto(user).toObject()));
+            this.localStorageService.getStorage().setItem('loggedUser', JSON.stringify(UserDto.createNewObjectFromDto(user).toObject()));
         } else {
-            this.shared.getStorage().setItem('loggedUser', '');
+            this.localStorageService.getStorage().setItem('loggedUser', '');
         }
     }
 
     public getLoggedUser(): UserDto {
-        let user = this.shared.getStorage().getItem('loggedUser');
+        let user = this.localStorageService.getStorage().getItem('loggedUser');
         if (user !== null && user !== '') {
             let parsedUser = JSON.parse(user);
             return new UserDto(parsedUser.id, parsedUser.username, parsedUser.password);
@@ -88,6 +92,29 @@ export class UserService {
         const regExp = /{id}/gi;
         const url = this.DELETE.replace(regExp, id);
         return this.http.delete<Observable<Object>>(url, this.getOptions());
+    }
+
+    public loginAndAuthUser(isRemember: boolean, user: UserDto) {
+        if (isRemember) {
+            localStorage.setItem('isRemember', 'true');
+        } else {
+            localStorage.setItem('isRemember', 'false');
+        }
+        this.login(user)
+            .subscribe(() => {
+                this.setUserToken(btoa(user.username + ':' + user.password));
+                this.setLoggedUser(new UserDto(null, null, null));
+                this.authenticate().subscribe(data => {
+                    this.setLoggedUser(data);
+                    this.router.navigate(['home']);
+                })
+            }, error => {
+                if (error.status === 401) {
+                    this.shared.openSnackBar("Username or password incorrect!");
+                } else {
+                    this.shared.openSnackBar(error.error.message);
+                }
+            });
     }
 
 }

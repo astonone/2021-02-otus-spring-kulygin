@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {SharedService} from "./shared.service";
+import {LocalStorageService} from "./local-storage.service";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {GenreDto} from "../models/genre-dto";
@@ -18,10 +18,10 @@ export class GenreService {
     private readonly DELETE: string;
     private readonly SAVE: string;
 
-    constructor(private shared: SharedService,
+    constructor(private localStorageService: LocalStorageService,
                 private http: HttpClient,
                 private userService: UserService) {
-        this.SERVER_URL = this.shared.getServerURL();
+        this.SERVER_URL = this.localStorageService.getServerURL();
         this.GET_ALL = this.SERVER_URL + '/genre/';
         this.DELETE = this.SERVER_URL + '/genre/{id}';
         this.SAVE = this.SERVER_URL + '/genre/';

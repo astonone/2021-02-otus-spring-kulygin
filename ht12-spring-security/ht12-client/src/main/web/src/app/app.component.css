@@ -10,10 +10,12 @@
 .header-panel {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .login-management {
     display: flex;
+    align-items: center;
 }
 
 .exit-button {
@@ -21,4 +23,11 @@
 }
 
 @media screen and (max-device-width: 768px) {
+    .home-label {
+        font-size: small;
+    }
+
+    .login-management {
+        font-size: small;
+    }
 }

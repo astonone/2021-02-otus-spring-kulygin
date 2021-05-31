@@ -1,12 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {SharedService} from "../../services/shared.service";
+import {LocalStorageService} from "../../services/local-storage.service";
 import {AuthorService} from "../../services/author.service";
 import {AuthorDto} from "../../models/author-dto";
 import {MatTable} from "@angular/material/table";
-import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
 import {BookService} from "../../services/book.service";
-import {UserService} from "../../services/user.service";
-import {Router} from "@angular/router";
+import {SharedService} from "../../services/shared.service";
 
 
 @Component({
@@ -25,36 +23,22 @@ export class AuthorComponent implements OnInit {
 
     @ViewChild('authorTable') authorTable: MatTable<any>;
 
-    private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
-    private verticalPosition: MatSnackBarVerticalPosition = 'top';
-
-    constructor(public shared: SharedService,
+    constructor(public localStorageService: LocalStorageService,
+                private shared: SharedService,
                 private authorService: AuthorService,
-                private bookService: BookService,
-                private snackBar: MatSnackBar,
-                private userService: UserService,
-                private router: Router) {
-        if (!this.userService.isUserLogged()) {
-            this.router.navigate(['login']);
-        }
+                private bookService: BookService) {
     }
 
     ngOnInit(): void {
         this.loadAuthors();
     }
 
-    private openSnackBar(snackBarText: string): void {
-        this.snackBar.open(snackBarText, 'End now', {
-            duration: 2000,
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-        });
-    }
-
     private loadAuthors(): void {
         this.authorService.getAll().subscribe(data => {
-            this.shared.authors = data.authors;
-        })
+            this.localStorageService.authors = data.authors;
+        }, error => {
+            this.shared.openSnackBar(error.error.message);
+        });
     }
 
     public makeAuthorEdit(element: AuthorDto): void {
@@ -66,7 +50,7 @@ export class AuthorComponent implements OnInit {
     public cancelAuthorEdit(element: AuthorDto): void {
         element.isEdit = false;
         if (!element.id) {
-            this.shared.authors.splice(this.shared.authors.findIndex(a => a === element), 1);
+            this.localStorageService.authors.splice(this.localStorageService.authors.findIndex(a => a === element), 1);
             this.authorTable.renderRows();
         } else {
             element.firstName = this.updatedAuthor.firstName;
@@ -80,47 +64,51 @@ export class AuthorComponent implements OnInit {
             element.isEdit = false;
             this.authorTable.renderRows();
             this.updateBooks();
-        })
+        }, error => {
+            this.shared.openSnackBar(error.error.message);
+        });
     }
 
     private updateBooks(): void {
         this.bookService.getAll().subscribe(data => {
-            this.shared.books = data.books;
-        })
+            this.localStorageService.books = data.books;
+        }, error => {
+            this.shared.openSnackBar(error.error.message);
+        });
     }
 
     private updateAuthors(element: AuthorDto, author: AuthorDto): void {
         let index = this.getElementIndexInAuthorsArray(element);
 
-        this.shared.authors.splice(index, 1, author);
+        this.localStorageService.authors.splice(index, 1, author);
     }
 
     public removeAuthor(element: AuthorDto): void {
         this.authorService.removeById(element.id).subscribe(data => {
             this.removeAuthorFromArrayById(element);
         }, error => {
-            this.openSnackBar(error.error.message);
-        })
+            this.shared.openSnackBar(error.error.message);
+        });
     }
 
     private removeAuthorFromArrayById(element: AuthorDto): void {
         let index = this.getElementIndexInAuthorsArray(element);
 
-        this.shared.authors.splice(index, 1);
+        this.localStorageService.authors.splice(index, 1);
         this.authorTable.renderRows();
     }
 
     private getElementIndexInAuthorsArray(element: AuthorDto): number {
-        return this.shared.authors.map(function (item) {
+        return this.localStorageService.authors.map(function (item) {
             return item.id
-        }).indexOf(element.id)
+        }).indexOf(element.id);
     }
 
     public newAuthor(): void {
         this.cancelEditingOtherElements();
         let author = new AuthorDto(null, null, null);
         author.isEdit = true;
-        this.shared.authors.push(author);
+        this.localStorageService.authors.push(author);
         this.authorTable.renderRows();
     }
 
@@ -133,7 +121,7 @@ export class AuthorComponent implements OnInit {
             return (element.isEdit);
         }
 
-        let filtered = this.shared.authors.filter(isEditing);
+        let filtered = this.localStorageService.authors.filter(isEditing);
         if (filtered.length > 0) {
             this.cancelAuthorEdit(filtered[0]);
         }

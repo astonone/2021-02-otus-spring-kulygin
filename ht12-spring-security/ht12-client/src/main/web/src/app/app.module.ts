@@ -13,8 +13,9 @@ import {MainUiModule} from './modules/main-ui/main-ui.module';
 import {BookService} from "./services/book.service";
 import {AuthorService} from "./services/author.service";
 import {GenreService} from "./services/genre.service";
-import {SharedService} from "./services/shared.service";
+import {LocalStorageService} from "./services/local-storage.service";
 import {UserService} from "./services/user.service";
+import {SharedService} from "./services/shared.service";
 
 /*Components*/
 import {HomeComponent} from './components/home/home.component';
@@ -24,6 +25,7 @@ import {AuthorComponent} from "./components/author/author.component";
 import {BookComponent} from "./components/book/book.component";
 import {LoginComponent} from "./components/login/login.component";
 import {SignUpComponent} from "./components/sign-up/sign-up.component";
+import {PageNotFoundComponent} from "./components/page-not-found/page-not-found.component";
 
 
 @NgModule({
@@ -43,7 +45,8 @@ import {SignUpComponent} from "./components/sign-up/sign-up.component";
         BookComponent,
         CommentsComponent,
         LoginComponent,
-        SignUpComponent
+        SignUpComponent,
+        PageNotFoundComponent
     ],
     entryComponents: [],
     providers: [
@@ -54,11 +57,13 @@ import {SignUpComponent} from "./components/sign-up/sign-up.component";
         CommentsComponent,
         LoginComponent,
         SignUpComponent,
+        PageNotFoundComponent,
         AuthorService,
         GenreService,
         BookService,
-        SharedService,
-        UserService
+        LocalStorageService,
+        UserService,
+        SharedService
     ],
     bootstrap: [AppComponent]
 })

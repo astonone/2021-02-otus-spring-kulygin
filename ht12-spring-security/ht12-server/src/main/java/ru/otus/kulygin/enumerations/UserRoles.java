@@ -2,8 +2,8 @@ package ru.otus.kulygin.enumerations;
 
 public enum UserRoles {
 
-    USER("USER"),
-    ADMIN("ADMIN");
+    USER("ROLE_USER"),
+    ADMIN("ROLE_ADMIN");
 
     private final String roleName;
 

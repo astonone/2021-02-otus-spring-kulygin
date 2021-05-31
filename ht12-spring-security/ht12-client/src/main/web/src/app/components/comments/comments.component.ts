@@ -4,9 +4,9 @@ import {BookService} from "../../services/book.service";
 import {MatTable} from "@angular/material/table";
 import {BookDto} from "../../models/book-dto";
 import {CommentDto} from "../../models/comment-dto";
-import {SharedService} from "../../services/shared.service";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import {LocalStorageService} from "../../services/local-storage.service";
 import {UserService} from "../../services/user.service";
+import {SharedService} from "../../services/shared.service";
 
 @Component({
     selector: 'comments',
@@ -26,12 +26,10 @@ export class CommentsComponent implements OnInit {
 
     constructor(private route: ActivatedRoute,
                 private bookService: BookService,
-                private shared: SharedService,
+                private localStorageService: LocalStorageService,
                 private userService: UserService,
-                private router: Router) {
-        if (!this.userService.isUserLogged()) {
-            this.router.navigate(['login']);
-        }
+                private router: Router,
+                private shared: SharedService) {
     }
 
     ngOnInit(): void {
@@ -43,7 +41,9 @@ export class CommentsComponent implements OnInit {
         this.bookService.getById(this.currentBookId).subscribe(data => {
             this.currentBook = data;
             this.comments = this.currentBook.comments;
-        })
+        }, error => {
+            this.shared.openSnackBar(error.error.message);
+        });
     }
 
     public cancelCommentEdit(comment: CommentDto): void {
@@ -59,7 +59,9 @@ export class CommentsComponent implements OnInit {
             this.updateComments(comment, this.getNewComment(data));
             comment.isEdit = false;
             this.commentsTable.renderRows();
-        })
+        }, error => {
+            this.shared.openSnackBar(error.error.message);
+        });
     }
 
     private getNewComment(book: BookDto): CommentDto {
@@ -84,7 +86,9 @@ export class CommentsComponent implements OnInit {
     public removeComment(element: CommentDto): void {
         this.bookService.removeComment(element.id, this.currentBookId).subscribe(data => {
             this.removeCommentFromArrayById(element);
-        })
+        }, error => {
+            this.shared.openSnackBar(error.error.message);
+        });
     }
 
     private removeCommentFromArrayById(element: CommentDto): void {
@@ -97,7 +101,7 @@ export class CommentsComponent implements OnInit {
     private getElementIndexInCommentsArray(element: CommentDto): number {
         return this.comments.map(function (item) {
             return item.id
-        }).indexOf(element.id)
+        }).indexOf(element.id);
     }
 
     public newComment(): void {

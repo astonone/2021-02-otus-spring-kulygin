@@ -2,7 +2,7 @@
     <button mat-raised-button color="primary" class="new-entity-button" (click)="newGenre()">New genre
     </button>
 
-    <table mat-table #genreTable [dataSource]="shared.genres" class="entity-table mat-elevation-z8">
+    <table mat-table #genreTable [dataSource]="localStorageService.genres" class="entity-table mat-elevation-z8">
 
         <!-- id Column -->
         <ng-container matColumnDef="id">
@@ -42,17 +42,17 @@
             <td mat-cell *matCellDef="let element">
                 <div *ngIf="!element.isEdit">
                     <img class="action-element" src="assets/image/edit.png"
-                         (click)="makeGenreEdit(element)">
+                         alt="edit" (click)="makeGenreEdit(element)">
                     <img class="action-element" src="assets/image/remove.png"
-                         (click)="removeGenre(element)">
+                         alt="remove" (click)="removeGenre(element)">
                 </div>
                 <div *ngIf="element.isEdit">
                     <img *ngIf="isGenreReadyToUpdate(element)" class="action-element"
-                         src="assets/image/save.png" (click)="updateGenre(element)">
+                         src="assets/image/save.png" alt="save" (click)="updateGenre(element)">
                     <img class="action-element" src="assets/image/cancel.png"
-                         (click)="cancelGenreEdit(element)">
+                         alt="cancel" (click)="cancelGenreEdit(element)">
                     <img *ngIf="element.id" class="action-element" src="assets/image/remove.png"
-                         (click)="removeGenre(element)">
+                         alt="remove" (click)="removeGenre(element)">
                 </div>
             </td>
         </ng-container>

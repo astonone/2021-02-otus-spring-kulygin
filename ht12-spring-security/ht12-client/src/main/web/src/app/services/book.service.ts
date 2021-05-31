@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {SharedService} from "./shared.service";
+import {LocalStorageService} from "./local-storage.service";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {BookDto} from "../models/book-dto";
@@ -22,10 +22,10 @@ export class BookService {
     private readonly ADD_COMMENT: string;
     private readonly REMOVE_COMMENT: string;
 
-    constructor(private shared: SharedService,
+    constructor(private localStorageService: LocalStorageService,
                 private http: HttpClient,
                 private userService: UserService) {
-        this.SERVER_URL = this.shared.getServerURL();
+        this.SERVER_URL = this.localStorageService.getServerURL();
         this.GET_ALL = this.SERVER_URL + '/book/';
         this.DELETE = this.SERVER_URL + '/book/{id}';
         this.SAVE = this.SERVER_URL + '/book/';
