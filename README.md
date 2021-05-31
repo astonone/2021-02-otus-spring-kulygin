@@ -20,3 +20,5 @@ Student: Viktor Kulygin
 |[ht09-spring-mvc-view](https://github.com/astonone/2021-02-otus-spring-kulygin/tree/main/ht09-spring-mvc-view)|develop classic Web applications in Spring MVC;develop View layer in Thymeleaf.|
 |[ht10-spring-mvc-spa](https://github.com/astonone/2021-02-otus-spring-kulygin/tree/main/ht10-spring-mvc-spa)|create complex classic applications using Spring Web Flow; create modern applications, as based on AJAX architecture and jQuery, as well as SPA-applications in Vue, React and Angular.|
 |[ht11-spring-webflux](https://github.com/astonone/2021-02-otus-spring-kulygin/tree/main/ht11-spring-webflux)|create modern reactive Web applications using Spring WebFlux.|
+|About and Zen|
+|[ht12-spring-security](https://github.com/astonone/2021-02-otus-spring-kulygin/tree/main/ht12-spring-security)|distinguish between different authentication mechanisms;implement HTTP Basic authentication to protect a Web application;implement Form-based authentication to protect the Web application;use secondary types of authentication (such as Remember Me and Anonymous).|
