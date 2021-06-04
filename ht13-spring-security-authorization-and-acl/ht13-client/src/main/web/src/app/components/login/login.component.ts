@@ -16,7 +16,7 @@ import {LocalStorageService} from "../../services/local-storage.service";
 export class LoginComponent implements OnInit {
 
     public isRemember: boolean = false;
-    public user: UserDto = new UserDto(null, null, null);
+    public user: UserDto = new UserDto(null, null, null, null);
 
     constructor(private userService: UserService,
                 private shared: SharedService,

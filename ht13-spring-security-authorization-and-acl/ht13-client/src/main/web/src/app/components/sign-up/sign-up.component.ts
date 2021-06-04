@@ -14,7 +14,7 @@ import {SharedService} from "../../services/shared.service";
 
 export class SignUpComponent implements OnInit {
 
-    public newUser: UserDto = new UserDto(null, null, null);
+    public newUser: UserDto = new UserDto(null, null, null, null);
     public isRememberMe: boolean = false;
 
     constructor(private userService: UserService,

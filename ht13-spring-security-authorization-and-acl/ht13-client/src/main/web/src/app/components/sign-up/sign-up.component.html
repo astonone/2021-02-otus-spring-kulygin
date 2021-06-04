@@ -18,6 +18,11 @@
                (keyup.enter)="isCreateAvailable() ? createUser() : false">
         <mat-hint class="text-filed-hint">Required field</mat-hint>
     </mat-form-field>
+    <mat-form-field class="registration-text-input" appearance="outline">
+        <mat-label>Secret key(for creating admin)</mat-label>
+        <input matInput type="search" placeholder="Please enter secret key" [(ngModel)]="newUser.secretKey"
+               (keyup.enter)="isCreateAvailable() ? createUser() : false">
+    </mat-form-field>
     <div class="registration-buttons">
         <button class="registration-button" mat-raised-button color="primary" [disabled]="!isCreateAvailable()"
                 (click)="createUser()">Sign-up

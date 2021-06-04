@@ -52,7 +52,7 @@ export class UserService {
         let user = this.localStorageService.getStorage().getItem('loggedUser');
         if (user !== null && user !== '') {
             let parsedUser = JSON.parse(user);
-            return new UserDto(parsedUser.id, parsedUser.username, parsedUser.password);
+            return new UserDto(parsedUser.id, parsedUser.username, parsedUser.password, null);
         } else {
             return null;
         }
@@ -103,7 +103,7 @@ export class UserService {
         this.login(user)
             .subscribe(() => {
                 this.setUserToken(btoa(user.username + ':' + user.password));
-                this.setLoggedUser(new UserDto(null, null, null));
+                this.setLoggedUser(new UserDto(null, null, null, null));
                 this.authenticate().subscribe(data => {
                     this.setLoggedUser(data);
                     this.router.navigate(['home']);

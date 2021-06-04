@@ -19,7 +19,7 @@ export class AppComponent {
 
     public logout(): void {
         this.userService.setUserToken('');
-        this.userService.setLoggedUser(new UserDto(null, null, null));
+        this.userService.setLoggedUser(new UserDto(null, null, null, null));
         this.router.navigate(['/login']);
     }
 
