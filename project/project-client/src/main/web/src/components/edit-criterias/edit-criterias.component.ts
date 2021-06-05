@@ -86,15 +86,15 @@ export class EditCriteriasComponent implements OnInit {
             this.templateCriteriaDataSource = data.criterias;
             this.translateService.get('edit-criterias.removed').subscribe(text => {
                 this.sharedService.openSnackBar(text);
-            }, error => {
-                if (error.status === 403) {
-                    let text = "";
-                    this.translateService.get('snackbar.rights').subscribe(t => text = t);
-                    this.sharedService.openSnackBar(text);
-                } else {
-                    this.sharedService.openSnackBar(error.error.message);
-                }
             });
+        }, error => {
+            if (error.status === 403) {
+                let text = "";
+                this.translateService.get('snackbar.rights').subscribe(t => text = t);
+                this.sharedService.openSnackBar(text);
+            } else {
+                this.sharedService.openSnackBar(error.error.message);
+            }
         })
     }
 
@@ -103,15 +103,15 @@ export class EditCriteriasComponent implements OnInit {
             this.templateCriteriaDataSource = data.criterias;
             this.translateService.get('edit-criterias.added').subscribe(text => {
                 this.sharedService.openSnackBar(text);
-            }, error => {
-                if (error.status === 403) {
-                    let text = "";
-                    this.translateService.get('snackbar.rights').subscribe(t => text = t);
-                    this.sharedService.openSnackBar(text);
-                } else {
-                    this.sharedService.openSnackBar(error.error.message);
-                }
             });
+        }, error => {
+            if (error.status === 403) {
+                let text = "";
+                this.translateService.get('snackbar.rights').subscribe(t => text = t);
+                this.sharedService.openSnackBar(text);
+            } else {
+                this.sharedService.openSnackBar(error.error.message);
+            }
         })
     }
 

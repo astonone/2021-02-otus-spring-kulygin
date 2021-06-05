@@ -95,7 +95,11 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     private void deletePreviousCvFileIfExists(String id) {
-        candidateRepository.findById(id).ifPresent(candidate -> fileService.deleteFile(candidate.getPathToCvFile()));
+        candidateRepository.findById(id).ifPresent(candidate -> {
+            if (candidate.getPathToCvFile() != null) {
+                fileService.deleteFile(candidate.getPathToCvFile());
+            }
+        });
     }
 
     private String getFinalPath(MultipartFile multipartFile) {

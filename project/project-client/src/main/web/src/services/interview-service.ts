@@ -28,7 +28,7 @@ export class InterviewService {
 
         this.SERVICE = this.localStorageService.getServerURL() + '/interview/';
         this.GET_ALL = this.SERVICE + '?page={page}&pageSize={pageSize}';
-        this.GET_ALL_BY_STATUS = this.SERVICE + '/status/?status={status}&page={page}&pageSize={pageSize}';
+        this.GET_ALL_BY_STATUS = this.SERVICE + 'status/?status={status}&page={page}&pageSize={pageSize}';
         this.GET_BY_ID = this.SERVICE + '{id}';
         this.SAVE = this.SERVICE;
         this.DELETE = this.SERVICE + '{id}';
