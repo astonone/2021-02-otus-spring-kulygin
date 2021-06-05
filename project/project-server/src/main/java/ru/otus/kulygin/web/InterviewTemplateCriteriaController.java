@@ -3,6 +3,7 @@ package ru.otus.kulygin.web;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.kulygin.dto.ErrorDto;
 import ru.otus.kulygin.dto.InterviewTemplateCriteriaDto;
@@ -28,6 +29,7 @@ public class InterviewTemplateCriteriaController {
         return new ResponseEntity<>(interviewTemplateCriteriaService.findAll(PageRequest.of(page, pageSize)), HttpStatus.OK);
     }
 
+    @Secured("ROLE_DEVELOPER")
     @PostMapping
     public ResponseEntity<?> save(@RequestBody InterviewTemplateCriteriaDto criteriaDto) {
         try {
@@ -37,6 +39,7 @@ public class InterviewTemplateCriteriaController {
         }
     }
 
+    @Secured("ROLE_DEVELOPER")
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteById(@PathVariable String id) {
         try {

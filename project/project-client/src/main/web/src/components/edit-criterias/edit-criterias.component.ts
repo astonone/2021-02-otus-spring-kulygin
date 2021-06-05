@@ -1,5 +1,4 @@
 import {Component, OnInit} from "@angular/core";
-import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
 import {ActivatedRoute} from "@angular/router";
 import {TemplateDto} from "../../models/template-dto";
 import {TemplateService} from "../../services/template-service";
@@ -8,6 +7,7 @@ import {InterviewTemplateCriteriaDto} from "../../models/interview-template-crit
 import {MatTableDataSource} from "@angular/material/table";
 import {InterviewTemplateCriteriaService} from "../../services/interview-template-criteria-service";
 import {TranslateService} from "@ngx-translate/core";
+import {SharedService} from "../../services/shared-service";
 
 @Component({
     selector: 'edit-criterias',
@@ -36,15 +36,11 @@ export class EditCriteriasComponent implements OnInit {
     public globalCriteriaDataSource: MatTableDataSource<InterviewTemplateCriteriaDto> = new MatTableDataSource([]);
     public templateCriteriaDataSource: InterviewTemplateCriteriaDto[] = [];
 
-    // Snackbar options
-    private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
-    private verticalPosition: MatSnackBarVerticalPosition = 'top';
-
     constructor(private templateService: TemplateService,
                 private interviewTemplateCriteriaService: InterviewTemplateCriteriaService,
-                private translateService: TranslateService,
-                private snackBar: MatSnackBar,
-                private route: ActivatedRoute) {
+                private route: ActivatedRoute,
+                private sharedService: SharedService,
+                private translateService: TranslateService) {
     }
 
     ngOnInit(): void {
@@ -64,6 +60,14 @@ export class EditCriteriasComponent implements OnInit {
             this.page = data.page;
             this.pageSize = data.pageSize;
             this.globalCriteriaDataSource = new MatTableDataSource<InterviewTemplateCriteriaDto>(data.interviewTemplateCriterias);
+        }, error => {
+            if (error.status === 403) {
+                this.translateService.get('snackbar.rights').subscribe(t => {
+                    this.sharedService.openSnackBar(t)
+                });
+            } else {
+                this.sharedService.openSnackBar(error.error.message);
+            }
         });
     }
 
@@ -81,7 +85,15 @@ export class EditCriteriasComponent implements OnInit {
         this.templateService.removeCriteria(this.currentTemplateId, element.id).subscribe(data => {
             this.templateCriteriaDataSource = data.criterias;
             this.translateService.get('edit-criterias.removed').subscribe(text => {
-                this.openSnackBar(text);
+                this.sharedService.openSnackBar(text);
+            }, error => {
+                if (error.status === 403) {
+                    let text = "";
+                    this.translateService.get('snackbar.rights').subscribe(t => text = t);
+                    this.sharedService.openSnackBar(text);
+                } else {
+                    this.sharedService.openSnackBar(error.error.message);
+                }
             });
         })
     }
@@ -90,17 +102,17 @@ export class EditCriteriasComponent implements OnInit {
         this.templateService.addCriteria(this.currentTemplateId, element).subscribe(data => {
             this.templateCriteriaDataSource = data.criterias;
             this.translateService.get('edit-criterias.added').subscribe(text => {
-                this.openSnackBar(text);
+                this.sharedService.openSnackBar(text);
+            }, error => {
+                if (error.status === 403) {
+                    let text = "";
+                    this.translateService.get('snackbar.rights').subscribe(t => text = t);
+                    this.sharedService.openSnackBar(text);
+                } else {
+                    this.sharedService.openSnackBar(error.error.message);
+                }
             });
         })
-    }
-
-    private openSnackBar(snackBarText: string): void {
-        this.snackBar.open(snackBarText, 'End now', {
-            duration: 2000,
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-        });
     }
 
 }

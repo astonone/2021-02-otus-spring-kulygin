@@ -4,14 +4,13 @@ import {InterviewDto} from "../../models/interview-dto";
 import {InterviewerDto} from "../../models/Interviewer-dto";
 import {CandidateDto} from "../../models/candidate-dto";
 import {TemplateDto} from "../../models/template-dto";
-import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
 import {InterviewService} from "../../services/interview-service";
 import {InterviewersService} from "../../services/interviewers-service";
 import {CandidateService} from "../../services/candidate-service";
 import {TemplateService} from "../../services/template-service";
 import {TranslateService} from "@ngx-translate/core";
 import {Router} from "@angular/router";
-import {SharedService} from "../../services/shared.service";
+import {SharedService} from "../../services/shared-service";
 
 @Component({
     selector: 'home',
@@ -44,23 +43,19 @@ export class HomeComponent implements OnInit {
 
     public newInterviewer: InterviewDto = new InterviewDto(null,
         new CandidateDto(null, null, null, null, null, null),
-        new InterviewerDto(null, null, null, null), null,
+        new InterviewerDto(null, null, null, null, null, null, null, null), null,
         new TemplateDto(null, null, null), null, null, null, null, null);
     public backupInterviewer: InterviewDto = new InterviewDto(null,
         new CandidateDto(null, null, null, null, null, null),
-        new InterviewerDto(null, null, null, null), null,
+        new InterviewerDto(null, null, null, null, null, null, null, null), null,
         new TemplateDto(null, null, null), null, null, null, null, null);
-
-    // Snackbar options
-    private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
-    private verticalPosition: MatSnackBarVerticalPosition = 'top';
 
     constructor(private interviewService: InterviewService,
                 private interviewersService: InterviewersService,
                 private candidateService: CandidateService,
                 private templateService: TemplateService,
-                private snackBar: MatSnackBar,
                 private translateService: TranslateService,
+                private sharedService: SharedService,
                 private router: Router) {
     }
 
@@ -79,24 +74,56 @@ export class HomeComponent implements OnInit {
             this.page = data.page;
             this.pageSize = data.pageSize;
             this.dataSource = data.interviews;
+        }, error => {
+            if (error.status === 403) {
+                this.translateService.get('snackbar.rights').subscribe(t => {
+                    this.sharedService.openSnackBar(t)
+                });
+            } else {
+                this.sharedService.openSnackBar(error.error.message);
+            }
         });
     }
 
     private loadInterviewers(): void {
         this.interviewersService.getAll().subscribe(data => {
             this.interviewers = data.interviewers;
+        }, error => {
+            if (error.status === 403) {
+                this.translateService.get('snackbar.rights').subscribe(t => {
+                    this.sharedService.openSnackBar(t)
+                });
+            } else {
+                this.sharedService.openSnackBar(error.error.message);
+            }
         });
     }
 
     private loadCandidates(): void {
         this.candidateService.getAll().subscribe(data => {
             this.candidates = data.candidates;
+        }, error => {
+            if (error.status === 403) {
+                this.translateService.get('snackbar.rights').subscribe(t => {
+                    this.sharedService.openSnackBar(t)
+                });
+            } else {
+                this.sharedService.openSnackBar(error.error.message);
+            }
         });
     }
 
     private loadTemplates(): void {
         this.templateService.getAll().subscribe(data => {
             this.templates = data.templates;
+        }, error => {
+            if (error.status === 403) {
+                this.translateService.get('snackbar.rights').subscribe(t => {
+                    this.sharedService.openSnackBar(t)
+                });
+            } else {
+                this.sharedService.openSnackBar(error.error.message);
+            }
         });
     }
 
@@ -126,22 +153,20 @@ export class HomeComponent implements OnInit {
                 this.totalSize--;
             }
         }, error => {
-            this.openSnackBar(error.error.message);
-        })
+            if (error.status === 403) {
+                this.translateService.get('snackbar.rights').subscribe(t => {
+                    this.sharedService.openSnackBar(t)
+                });
+            } else {
+                this.sharedService.openSnackBar(error.error.message);
+            }
+        });
     }
 
     private removeFromDataSourceById(element: InterviewDto): void {
         let index = this.getElementIndexInDataSource(element);
 
         this.dataSource.splice(index, 1);
-    }
-
-    private openSnackBar(snackBarText: string): void {
-        this.snackBar.open(snackBarText, 'End now', {
-            duration: 2000,
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-        });
     }
 
     public isReadyToUpdate(): boolean {
@@ -167,11 +192,11 @@ export class HomeComponent implements OnInit {
             element.totalComment = this.backupInterviewer.totalComment;
             this.newInterviewer = new InterviewDto(null,
                 new CandidateDto(null, null, null, null, null, null),
-                new InterviewerDto(null, null, null, null), null,
+                new InterviewerDto(null, null, null, null, null, null, null, null), null,
                 new TemplateDto(null, null, null), null, null, null, null, null);
             this.backupInterviewer = new InterviewDto(null,
                 new CandidateDto(null, null, null, null, null, null),
-                new InterviewerDto(null, null, null, null), null,
+                new InterviewerDto(null, null, null, null, null, null, null, null), null,
                 new TemplateDto(null, null, null), null, null, null, null, null);
         }
     }
@@ -182,7 +207,15 @@ export class HomeComponent implements OnInit {
             this.newInterviewer = new InterviewDto(null, null, null, null, null, null, null, null, null, null);
             this.backupInterviewer = new InterviewDto(null, null, null, null, null, null, null, null, null, null);
             this.loadInterviews(this.page, this.pageSize);
-        })
+        }, error => {
+            if (error.status === 403) {
+                this.translateService.get('snackbar.rights').subscribe(t => {
+                    this.sharedService.openSnackBar(t)
+                });
+            } else {
+                this.sharedService.openSnackBar(error.error.message);
+            }
+        });
     }
 
     private getElementIndexInDataSource(element: InterviewDto) {

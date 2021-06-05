@@ -47,8 +47,8 @@
   },
   "login": {
     "main-text": "Please sign in",
-    "email": "Email address",
-    "email-placeholder": "Please enter your email",
+    "username": "Username",
+    "username-placeholder": "Please enter your username",
     "password": "Password",
     "password-placeholder": "Please enter your password",
     "remember-me": "Remember me",
@@ -57,8 +57,8 @@
   "sign-up": {
     "main-text": "Please fill your personal data",
     "required-field": "This field is required",
-    "email": "Email address",
-    "email-placeholder": "Please enter your email",
+    "username": "Username",
+    "username-placeholder": "Please enter your username",
     "password": "Password",
     "password-placeholder": "Please enter your password",
     "password-repeat": "Repeat password",
@@ -67,7 +67,11 @@
     "firstname-placeholder": "Please enter your firstname",
     "lastname": "Lastname",
     "lastname-placeholder": "Please enter your lastname",
-    "sign-up": "Sign up"
+    "sign-up": "Sign up",
+    "secret-key": "Secret key(for developer user)",
+    "secret-key-placeholder": "Please enter secret key",
+    "user": "User: ",
+    "created": " successfully created"
   },
   "interviewers": {
     "empty": "You do not have any created interviewers",
@@ -197,5 +201,12 @@
       "load": "Download CV",
       "finish": "Finish interview and go to main"
     }
+  },
+  "snackbar": {
+    "end-now": "End now",
+    "rights": "You don't have rights for this action"
+  },
+  "page-not-found": {
+    "text": "Page not found"
   }
 }

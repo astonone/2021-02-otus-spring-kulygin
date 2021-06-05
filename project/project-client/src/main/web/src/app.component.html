@@ -10,27 +10,27 @@
         <mat-toolbar color="primary">{{'app.header.menu' | translate}}</mat-toolbar>
         <mat-nav-list class="menu">
             <div class="user-name">
-                <span *ngIf="shared.isMobile() && shared.isUserLogged()">{{'app.header.user-prefix' | translate}}
-                    Admin</span>
+                <span *ngIf="shared.isMobile() && userService.isUserLogged()">{{'app.header.user-prefix' | translate}}
+                    {{userService.getLoggedUser().firstName + ' ' + userService.getLoggedUser().lastName}}</span>
             </div>
             <div>
-                <a *ngIf="shared.isUserLogged()" mat-list-item
+                <a *ngIf="userService.isUserLogged()" mat-list-item
                    (click)="goto('home')">{{'app.header.home' | translate}}</a>
-                <a *ngIf="shared.isUserLogged()" mat-list-item
+                <a *ngIf="userService.isUserLogged()" mat-list-item
                    (click)="goto('candidates')">{{'app.header.candidates' | translate}}</a>
-                <a *ngIf="shared.isUserLogged()" mat-list-item
+                <a *ngIf="userService.isUserLogged()" mat-list-item
                    (click)="goto('interviewers')">{{'app.header.interviewers' | translate}}</a>
-                <a *ngIf="shared.isUserLogged()" mat-list-item
+                <a *ngIf="userService.isUserLogged()" mat-list-item
                    (click)="goto('templates')">{{'app.header.templates' | translate}}</a>
-                <a *ngIf="shared.isUserLogged()" mat-list-item
+                <a *ngIf="userService.isUserLogged()" mat-list-item
                    (click)="goto('template-criteria')">{{'app.header.template-criteria' | translate}}</a>
-                <a *ngIf="shared.isUserLogged()" mat-list-item
+                <a *ngIf="userService.isUserLogged()" mat-list-item
                    (click)="goto('interviews')">{{'app.header.interviews' | translate}}</a>
-                <a *ngIf="!shared.isUserLogged()" mat-list-item
+                <a *ngIf="!userService.isUserLogged()" mat-list-item
                    (click)="goto('login')">{{'app.header.button.login' | translate}}</a>
-                <a *ngIf="!shared.isUserLogged()" mat-list-item
+                <a *ngIf="!userService.isUserLogged()" mat-list-item
                    (click)="goto('sign-up')">{{'app.header.button.sign-up' | translate}}</a>
-                <a *ngIf="shared.isMobile() && shared.isUserLogged()"
+                <a *ngIf="shared.isMobile() && userService.isUserLogged()" (click)="logout()"
                    mat-list-item>{{'app.header.button.logout' | translate}}</a>
                 <mat-accordion *ngIf="shared.isMobile()">
                     <mat-expansion-panel [expanded]="true">
@@ -67,9 +67,12 @@
                         type="button">
                     <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
                 </button>
-                <div *ngIf="!shared.isMobile() && shared.isUserLogged()"
-                     class="header-panel-el">{{'app.header.user-prefix' | translate}} Admin
+                <div *ngIf="!shared.isMobile() && userService.isUserLogged()"
+                     class="header-panel-el">{{'app.header.user-prefix' | translate}}
+                    {{userService.getLoggedUser().firstName + ' ' + userService.getLoggedUser().lastName}}
                 </div>
+                <img *ngIf="!shared.isMobile() && userService.isUserLogged()" class="header-exit"
+                     src="assets/image/actions/exit.svg" (click)="logout()">
             </div>
             <div class="header-control-label-panel">
                 <button mat-button [matMenuTriggerFor]="themes" *ngIf="!shared.isMobile()">

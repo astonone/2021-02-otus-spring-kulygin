@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
-import {SharedService} from "./shared.service";
+import {LocalStorageService} from "./local-storage-service";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {InterviewTemplateCriteriaPageableDto} from "../models/pageable/interview-template-criteria-pageable-dto";
 import {InterviewTemplateCriteriaDto} from "../models/interview-template-criteria-dto";
+import {UserService} from "./user.service";
 
 @Injectable({
     providedIn: 'root'
@@ -11,14 +12,15 @@ import {InterviewTemplateCriteriaDto} from "../models/interview-template-criteri
 export class InterviewTemplateCriteriaService {
 
     private readonly SERVICE: string;
-    private GET_ALL: string;
     private readonly SAVE: string;
+    private GET_ALL: string;
     private DELETE: string;
 
-    constructor(private sharedService: SharedService,
-                private http: HttpClient) {
+    constructor(private localStorageService: LocalStorageService,
+                private http: HttpClient,
+                private userService: UserService) {
 
-        this.SERVICE = this.sharedService.getServerURL() + '/interview-template-criteria/';
+        this.SERVICE = this.localStorageService.getServerURL() + '/interview-template-criteria/';
         this.GET_ALL = this.SERVICE + '?page={page}&pageSize={pageSize}';
         this.SAVE = this.SERVICE;
         this.DELETE = this.SERVICE + '{id}';
@@ -28,17 +30,17 @@ export class InterviewTemplateCriteriaService {
         const regExpPage = /{page}/gi;
         const regExpPageSize = /{pageSize}/gi;
         const url = this.GET_ALL.replace(regExpPage, page.toString()).replace(regExpPageSize, pageSize.toString());
-        return this.http.get<InterviewTemplateCriteriaPageableDto>(url);
+        return this.http.get<InterviewTemplateCriteriaPageableDto>(url, this.userService.getOptions());
     }
 
     public save(criteria: InterviewTemplateCriteriaDto): Observable<InterviewTemplateCriteriaDto> {
-        return this.http.post<InterviewTemplateCriteriaDto>(this.SAVE, criteria.toObject());
+        return this.http.post<InterviewTemplateCriteriaDto>(this.SAVE, criteria.toObject(), this.userService.getOptions());
     }
 
     public removeById(id: string): Observable<Object> {
         const regExpId = /{id}/gi;
         const url = this.DELETE.replace(regExpId, id);
-        return this.http.delete<Observable<Object>>(url);
+        return this.http.delete<Observable<Object>>(url, this.userService.getOptions());
     }
 
 }

@@ -12,12 +12,14 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 
 /*Services*/
-import {SharedService} from "./services/shared.service";
+import {LocalStorageService} from "./services/local-storage-service";
 import {InterviewersService} from "./services/interviewers-service";
 import {InterviewTemplateCriteriaService} from "./services/interview-template-criteria-service";
 import {CandidateService} from "./services/candidate-service";
 import {TemplateService} from "./services/template-service";
 import {InterviewService} from "./services/interview-service";
+import {SharedService} from "./services/shared-service";
+import {UserService} from "./services/user.service";
 
 /*Components*/
 import {HomeComponent} from './components/home/home.component';
@@ -30,6 +32,7 @@ import {TemplatesComponent} from "./components/templates/templates.component";
 import {TemplateCriteriaComponent} from "./components/template-criteria/template-criteria.component";
 import {EditCriteriasComponent} from "./components/edit-criterias/edit-criterias.component";
 import {InterviewComponent} from "./components/interview/interview.component";
+import {PageNotFoundComponent} from "./components/page-not-found/page-not-found.component";
 
 /*Components UI*/
 import {RateStarsComponent} from "./components/ui/rate-stars/rate-stars.component";
@@ -62,7 +65,8 @@ export function TranslationLoaderFactory(http: HttpClient) {
         TemplateCriteriaComponent,
         EditCriteriasComponent,
         InterviewComponent,
-        RateStarsComponent
+        RateStarsComponent,
+        PageNotFoundComponent
     ],
     entryComponents: [],
     providers: [
@@ -77,12 +81,15 @@ export function TranslationLoaderFactory(http: HttpClient) {
         EditCriteriasComponent,
         InterviewComponent,
         RateStarsComponent,
-        SharedService,
+        PageNotFoundComponent,
+        LocalStorageService,
         InterviewersService,
         InterviewTemplateCriteriaService,
         CandidateService,
         TemplateService,
-        InterviewService
+        InterviewService,
+        UserService,
+        SharedService
     ],
     bootstrap: [AppComponent]
 })

@@ -1,9 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {PageEvent} from "@angular/material/paginator";
 import {MatTable} from "@angular/material/table";
-import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
 import {InterviewTemplateCriteriaDto} from "../../models/interview-template-criteria-dto";
 import {InterviewTemplateCriteriaService} from "../../services/interview-template-criteria-service";
+import {SharedService} from "../../services/shared-service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
     selector: 'template-criteria',
@@ -32,12 +33,9 @@ export class TemplateCriteriaComponent implements OnInit {
 
     @ViewChild('criteriaTable') criteriaTable: MatTable<any>;
 
-    // Snackbar options
-    private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
-    private verticalPosition: MatSnackBarVerticalPosition = 'top';
-
     constructor(private interviewTemplateCriteriaService: InterviewTemplateCriteriaService,
-                private snackBar: MatSnackBar) {
+                private sharedService: SharedService,
+                private translateService: TranslateService) {
     }
 
     ngOnInit(): void {
@@ -52,6 +50,14 @@ export class TemplateCriteriaComponent implements OnInit {
             this.page = data.page;
             this.pageSize = data.pageSize;
             this.dataSource = data.interviewTemplateCriterias;
+        }, error => {
+            if (error.status === 403) {
+                this.translateService.get('snackbar.rights').subscribe(t => {
+                    this.sharedService.openSnackBar(t)
+                });
+            } else {
+                this.sharedService.openSnackBar(error.error.message);
+            }
         });
     }
 
@@ -71,8 +77,14 @@ export class TemplateCriteriaComponent implements OnInit {
         this.interviewTemplateCriteriaService.removeById(element.id).subscribe(() => {
             this.removeFromDataSourceById(element);
         }, error => {
-            this.openSnackBar(error.error.message);
-        })
+            if (error.status === 403) {
+                this.translateService.get('snackbar.rights').subscribe(t => {
+                    this.sharedService.openSnackBar(t)
+                });
+            } else {
+                this.sharedService.openSnackBar(error.error.message);
+            }
+        });
     }
 
     private removeFromDataSourceById(element: InterviewTemplateCriteriaDto): void {
@@ -80,14 +92,6 @@ export class TemplateCriteriaComponent implements OnInit {
 
         this.dataSource.splice(index, 1);
         this.criteriaTable.renderRows();
-    }
-
-    private openSnackBar(snackBarText: string): void {
-        this.snackBar.open(snackBarText, 'End now', {
-            duration: 2000,
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-        });
     }
 
     public isReadyToUpdate(element: InterviewTemplateCriteriaDto): boolean {
@@ -113,7 +117,15 @@ export class TemplateCriteriaComponent implements OnInit {
     public update(element: InterviewTemplateCriteriaDto): void {
         this.interviewTemplateCriteriaService.save(InterviewTemplateCriteriaDto.createNewObjectFromDto(element)).subscribe(data => {
             this.loadCriterias(this.page, this.pageSize);
-        })
+        }, error => {
+            if (error.status === 403) {
+                this.translateService.get('snackbar.rights').subscribe(t => {
+                    this.sharedService.openSnackBar(t)
+                });
+            } else {
+                this.sharedService.openSnackBar(error.error.message);
+            }
+        });
     }
 
     private getElementIndexInDataSource(element: InterviewTemplateCriteriaDto) {
@@ -130,10 +142,11 @@ export class TemplateCriteriaComponent implements OnInit {
         this.criteriaTable.renderRows();
     }
 
-    private cancelEditingOtherElements():void {
+    private cancelEditingOtherElements(): void {
         function isEditing(element, index, array) {
             return (element.isEdit);
         }
+
         let filtered = this.dataSource.filter(isEditing);
         if (filtered.length > 0) {
             this.cancelEdit(filtered[0]);

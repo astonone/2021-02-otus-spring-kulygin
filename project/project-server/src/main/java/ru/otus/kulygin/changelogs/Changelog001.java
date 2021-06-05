@@ -5,9 +5,11 @@ import com.github.cloudyrock.mongock.ChangeSet;
 import lombok.val;
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.otus.kulygin.domain.*;
 import ru.otus.kulygin.enumeration.DecisionStatus;
 import ru.otus.kulygin.enumeration.InterviewStatus;
+import ru.otus.kulygin.enumeration.UserRoles;
 import ru.otus.kulygin.repository.*;
 
 import java.io.File;
@@ -24,27 +26,61 @@ public class Changelog001 {
     private final String storagePath = System.getProperty("user.home") + "/interviewer-stor/";
 
     @ChangeSet(order = "001", id = "2021-09-04--001-insert-interviewers--vkulygin", author = "viktor.kulygin")
-    public void insertInterviewers(InterviewerRepository interviewerRepository) {
+    public void insertInterviewers(InterviewerRepository interviewerRepository, PasswordEncoder passwordEncoder) {
 
         val interviewer = Interviewer.builder()
                 .firstName("Джон")
                 .lastName("Петрович")
+                .username("johnyp")
+                .password(passwordEncoder.encode("123"))
+                .role(UserRoles.DEVELOPER.getRoleName())
                 .positionType("Java Developer")
+                .enabled(true)
+                .accountNonExpired(true)
+                .accountNonLocked(true)
+                .credentialsNonExpired(true)
                 .build();
 
         val interviewer2 = Interviewer.builder()
                 .firstName("Василий")
                 .lastName("Петров")
+                .username("vasya.petrov")
+                .password(passwordEncoder.encode("456"))
                 .positionType("JavaScript Developer")
+                .role(UserRoles.DEVELOPER.getRoleName())
+                .enabled(true)
+                .accountNonExpired(true)
+                .accountNonLocked(true)
+                .credentialsNonExpired(true)
                 .build();
 
         val interviewer3 = Interviewer.builder()
                 .firstName("Анна")
                 .lastName("Светлова")
+                .username("svetik")
+                .password(passwordEncoder.encode("789"))
                 .positionType("Scala Developer")
+                .role(UserRoles.DEVELOPER.getRoleName())
+                .enabled(true)
+                .accountNonExpired(true)
+                .accountNonLocked(true)
+                .credentialsNonExpired(true)
                 .build();
 
-        interviewerRepository.saveAll(Arrays.asList(interviewer, interviewer2, interviewer3));
+        val interviewer4 = Interviewer.builder()
+                .firstName("Лиза")
+                .lastName("Иванова")
+                .username("lizzy")
+                .password(passwordEncoder.encode("777"))
+                .positionType("HR")
+                .role(UserRoles.HR.getRoleName())
+                .enabled(true)
+                .accountNonExpired(true)
+                .accountNonLocked(true)
+                .credentialsNonExpired(true)
+                .build();
+
+        interviewerRepository.saveAll(Arrays.asList(interviewer, interviewer2, interviewer3, interviewer4));
     }
 
     @ChangeSet(order = "002", id = "2021-26-04--001-insert-criterias--vkulygin", author = "viktor.kulygin")

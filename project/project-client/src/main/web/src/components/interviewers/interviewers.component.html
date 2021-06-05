@@ -5,10 +5,6 @@
                    (page)="pageEvent = updatePage($event)">
     </mat-paginator>
 
-    <button mat-raised-button color="primary" class="new-entity-button" (click)="create()">
-        {{'interviewers.button.create' | translate}}
-    </button>
-
     <p class="empty-table" *ngIf="dataSource.length === 0">{{'interviewers.empty' | translate}}</p>
 
     <mat-accordion *ngIf="dataSource.length > 0">
@@ -16,10 +12,10 @@
                              [expanded]="element.isNew">
             <mat-expansion-panel-header>
                 <mat-panel-title>
-                    {{!element.isNew ? element.positionType : ''}}
+                    {{element.positionType ? element.positionType : ''}}
                 </mat-panel-title>
                 <mat-panel-description>
-                    {{!element.isNew ? element.firstName + ' ' + element.lastName : ''}}
+                    {{element.firstName + ' ' + element.lastName}}
                 </mat-panel-description>
             </mat-expansion-panel-header>
 

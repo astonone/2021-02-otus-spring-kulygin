@@ -11,4 +11,8 @@ public interface InterviewerRepository extends MongoRepository<Interviewer, Stri
 
     Interviewer findByFirstNameAndLastName(String firstname, String lastname);
 
+    Interviewer findByUsername(String username);
+
+    boolean existsByUsername(String username);
+
 }

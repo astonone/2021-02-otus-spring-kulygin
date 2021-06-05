@@ -9,19 +9,21 @@ import {TemplatesComponent} from "./components/templates/templates.component";
 import {TemplateCriteriaComponent} from "./components/template-criteria/template-criteria.component";
 import {EditCriteriasComponent} from "./components/edit-criterias/edit-criterias.component";
 import {InterviewComponent} from "./components/interview/interview.component";
+import {AuthGuard} from "./auth.guard";
 
 const appRoutes: Routes = [
-    {path: ':lang/home', component: HomeComponent},
-    {path: ':lang/candidates', component: CandidatesComponent},
-    {path: ':lang/interviewers', component: InterviewersComponent},
-    {path: ':lang/interviews', component: InterviewsComponent},
-    {path: ':lang/templates', component: TemplatesComponent},
-    {path: ':lang/template-criteria', component: TemplateCriteriaComponent},
+    {path: '', pathMatch: 'full', redirectTo: 'en/home'},
+    {path: ':lang/home', component: HomeComponent, canActivate: [AuthGuard]},
+    {path: ':lang/candidates', component: CandidatesComponent, canActivate: [AuthGuard]},
+    {path: ':lang/interviewers', component: InterviewersComponent, canActivate: [AuthGuard]},
+    {path: ':lang/interviews', component: InterviewsComponent, canActivate: [AuthGuard]},
+    {path: ':lang/templates', component: TemplatesComponent, canActivate: [AuthGuard]},
+    {path: ':lang/template-criteria', component: TemplateCriteriaComponent, canActivate: [AuthGuard]},
     {path: ':lang/login', component: LoginComponent},
     {path: ':lang/sign-up', component: SignUpComponent},
-    {path: ':lang/edit-criterias/:id', component: EditCriteriasComponent},
-    {path: ':lang/interview/:id', component: InterviewComponent},
-    {path: '**', redirectTo: 'en/home'}
+    {path: ':lang/edit-criterias/:id', component: EditCriteriasComponent, canActivate: [AuthGuard]},
+    {path: ':lang/interview/:id', component: InterviewComponent, canActivate: [AuthGuard]},
+    {path: '**', redirectTo: 'page-not-found'}
 ];
 
 export const routing = RouterModule.forRoot(appRoutes,

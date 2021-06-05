@@ -1,16 +1,24 @@
 package ru.otus.kulygin.service.impl;
 
 import lombok.val;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.otus.kulygin.domain.Interviewer;
 import ru.otus.kulygin.dto.InterviewerDto;
 import ru.otus.kulygin.dto.pageable.InterviewerPageableDto;
+import ru.otus.kulygin.enumeration.UserRoles;
+import ru.otus.kulygin.exception.InterviewDoesNotExistException;
 import ru.otus.kulygin.exception.InterviewerDoesNotExistException;
+import ru.otus.kulygin.exception.SecretKeyException;
+import ru.otus.kulygin.exception.UsernameAlreadyExistException;
 import ru.otus.kulygin.repository.InterviewerRepository;
 import ru.otus.kulygin.service.InterviewerService;
 import ru.otus.kulygin.service.impl.util.MappingService;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Base64;
 import java.util.Optional;
 
 @Service
@@ -18,10 +26,15 @@ public class InterviewerServiceImpl implements InterviewerService {
 
     private final InterviewerRepository interviewerRepository;
     private final MappingService mappingService;
+    private final PasswordEncoder passwordEncoder;
+    private final String secretKey;
 
-    public InterviewerServiceImpl(InterviewerRepository interviewerRepository, MappingService mappingService) {
+    public InterviewerServiceImpl(InterviewerRepository interviewerRepository, MappingService mappingService,
+                                  PasswordEncoder passwordEncoder, @Value("${app.admin.secret-key}") String secretKey) {
         this.interviewerRepository = interviewerRepository;
         this.mappingService = mappingService;
+        this.passwordEncoder = passwordEncoder;
+        this.secretKey = secretKey;
     }
 
     @Override
@@ -48,19 +61,65 @@ public class InterviewerServiceImpl implements InterviewerService {
     }
 
     @Override
+    public InterviewerDto getById(String id) {
+        return interviewerRepository.findById(id)
+                .map(interviewer -> mappingService.map(interviewer, InterviewerDto.class))
+                .orElseThrow(InterviewDoesNotExistException::new);
+    }
+
+    @Override
     public InterviewerDto save(InterviewerDto interviewerDto) {
         Interviewer forSave = Interviewer.builder().build();
-        Optional<Interviewer> interviewerById = Optional.empty();
-        if (interviewerDto.getId() != null) {
-            interviewerById = interviewerRepository.findById(interviewerDto.getId());
-            if (interviewerById.isEmpty()) {
-                throw new InterviewerDoesNotExistException();
+        if (interviewerDto.isCreate()) {
+            if (interviewerRepository.existsByUsername(interviewerDto.getUsername())) {
+                throw new UsernameAlreadyExistException();
             }
+            Optional<Interviewer> interviewerById = Optional.empty();
+            if (interviewerDto.getId() != null) {
+                interviewerById = interviewerRepository.findById(interviewerDto.getId());
+                if (interviewerById.isEmpty()) {
+                    throw new InterviewerDoesNotExistException();
+                }
+            }
+            forSave.setId(interviewerById.map(Interviewer::getId).orElse(null));
+            forSave.setFirstName(interviewerDto.getFirstName());
+            forSave.setLastName(interviewerDto.getLastName());
+            forSave.setPositionType(interviewerDto.getPositionType());
+            forSave.setUsername(interviewerDto.getUsername());
+            forSave.setPassword(passwordEncoder.encode(interviewerDto.getPassword()));
+            forSave.setAccountNonExpired(true);
+            forSave.setAccountNonLocked(true);
+            forSave.setCredentialsNonExpired(true);
+            forSave.setEnabled(true);
+            if (interviewerDto.getSecretKey() != null && !interviewerDto.getSecretKey().isEmpty()) {
+                if (passwordEncoder.matches(interviewerDto.getSecretKey(), this.secretKey)) {
+                    forSave.setRole(UserRoles.DEVELOPER.getRoleName());
+                } else {
+                    throw new SecretKeyException();
+                }
+            } else {
+                forSave.setRole(UserRoles.HR.getRoleName());
+            }
+        } else {
+            Optional<Interviewer> interviewerById = Optional.empty();
+            if (interviewerDto.getId() != null) {
+                interviewerById = interviewerRepository.findById(interviewerDto.getId());
+                if (interviewerById.isEmpty()) {
+                    throw new InterviewerDoesNotExistException();
+                }
+            }
+            forSave.setId(interviewerById.get().getId());
+            forSave.setFirstName(interviewerDto.getFirstName());
+            forSave.setLastName(interviewerDto.getLastName());
+            forSave.setPositionType(interviewerDto.getPositionType());
+            forSave.setUsername(interviewerById.get().getUsername());
+            forSave.setPassword(interviewerById.get().getPassword());
+            forSave.setAccountNonExpired(interviewerById.get().isAccountNonExpired());
+            forSave.setAccountNonLocked(interviewerById.get().isAccountNonLocked());
+            forSave.setCredentialsNonExpired(interviewerById.get().isCredentialsNonExpired());
+            forSave.setEnabled(interviewerById.get().isEnabled());
+            forSave.setRole(interviewerById.get().getRole());
         }
-        forSave.setId(interviewerById.map(Interviewer::getId).orElse(null));
-        forSave.setFirstName(interviewerDto.getFirstName());
-        forSave.setLastName(interviewerDto.getLastName());
-        forSave.setPositionType(interviewerDto.getPositionType());
         return mappingService.map(interviewerRepository.save(forSave), InterviewerDto.class);
     }
 
@@ -69,6 +128,23 @@ public class InterviewerServiceImpl implements InterviewerService {
         if (interviewerRepository.existsById(id)) {
             interviewerRepository.deleteById(id);
         }
+    }
+
+    @Override
+    public boolean login(InterviewerDto interviewerDto) {
+        Interviewer user = interviewerRepository.findByUsername(interviewerDto.getUsername());
+        if (user != null) {
+            return passwordEncoder.matches(interviewerDto.getPassword(), user.getPassword());
+        }
+        return false;
+    }
+
+    @Override
+    public InterviewerDto getUserByUsername(HttpServletRequest request) {
+        String authToken = request.getHeader("Authorization").substring("Basic".length()).trim();
+        String username = new String(Base64.getDecoder().decode(authToken)).split(":")[0];
+        Interviewer userByUserName = interviewerRepository.findByUsername(username);
+        return mappingService.map(userByUserName, InterviewerDto.class);
     }
 
 }

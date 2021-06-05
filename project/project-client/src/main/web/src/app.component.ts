@@ -1,8 +1,10 @@
 ﻿import {Component, ElementRef, Inject, OnInit} from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
 import {Router} from "@angular/router";
-import {SharedService} from "./services/shared.service";
 import {DOCUMENT} from "@angular/common";
+import {SharedService} from "./services/shared-service";
+import {UserService} from "./services/user.service";
+import {InterviewerDto} from "./models/Interviewer-dto";
 
 @Component({
     selector: 'app-root',
@@ -15,6 +17,7 @@ import {DOCUMENT} from "@angular/common";
 export class AppComponent implements OnInit {
 
     constructor(private translateService: TranslateService,
+                public userService: UserService,
                 public shared: SharedService,
                 private router: Router,
                 @Inject(DOCUMENT) document: ElementRef) {
@@ -24,7 +27,6 @@ export class AppComponent implements OnInit {
         } else {
             this.shared.getThemeAndApply();
         }
-
     }
 
     ngOnInit(): void {
@@ -106,5 +108,11 @@ export class AppComponent implements OnInit {
 
     public isInterviewTemplateCriteriaPage(): boolean {
         return this.router.url.includes('/template-criteria');
+    }
+
+    public logout(): void {
+        this.userService.setUserToken('');
+        this.userService.setLoggedUser(new InterviewerDto(null, null, null, null, null, null, null, null));
+        this.router.navigate([this.translateService.getDefaultLang() + '/login']);
     }
 }

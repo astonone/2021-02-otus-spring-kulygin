@@ -11,7 +11,10 @@ public enum ApplicationErrorsEnum {
     INTERVIEW_NOT_FOUND(5L, "Interview by id has not found"),
     RELATED_ENTITY(6L, ""),
     INTERVIEW_STATUS_EXCEPTION(7L, "New interview must have status only: PLANNED"),
-    INTERVIEW_DECISION_EXCEPTION(8L, "New interview must have decision only: NOT_APPLICABLE");
+    INTERVIEW_DECISION_EXCEPTION(8L, "New interview must have decision only: NOT_APPLICABLE"),
+    USER_NOT_FOUND(9L, "User by id has not found"),
+    USER_EXIST(10L, "User with this username already exists"),
+    SECRET_KEY_ERROR(11L, "Incorrect secret key");
 
     private final Long code;
     private final String message;

@@ -6,6 +6,8 @@ import {CandidateDto} from "../../models/candidate-dto";
 import {InterviewerDto} from "../../models/Interviewer-dto";
 import {TemplateDto} from "../../models/template-dto";
 import {InterviewTemplateCriteriaDto} from "../../models/interview-template-criteria-dto";
+import {SharedService} from "../../services/shared-service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
     selector: 'interview',
@@ -26,11 +28,13 @@ export class InterviewComponent implements OnInit {
     public currentInterviewId: string;
     public currentInterview: InterviewDto = new InterviewDto(null,
         new CandidateDto(null, null, null, null, null, null),
-        new InterviewerDto(null, null, null, null), null,
+        new InterviewerDto(null, null, null, null, null, null, null, null), null,
         new TemplateDto(null, null, null), null, null, null, null, null);
 
     constructor(private route: ActivatedRoute,
-                private interviewService: InterviewService) {
+                private interviewService: InterviewService,
+                private sharedService: SharedService,
+                private translateService: TranslateService) {
     }
 
 
@@ -50,7 +54,15 @@ export class InterviewComponent implements OnInit {
                 this.currentInterview = data;
                 this.isViewMode = true;
             }
-        })
+        }, error => {
+            if (error.status === 403) {
+                this.translateService.get('snackbar.rights').subscribe(t => {
+                    this.sharedService.openSnackBar(t)
+                });
+            } else {
+                this.sharedService.openSnackBar(error.error.message);
+            }
+        });
     }
 
     public onClickDownloadPdf(element: CandidateDto) {
@@ -86,6 +98,14 @@ export class InterviewComponent implements OnInit {
         this.interviewService.save(this.currentInterview).subscribe(data => {
             this.currentInterview = data;
             this.isViewMode = true;
+        }, error => {
+            if (error.status === 403) {
+                this.translateService.get('snackbar.rights').subscribe(t => {
+                    this.sharedService.openSnackBar(t)
+                });
+            } else {
+                this.sharedService.openSnackBar(error.error.message);
+            }
         });
     }
 

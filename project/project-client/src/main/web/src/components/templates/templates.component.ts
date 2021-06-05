@@ -1,11 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {PageEvent} from "@angular/material/paginator";
-import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
-import {SharedService} from "../../services/shared.service";
 import {TemplateDto} from "../../models/template-dto";
 import {TemplateService} from "../../services/template-service";
-import {TranslateService} from "@ngx-translate/core";
 import {Router} from "@angular/router";
+import {SharedService} from "../../services/shared-service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
     selector: 'templates',
@@ -32,14 +31,10 @@ export class TemplatesComponent implements OnInit {
     public newTemplate: TemplateDto = new TemplateDto(null, null, null);
     public backupTemplate: TemplateDto = new TemplateDto(null, null, null);
 
-    // Snackbar options
-    private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
-    private verticalPosition: MatSnackBarVerticalPosition = 'top';
-
     constructor(private templateService: TemplateService,
-                private snackBar: MatSnackBar,
-                private translateService: TranslateService,
-                private router: Router) {
+                private router: Router,
+                private sharedService: SharedService,
+                private translateService: TranslateService) {
     }
 
     ngOnInit(): void {
@@ -54,6 +49,14 @@ export class TemplatesComponent implements OnInit {
             this.page = data.page;
             this.pageSize = data.pageSize;
             this.dataSource = data.templates;
+        }, error => {
+            if (error.status === 403) {
+                this.translateService.get('snackbar.rights').subscribe(t => {
+                    this.sharedService.openSnackBar(t)
+                });
+            } else {
+                this.sharedService.openSnackBar(error.error.message);
+            }
         });
     }
 
@@ -79,22 +82,20 @@ export class TemplatesComponent implements OnInit {
                 this.totalSize--;
             }
         }, error => {
-            this.openSnackBar(error.error.message);
-        })
+            if (error.status === 403) {
+                this.translateService.get('snackbar.rights').subscribe(t => {
+                    this.sharedService.openSnackBar(t)
+                });
+            } else {
+                this.sharedService.openSnackBar(error.error.message);
+            }
+        });
     }
 
     private removeFromDataSourceById(element: TemplateDto): void {
         let index = this.getElementIndexInDataSource(element);
 
         this.dataSource.splice(index, 1);
-    }
-
-    private openSnackBar(snackBarText: string): void {
-        this.snackBar.open(snackBarText, 'End now', {
-            duration: 2000,
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-        });
     }
 
     public isReadyToUpdate(): boolean {
@@ -124,7 +125,15 @@ export class TemplatesComponent implements OnInit {
             } else {
                 this.loadTemplates(this.page, this.pageSize);
             }
-        })
+        }, error => {
+            if (error.status === 403) {
+                this.translateService.get('snackbar.rights').subscribe(t => {
+                    this.sharedService.openSnackBar(t)
+                });
+            } else {
+                this.sharedService.openSnackBar(error.error.message);
+            }
+        });
     }
 
     private updateDataSource(element: any, interviewer: TemplateDto): void {

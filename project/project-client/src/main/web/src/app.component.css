@@ -16,11 +16,13 @@
 .header-control-label-panel {
     display: flex;
     align-items: center;
+    font-size: medium;
 }
 
 .header-control-menu-panel {
     display: flex;
     align-items: center;
+    font-size: medium;
 }
 
 .sidenav {
@@ -38,11 +40,27 @@
     margin: 5px 5px 5px 5px;
 }
 
+.header-exit {
+    margin: 5px 5px 5px 5px;
+    width: 56px;
+    cursor: pointer;
+}
+
 .lang-el {
     color: white;
     padding: 5px 5px 5px 5px;
 }
 
-@media screen and (max-device-width: 768px) {
+.user-name {
+    margin-left: 15px;
+}
 
+@media screen and (max-device-width: 980px) {
+    .header-control-label-panel {
+        font-size: small;
+    }
+
+    .header-control-menu-panel {
+        font-size: small;
+    }
 }

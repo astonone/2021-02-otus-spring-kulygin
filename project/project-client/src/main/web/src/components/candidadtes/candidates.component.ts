@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {PageEvent} from "@angular/material/paginator";
-import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
-import {SharedService} from "../../services/shared.service";
 import {CandidateDto} from "../../models/candidate-dto";
 import {CandidateService} from "../../services/candidate-service";
+import {SharedService} from "../../services/shared-service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
     selector: 'candidates',
@@ -32,12 +32,9 @@ export class CandidatesComponent implements OnInit {
     public newCandidate: CandidateDto = new CandidateDto(null, null, null, null, null, null);
     public backupCandidate: CandidateDto = new CandidateDto(null, null, null, null, null, null);
 
-    // Snackbar options
-    private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
-    private verticalPosition: MatSnackBarVerticalPosition = 'top';
-
     constructor(private candidateService: CandidateService,
-                private snackBar: MatSnackBar) {
+                private sharedService: SharedService,
+                private translateService: TranslateService) {
     }
 
     ngOnInit(): void {
@@ -52,6 +49,14 @@ export class CandidatesComponent implements OnInit {
             this.page = data.page;
             this.pageSize = data.pageSize;
             this.dataSource = data.candidates;
+        }, error => {
+            if (error.status === 403) {
+                this.translateService.get('snackbar.rights').subscribe(t => {
+                    this.sharedService.openSnackBar(t)
+                });
+            } else {
+                this.sharedService.openSnackBar(error.error.message);
+            }
         });
     }
 
@@ -77,22 +82,20 @@ export class CandidatesComponent implements OnInit {
                 this.totalSize--;
             }
         }, error => {
-            this.openSnackBar(error.error.message);
-        })
+            if (error.status === 403) {
+                this.translateService.get('snackbar.rights').subscribe(t => {
+                    this.sharedService.openSnackBar(t)
+                });
+            } else {
+                this.sharedService.openSnackBar(error.error.message);
+            }
+        });
     }
 
     private removeFromDataSourceById(element: CandidateDto): void {
         let index = this.getElementIndexInDataSource(element);
 
         this.dataSource.splice(index, 1);
-    }
-
-    private openSnackBar(snackBarText: string): void {
-        this.snackBar.open(snackBarText, 'End now', {
-            duration: 2000,
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-        });
     }
 
     public isReadyToUpdate(): boolean {
@@ -124,8 +127,14 @@ export class CandidatesComponent implements OnInit {
             this.files = null;
             this.loadCandidates(this.page, this.pageSize);
         }, error => {
-            this.openSnackBar(error.error.message);
-        })
+            if (error.status === 403) {
+                this.translateService.get('snackbar.rights').subscribe(t => {
+                    this.sharedService.openSnackBar(t)
+                });
+            } else {
+                this.sharedService.openSnackBar(error.error.message);
+            }
+        });
     }
 
     private createFormData(): FormData {
@@ -161,10 +170,11 @@ export class CandidatesComponent implements OnInit {
         this.dataSource.push(candidate);
     }
 
-    private cancelEditingOtherElements():void {
+    private cancelEditingOtherElements(): void {
         function isEditing(element, index, array) {
             return (element.isEdit);
         }
+
         let filtered = this.dataSource.filter(isEditing);
         if (filtered.length > 0) {
             this.cancelEdit(filtered[0]);
