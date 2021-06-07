@@ -23,3 +23,4 @@ Student: Viktor Kulygin
 |About and Zen|
 |[ht12-spring-security](https://github.com/astonone/2021-02-otus-spring-kulygin/tree/main/ht12-spring-security)|distinguish between different authentication mechanisms;implement HTTP Basic authentication to protect a Web application;implement Form-based authentication to protect the Web application;use secondary types of authentication (such as Remember Me and Anonymous).|
 |[ht13-spring-security-authorization](https://github.com/astonone/2021-02-otus-spring-kulygin/tree/main/ht13-spring-security-authorization)|implement different authorisation mechanisms in the application - based on URLs and service methods, for deep application security or implement domain-entity-based security - ACLs - in the application.|
+|[ht14-spring-batch](https://github.com/astonone/2021-02-otus-spring-kulygin/tree/main/ht14-spring-batch)|use Spring Batch to organise batch processing in an application;use Spring Batch not only in large projects.|
