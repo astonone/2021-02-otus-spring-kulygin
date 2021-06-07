@@ -21,7 +21,7 @@
         <module>ht10-spring-mvc-spa</module>
         <module>ht11-spring-webflux</module>
         <module>ht12-spring-security</module>
-        <module>ht13-spring-security-acl</module>
+        <module>ht13-spring-security-authorization</module>
     </modules>
 
     <properties>
