@@ -176,7 +176,7 @@ public class JobConfig {
     @Bean
     public Step transformGenreStep(RepositoryItemReader<Genre> reader, RepositoryItemWriter<GenreDocument> writer,
                                    ItemProcessor<Genre, GenreDocument> itemProcessor) {
-        return stepBuilderFactory.get("step1")
+        return stepBuilderFactory.get("migrateGenre")
                 .<Genre, GenreDocument>chunk(CHUNK_SIZE)
                 .reader(reader)
                 .processor(itemProcessor)
@@ -188,7 +188,7 @@ public class JobConfig {
     @Bean
     public Step transformAuthorStep(RepositoryItemReader<Author> reader, RepositoryItemWriter<AuthorDocument> writer,
                                     ItemProcessor<Author, AuthorDocument> itemProcessor) {
-        return stepBuilderFactory.get("step2")
+        return stepBuilderFactory.get("migrateAuthor")
                 .<Author, AuthorDocument>chunk(CHUNK_SIZE)
                 .reader(reader)
                 .processor(itemProcessor)
@@ -200,7 +200,7 @@ public class JobConfig {
     @Bean
     public Step transformBookStep(RepositoryItemReader<Book> reader, RepositoryItemWriter<BookDocument> writer,
                                   ItemProcessor<Book, BookDocument> itemProcessor) {
-        return stepBuilderFactory.get("step3")
+        return stepBuilderFactory.get("migrateBook")
                 .<Book, BookDocument>chunk(CHUNK_SIZE)
                 .reader(reader)
                 .processor(itemProcessor)
@@ -212,7 +212,7 @@ public class JobConfig {
     @Bean
     public Step transformCommentStep(RepositoryItemReader<Comment> reader, RepositoryItemWriter<CommentDocument> writer,
                                      ItemProcessor<Comment, CommentDocument> itemProcessor) {
-        return stepBuilderFactory.get("step4")
+        return stepBuilderFactory.get("migrateComments")
                 .<Comment, CommentDocument>chunk(CHUNK_SIZE)
                 .reader(reader)
                 .processor(itemProcessor)
