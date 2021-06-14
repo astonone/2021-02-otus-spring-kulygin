@@ -22,6 +22,7 @@
         <module>ht11-spring-webflux</module>
         <module>ht12-spring-security</module>
         <module>ht13-spring-security-authorization</module>
+        <module>ht14-spring-batch</module>
     </modules>
 
     <properties>
