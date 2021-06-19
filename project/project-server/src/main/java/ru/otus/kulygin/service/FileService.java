@@ -8,4 +8,5 @@ public interface FileService {
     void writeFile(String storagePath, MultipartFile file) throws FileWritingException;
 
     void deleteFile(String pathToCvFile);
+
 }

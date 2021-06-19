@@ -2,3 +2,22 @@ spring:
   shell:
     interactive:
       enabled: false
+    #MongoDB config
+  data:
+    mongodb:
+      authentication-database: none
+      host: localhost
+      port: 27017
+      database: interviewer-test
+file:
+  storage:
+    path: ${user.home}/interviewer-stor/
+app:
+  admin:
+    # mySecret777
+    secret-key: $2a$10$Uke6zNBEQbaDz5MVLlX8ze0.pG5bMO2aF68QpYrejxbX8uUeDJ.lq
+#Mongock config
+mongock:
+  runner-type: InitializingBean
+  change-logs-scan-package:
+    - ru.otus.kulygin.changelogs

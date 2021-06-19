@@ -22,4 +22,5 @@ public interface InterviewService {
     InterviewDto updateCriteria(String interviewId, String criteriaId, Integer mark);
 
     InterviewDto updateCriteriaComment(String interviewId, String criteriaId, InterviewTemplateCriteriaDto criteria);
+
 }

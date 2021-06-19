@@ -63,4 +63,11 @@ public class InterviewTemplateCriteriaServiceImpl implements InterviewTemplateCr
         }
     }
 
+    @Override
+    public InterviewTemplateCriteria processItem(InterviewTemplateCriteria criteria) {
+        return interviewTemplateCriteriaRepository.existsByNameAndPositionType(criteria.getName(), criteria.getPositionType())
+                ? null
+                : criteria;
+    }
+
 }

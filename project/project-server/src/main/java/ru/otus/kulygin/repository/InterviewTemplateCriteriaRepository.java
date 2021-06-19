@@ -9,4 +9,6 @@ public interface InterviewTemplateCriteriaRepository extends MongoRepository<Int
 
     List<InterviewTemplateCriteria> findAllByPositionType(String positionType);
 
+    boolean existsByNameAndPositionType(String name, String positionType);
+
 }

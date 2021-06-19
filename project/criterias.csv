@@ -1,0 +1,70 @@
+В чем разница между null и undefined?;Java Script Developer
+Для чего используется оператор "&&"?;Java Script Developer
+Для чего используется оператор "||"?;Java Script Developer
+Является ли использование унарного плюса (оператор "+") самым быстрым способом преобразования строки в число?;Java Script Developer
+Что такое DOM?;Java Script Developer
+Что такое распространение события (Event Propogation)?;Java Script Developer
+Что такое всплытие события (Event Bubbling)?;Java Script Developer
+Что такое погружение события (Event Capturing)?;Java Script Developer
+В чем разница между методами event.preventDefault() и event.stopPropagation()?;Java Script Developer
+Как узнать об использовании метода event.preventDefault()?;Java Script Developer
+Почему obj.someprop.x приводит к ошибке?;Java Script Developer
+Что такое цель события или целевой элемент (event.target)?;Java Script Developer
+Что такое текущая цель события (event.currentTarget)?;Java Script Developer
+В чем разница между операторами "==" и "==="?;Java Script Developer
+Почему результатом сравнения двух похожих объектов является false?;Java Script Developer
+Для чего используется оператор "!!"?;Java Script Developer
+Как записать несколько выражений в одну строку?;Java Script Developer
+Что такое поднятие (Hoisting)?;Java Script Developer
+Что такое область видимости (Scope)?;Java Script Developer
+Что такое замыкание (Closures)?;Java Script Developer
+Какие значения в JS являются ложными?;Java Script Developer
+Как проверить, является ли значение ложным?;Java Script Developer
+Для чего используется директива «use strict»?;Java Script Developer
+Какое значение имеет this?;Java Script Developer
+Что такое прототип объекта?;Java Script Developer
+Что такое IIFE?;Java Script Developer
+Для чего используется метод Function.prototype.apply?;Java Script Developer
+Для чего используется метод Function.prototype.call?;Java Script Developer
+В чем разница между методами call и apply?;Java Script Developer
+Для чего используется метод Function.prototype.bind?;Java Script Developer
+Что такое функциональное программирование и какие особенности JS позволяют говорить о нем как о функциональном языке программирования?;Java Script Developer
+Что такое функции высшего порядка (Higher Order Functions)?;Java Script Developer
+Почему функции в JS называют объектами первого класса (First-class Objects)?;Java Script Developer
+Как бы Вы реализовали метод Array.prototype.map?;Java Script Developer
+Как бы Вы реализовали метод Array.prototype.filter?;Java Script Developer
+Как бы Вы реализовали метод Array.prototype.reduce?;Java Script Developer
+Что такое объект arguments?;Java Script Developer
+Как создать объект, не имеющий прототипа?;Java Script Developer
+Почему в представленном коде переменная b становится глобальной при вызове функции?;Java Script Developer
+Что такое ECMAScript?;Java Script Developer
+Что нового привнес в JS стандарт ES6 или ECMAScript2015?;Java Script Developer
+В чем разница между ключевыми словами «var», «let» и «const»?;Java Script Developer
+Что такое стрелочные функции (Arrow Functions)?;Java Script Developer
+Что такое классы (Classes)?;Java Script Developer
+Что такое шаблонные литералы (Template Literals)?;Java Script Developer
+Что такое деструктуризация объекта (Object Destructuring)?;Java Script Developer
+Что такое модули (Modules)?;Java Script Developer
+Что такое объект Set?;Java Script Developer
+Что такое функция обратного вызова (Callback Function)?;Java Script Developer
+Что такое промисы (Promises)?;Java Script Developer
+Что такое async/await?;Java Script Developer
+В чем разница между spread-оператором и rest-оператором?;Java Script Developer
+Что такое параметры по умолчанию (Default Parameters)?;Java Script Developer
+Что такое объектная обертка (Wrapper Objects)?;Java Script Developer
+В чем разница между явным и неявным преобразованием или приведением к типу (Implicit and Explicit Coercion)?;Java Script Developer
+Что такое NaN? Как проверить, является ли значение NaN?;Java Script Developer
+Как проверить, является ли значение массивом?;Java Script Developer
+Как проверить, что число является четным, без использования деления по модулю или деления с остатком (оператора "%")?;Java Script Developer
+Как определить наличие свойства в объекте?;Java Script Developer
+Что такое AJAX?;Java Script Developer
+Как в JS создать объект?;Java Script Developer
+В чем разница между методами Object.freeze и Object.seal?;Java Script Developer
+В чем разница между оператором «in» и методом hasOwnProperty?;Java Script Developer
+Какие приемы работы с асинхронным кодом в JS Вы знаете?;Java Script Developer
+В чем разница между обычной функцией и функциональным выражением?;Java Script Developer
+Как в JS вызвать функцию?;Java Script Developer
+Что такое запоминание или меморизация (Memoization)?;Java Script Developer
+Как бы Вы реализовали вспомогательную функцию запоминания?;Java Script Developer
+Почему typeof null возвращает object? Как проверить, является ли значение null?;Java Script Developer
+Для чего используется ключевое слово «new»?;Java Script Developer
