@@ -22,7 +22,7 @@ public class SpringSecurityWebTestConfig {
                 .accountNonLocked(true)
                 .credentialsNonExpired(true)
                 .enabled(true)
-                .authority(UserAuthorities.USER.getRoleName())
+                .authority(UserAuthorities.USER.getAuthority())
                 .build();
 
         User adminUser = User.builder()
@@ -33,7 +33,7 @@ public class SpringSecurityWebTestConfig {
                 .accountNonLocked(true)
                 .credentialsNonExpired(true)
                 .enabled(true)
-                .authority(UserAuthorities.ADMIN.getRoleName())
+                .authority(UserAuthorities.ADMIN.getAuthority())
                 .build();
 
         return new InMemoryUserDetailsManager(Arrays.asList(basicUser, adminUser));

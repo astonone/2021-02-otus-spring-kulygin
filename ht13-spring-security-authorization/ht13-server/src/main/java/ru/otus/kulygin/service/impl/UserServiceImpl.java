@@ -56,12 +56,12 @@ public class UserServiceImpl implements UserService {
         forSave.setEnabled(true);
         if (userDto.getSecretKey() != null && !userDto.getSecretKey().isEmpty()) {
             if (passwordEncoder.matches(userDto.getSecretKey(), this.secretKey)) {
-                forSave.setAuthority(UserAuthorities.ADMIN.getRoleName());
+                forSave.setAuthority(UserAuthorities.ADMIN.getAuthority());
             } else {
                 throw new SecretKeyException();
             }
         } else {
-            forSave.setAuthority(UserAuthorities.USER.getRoleName());
+            forSave.setAuthority(UserAuthorities.USER.getAuthority());
         }
         return mappingService.map(userRepository.save(forSave), UserDto.class);
     }
