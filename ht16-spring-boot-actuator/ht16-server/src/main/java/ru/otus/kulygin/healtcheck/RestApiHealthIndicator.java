@@ -1,4 +1,4 @@
-package ru.otus.kulygin.service.impl;
+package ru.otus.kulygin.healtcheck;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.Health;
@@ -13,10 +13,14 @@ import java.util.Objects;
 @Component
 public class RestApiHealthIndicator implements HealthIndicator {
 
-    @Value("${app.health-check.url}")
-    private String restApiHealthCheckUrl;
+    private final String restApiHealthCheckUrl;
+    private final RestTemplate restTemplate;
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    public RestApiHealthIndicator(@Value("${app.health-check.url}") String restApiHealthCheckUrl,
+                                  RestTemplate restTemplate) {
+        this.restApiHealthCheckUrl = restApiHealthCheckUrl;
+        this.restTemplate = restTemplate;
+    }
 
     @Override
     public Health health() {

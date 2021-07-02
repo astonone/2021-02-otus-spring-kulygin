@@ -16,12 +16,16 @@ export class LogsComponent implements OnInit {
     filter = '';
     orderProp: keyof Log = 'name';
     ascending = true;
+    logs: string[] = [];
 
     constructor(private logsService: LogsService) {
     }
 
     public ngOnInit(): void {
         this.findAndExtractLoggers();
+        this.logsService.getLogFile().subscribe(data => {
+            this.logs = data.split('\n');
+        });
     }
 
     public changeLevel(name: string, level: Level): void {

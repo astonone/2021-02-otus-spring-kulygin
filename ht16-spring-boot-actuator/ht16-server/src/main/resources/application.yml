@@ -27,6 +27,8 @@ management:
       show-details: always
     jhimetrics:
       enabled: true
+    logfile:
+      enabled: true
   metrics:
     enable:
       http: true
@@ -34,3 +36,7 @@ management:
       logback: true
       process: true
       system: true
+
+logging:
+  file:
+    name: library.log
