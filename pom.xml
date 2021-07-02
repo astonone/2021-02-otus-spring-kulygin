@@ -23,6 +23,7 @@
         <module>ht12-spring-security</module>
         <module>ht13-spring-security-authorization</module>
         <module>ht14-spring-batch</module>
+        <module>ht15-spring-integration</module>
     </modules>
 
     <properties>
