@@ -25,6 +25,7 @@
         <module>ht14-spring-batch</module>
         <module>ht15-spring-integration</module>
         <module>ht16-spring-boot-actuator</module>
+        <module>ht17-docker</module>
     </modules>
 
     <properties>

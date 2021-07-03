@@ -1,0 +1,34 @@
+.home {
+    display: flex;
+    min-height: calc(100vh - 64px);
+}
+
+.home-label {
+    cursor: pointer;
+}
+
+.header-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.login-management {
+    display: flex;
+    align-items: center;
+}
+
+.exit-button {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+@media screen and (max-device-width: 768px) {
+    .home-label {
+        font-size: small;
+    }
+
+    .login-management {
+        font-size: small;
+    }
+}
