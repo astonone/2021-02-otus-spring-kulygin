@@ -1,4 +1,4 @@
-#ht13-spring-boot-actuator
+#ht16-spring-boot-actuator
 Homework
 
 Use metrics, healthchecks and logfile
