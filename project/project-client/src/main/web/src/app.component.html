@@ -15,44 +15,80 @@
             </div>
             <div>
                 <a *ngIf="userService.isUserLogged()" mat-list-item
-                   (click)="goto('home')">{{'app.header.home' | translate}}</a>
+                   (click)="goto('home')">
+                    <fa-icon icon="home" [fixedWidth]="true"></fa-icon>
+                    {{'app.header.home' | translate}}</a>
                 <a *ngIf="userService.isUserLogged()" mat-list-item
-                   (click)="goto('candidates')">{{'app.header.candidates' | translate}}</a>
+                   (click)="goto('candidates')">
+                    <fa-icon icon="user" [fixedWidth]="true"></fa-icon>
+                    {{'app.header.candidates' | translate}}</a>
                 <a *ngIf="userService.isUserLogged()" mat-list-item
-                   (click)="goto('interviewers')">{{'app.header.interviewers' | translate}}</a>
+                   (click)="goto('interviewers')">
+                    <fa-icon icon="user-graduate" [fixedWidth]="true"></fa-icon>
+                    {{'app.header.interviewers' | translate}}</a>
                 <a *ngIf="userService.isUserLogged()" mat-list-item
-                   (click)="goto('templates')">{{'app.header.templates' | translate}}</a>
+                   (click)="goto('templates')">
+                    <fa-icon icon="clipboard-list" [fixedWidth]="true"></fa-icon>
+                    {{'app.header.templates' | translate}}</a>
                 <a *ngIf="userService.isUserLogged()" mat-list-item
-                   (click)="goto('template-criteria')">{{'app.header.template-criteria' | translate}}</a>
+                   (click)="goto('template-criteria')">
+                    <fa-icon icon="edit" [fixedWidth]="true"></fa-icon>
+                    {{'app.header.template-criteria' | translate}}</a>
                 <a *ngIf="userService.isUserLogged()" mat-list-item
-                   (click)="goto('interviews')">{{'app.header.interviews' | translate}}</a>
+                   (click)="goto('interviews')">
+                    <fa-icon icon="user-friends" [fixedWidth]="true"></fa-icon>
+                    {{'app.header.interviews' | translate}}</a>
                 <a *ngIf="!userService.isUserLogged()" mat-list-item
                    (click)="goto('login')">{{'app.header.button.login' | translate}}</a>
                 <a *ngIf="!userService.isUserLogged()" mat-list-item
                    (click)="goto('sign-up')">{{'app.header.button.sign-up' | translate}}</a>
-                <a *ngIf="shared.isMobile() && userService.isUserLogged()" (click)="logout()"
-                   mat-list-item>{{'app.header.button.logout' | translate}}</a>
+                <a *ngIf="shared.isMobile() && userService.isUserLogged()" mat-list-item (click)="goto('metrics')">
+                    <fa-icon icon="tachometer-alt" [fixedWidth]="true"></fa-icon>
+                    {{'menu.management.metrics' | translate}}</a>
+                <a *ngIf="shared.isMobile() && userService.isUserLogged()" mat-list-item (click)="goto('health')">
+                    <fa-icon icon="heart" [fixedWidth]="true"></fa-icon>
+                    {{'menu.management.health' | translate}}</a>
+                <a *ngIf="shared.isMobile() && userService.isUserLogged()" mat-list-item
+                   (click)="goto('configuration')">
+                    <fa-icon icon="cogs" [fixedWidth]="true"></fa-icon>
+                    {{'menu.management.configuration' | translate}}</a>
+                <a *ngIf="shared.isMobile() && userService.isUserLogged()" mat-list-item (click)="goto('logs')">
+                    <fa-icon icon="tasks" [fixedWidth]="true"></fa-icon>
+                    {{'menu.management.logs' | translate}}</a>
                 <mat-accordion *ngIf="shared.isMobile()">
                     <mat-expansion-panel [expanded]="true">
                         <mat-expansion-panel-header>
                             <mat-panel-title>
+                                <fa-icon icon="palette" [fixedWidth]="true"></fa-icon>
                                 {{'app.header.themes' | translate}}
                             </mat-panel-title>
                         </mat-expansion-panel-header>
                         <button [ngStyle]="{'background-color':isSelected('deeppurple-amber') ? 'red' : '' }"
-                                mat-menu-item (click)="onSetTheme('deeppurple-amber')">deeppurple-amber
+                                mat-menu-item (click)="onSetTheme('deeppurple-amber')">
+                            <fa-icon icon="palette" [fixedWidth]="true"></fa-icon>
+                            deeppurple-amber
                         </button>
                         <button [ngStyle]="{'background-color':isSelected('indigo-pink') ? 'red' : '' }" mat-menu-item
-                                (click)="onSetTheme('indigo-pink')">indigo-pink
+                                (click)="onSetTheme('indigo-pink')">
+                            <fa-icon icon="palette" [fixedWidth]="true"></fa-icon>
+                            indigo-pink
                         </button>
                         <button [ngStyle]="{'background-color':isSelected('pink-bluegrey') ? 'red' : '' }" mat-menu-item
-                                (click)="onSetTheme('pink-bluegrey')">pink-bluegrey
+                                (click)="onSetTheme('pink-bluegrey')">
+                            <fa-icon icon="palette" [fixedWidth]="true"></fa-icon>
+                            pink-bluegrey
                         </button>
                         <button [ngStyle]="{'background-color':isSelected('purple-green') ? 'red' : '' }" mat-menu-item
-                                (click)="onSetTheme('purple-green')">purple-green
+                                (click)="onSetTheme('purple-green')">
+                            <fa-icon icon="palette" [fixedWidth]="true"></fa-icon>
+                            purple-green
                         </button>
                     </mat-expansion-panel>
                 </mat-accordion>
+                <a *ngIf="shared.isMobile() && userService.isUserLogged()" (click)="logout()"
+                   mat-list-item>
+                    <fa-icon icon="sign-out-alt" [fixedWidth]="true"></fa-icon>
+                    {{'app.header.button.logout' | translate}}</a>
             </div>
         </mat-nav-list>
     </mat-sidenav>
@@ -75,21 +111,58 @@
                      src="assets/image/actions/exit.svg" (click)="logout()">
             </div>
             <div class="header-control-label-panel">
-                <button mat-button [matMenuTriggerFor]="themes" *ngIf="!shared.isMobile()">
+                <button mat-button [matMenuTriggerFor]="menu" *ngIf="!shared.isMobile()">
                     <mat-icon>more_vert</mat-icon>
                 </button>
+                <mat-menu #menu="matMenu">
+                    <button *ngIf="!shared.isMobile()" mat-menu-item [matMenuTriggerFor]="themes">
+                        <fa-icon icon="palette"></fa-icon>
+                        {{'menu.themes' | translate}}
+                    </button>
+                    <button *ngIf="!shared.isMobile() && userService.isUserLogged()" mat-menu-item
+                            [matMenuTriggerFor]="management">
+                        <fa-icon icon="users-cog"></fa-icon>
+                        {{'menu.management.main' | translate}}
+                    </button>
+                </mat-menu>
                 <mat-menu #themes="matMenu">
                     <button [ngStyle]="{'background-color':isSelected('deeppurple-amber') ? 'red' : '' }" mat-menu-item
-                            (click)="onSetTheme('deeppurple-amber')">deeppurple-amber
+                            (click)="onSetTheme('deeppurple-amber')">
+                        <fa-icon icon="palette"></fa-icon>
+                        deeppurple-amber
                     </button>
                     <button [ngStyle]="{'background-color':isSelected('indigo-pink') ? 'red' : '' }" mat-menu-item
-                            (click)="onSetTheme('indigo-pink')">indigo-pink
+                            (click)="onSetTheme('indigo-pink')">
+                        <fa-icon icon="palette"></fa-icon>
+                        indigo-pink
                     </button>
                     <button [ngStyle]="{'background-color':isSelected('pink-bluegrey') ? 'red' : '' }" mat-menu-item
-                            (click)="onSetTheme('pink-bluegrey')">pink-bluegrey
+                            (click)="onSetTheme('pink-bluegrey')">
+                        <fa-icon icon="palette"></fa-icon>
+                        pink-bluegrey
                     </button>
                     <button [ngStyle]="{'background-color':isSelected('purple-green') ? 'red' : '' }" mat-menu-item
-                            (click)="onSetTheme('purple-green')">purple-green
+                            (click)="onSetTheme('purple-green')">
+                        <fa-icon icon="palette"></fa-icon>
+                        purple-green
+                    </button>
+                </mat-menu>
+                <mat-menu #management="matMenu">
+                    <button mat-menu-item (click)="goto('metrics')">
+                        <fa-icon icon="tachometer-alt" [fixedWidth]="true"></fa-icon>
+                        {{'menu.management.metrics' | translate}}
+                    </button>
+                    <button mat-menu-item (click)="goto('health')">
+                        <fa-icon icon="heart" [fixedWidth]="true"></fa-icon>
+                        {{'menu.management.health' | translate}}
+                    </button>
+                    <button mat-menu-item (click)="goto('configuration')">
+                        <fa-icon icon="cogs" [fixedWidth]="true"></fa-icon>
+                        {{'menu.management.configuration' | translate}}
+                    </button>
+                    <button mat-menu-item (click)="goto('logs')">
+                        <fa-icon icon="tasks" [fixedWidth]="true"></fa-icon>
+                        {{'menu.management.logs' | translate}}
                     </button>
                 </mat-menu>
                 <form class="lang">

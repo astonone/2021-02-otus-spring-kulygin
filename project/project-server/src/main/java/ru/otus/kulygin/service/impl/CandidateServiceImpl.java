@@ -2,6 +2,8 @@ package ru.otus.kulygin.service.impl;
 
 import lombok.val;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,6 +41,7 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
+    @Cacheable(value = "candidates", key="{ #pageable.getPageNumber(), #pageable.getPageSize() }")
     public CandidatePageableDto findAll(Pageable pageable) {
         val candidates = candidateRepository.findAll(pageable);
 
@@ -53,6 +56,7 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
+    @Cacheable(value = "candidates", key="{ #root.methodName }")
     public CandidatePageableDto findAll() {
         val candidates = candidateRepository.findAll();
 
@@ -62,6 +66,7 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
+    @CacheEvict(value = {"candidates", "interviews", "interview"}, allEntries = true)
     public CandidateDto save(CandidateDto candidateDto, MultipartFile uploadedFile) throws FileWritingException, WrongCvFileFormatException {
         Candidate forSave = Candidate.builder().build();
         Optional<Candidate> candidateById = Optional.empty();
@@ -111,6 +116,7 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
+    @CacheEvict(value = {"candidates", "interviews", "interview"}, allEntries = true)
     public void deleteById(String id) {
         if (candidateRepository.existsById(id)) {
             deletePreviousCvFileIfExists(id);

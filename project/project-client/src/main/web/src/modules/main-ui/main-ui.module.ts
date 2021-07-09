@@ -23,6 +23,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {MatTableModule} from '@angular/material/table';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import {NgbProgressbarModule} from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -50,7 +51,8 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
         ReactiveFormsModule,
         MatTableModule,
         MatSnackBarModule,
-        NgxMaterialTimepickerModule
+        NgxMaterialTimepickerModule,
+        NgbProgressbarModule
     ],
     declarations: [],
     providers: [
@@ -78,7 +80,8 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
         ReactiveFormsModule,
         MatTableModule,
         MatSnackBarModule,
-        NgxMaterialTimepickerModule
+        NgxMaterialTimepickerModule,
+        NgbProgressbarModule
     ]
 })
 export class MainUiModule {

@@ -46,7 +46,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
                 .antMatchers("/", "*/home", "*/candidates", "*/interviewers", "*/interviews", "*/templates", "*/template-criteria",
-                        "*/login", "*/sign-up", "*/edit-criterias/*", "*/interview/*", "/page-not-found").permitAll()
+                        "*/login", "*/sign-up", "*/edit-criterias/*", "*/interview/*", "/page-not-found",
+                         "/metrics", "/health", "/configuration", "/logs").permitAll()
                 .antMatchers("/assets/themes/*.css", "/assets/i18n/*.json", "/assets/*.png", "/assets/image/*.png", "/assets/image/actions/*.svg", "/assets/image/actions/*.png", "/*.js", "/*.css", "/*.html").permitAll()
                 .antMatchers("/api/interviewer/", "/api/interviewer/login").permitAll()
                 .anyRequest()

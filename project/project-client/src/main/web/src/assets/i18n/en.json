@@ -17,6 +17,16 @@
       }
     }
   },
+  "menu": {
+    "themes": "Themes",
+    "management" : {
+      "main": "Management",
+      "metrics": "Metrics",
+      "health": "Health",
+      "logs": "Logs",
+      "configuration": "Configuration"
+    }
+  },
   "home": {
     "empty": "You do not have any scheduled interviews",
     "interviewer": "Interviewer",

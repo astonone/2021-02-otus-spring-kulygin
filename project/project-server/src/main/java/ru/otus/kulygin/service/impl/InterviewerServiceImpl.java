@@ -2,6 +2,8 @@ package ru.otus.kulygin.service.impl;
 
 import lombok.val;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,7 @@ public class InterviewerServiceImpl implements InterviewerService {
     }
 
     @Override
+    @Cacheable(value = "interviewers", key="{ #pageable.getPageNumber(), #pageable.getPageSize() }")
     public InterviewerPageableDto findAll(Pageable pageable) {
         val interviewers = interviewerRepository.findAll(pageable);
 
@@ -52,6 +55,7 @@ public class InterviewerServiceImpl implements InterviewerService {
     }
 
     @Override
+    @Cacheable(value = "interviewers", key="{ #root.methodName }")
     public InterviewerPageableDto findAll() {
         val interviewers = interviewerRepository.findAll();
 
@@ -61,6 +65,7 @@ public class InterviewerServiceImpl implements InterviewerService {
     }
 
     @Override
+    @Cacheable(value = "interviewer")
     public InterviewerDto getById(String id) {
         return interviewerRepository.findById(id)
                 .map(interviewer -> mappingService.map(interviewer, InterviewerDto.class))
@@ -68,6 +73,7 @@ public class InterviewerServiceImpl implements InterviewerService {
     }
 
     @Override
+    @CacheEvict(value = {"interviewers", "interviewer", "interviews", "interview"}, allEntries = true)
     public InterviewerDto save(InterviewerDto interviewerDto) {
         Interviewer forSave = Interviewer.builder().build();
         if (interviewerDto.isCreate()) {
@@ -124,6 +130,7 @@ public class InterviewerServiceImpl implements InterviewerService {
     }
 
     @Override
+    @CacheEvict(value = {"interviewers", "interviewer", "interviews", "interview"}, allEntries = true)
     public void deleteById(String id) {
         if (interviewerRepository.existsById(id)) {
             interviewerRepository.deleteById(id);

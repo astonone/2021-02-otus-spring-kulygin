@@ -1,6 +1,8 @@
 package ru.otus.kulygin.service.impl;
 
 import lombok.val;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.otus.kulygin.domain.InterviewTemplateCriteria;
@@ -25,6 +27,7 @@ public class InterviewTemplateCriteriaServiceImpl implements InterviewTemplateCr
     }
 
     @Override
+    @Cacheable(value = "criterias", key="{ #pageable.getPageNumber(), #pageable.getPageSize() }")
     public InterviewTemplateCriteriaPageableDto findAll(Pageable pageable) {
         val criterias = interviewTemplateCriteriaRepository.findAll(pageable);
 
@@ -39,6 +42,7 @@ public class InterviewTemplateCriteriaServiceImpl implements InterviewTemplateCr
     }
 
     @Override
+    @CacheEvict(value = {"criterias", "templates", "template", "interviews", "interview"}, allEntries = true)
     public InterviewTemplateCriteriaDto save(InterviewTemplateCriteriaDto criteriaDto) {
         InterviewTemplateCriteria forSave = InterviewTemplateCriteria.builder().build();
         Optional<InterviewTemplateCriteria> criteriaById = Optional.empty();
@@ -57,6 +61,7 @@ public class InterviewTemplateCriteriaServiceImpl implements InterviewTemplateCr
     }
 
     @Override
+    @CacheEvict(value = {"criterias", "templates", "template", "interviews", "interview"}, allEntries = true)
     public void deleteById(String id) {
         if (interviewTemplateCriteriaRepository.existsById(id)) {
             interviewTemplateCriteriaRepository.deleteById(id);
@@ -64,6 +69,7 @@ public class InterviewTemplateCriteriaServiceImpl implements InterviewTemplateCr
     }
 
     @Override
+    @Cacheable("criteria")
     public InterviewTemplateCriteria processItem(InterviewTemplateCriteria criteria) {
         return interviewTemplateCriteriaRepository.existsByNameAndPositionType(criteria.getName(), criteria.getPositionType())
                 ? null

@@ -1,9 +1,11 @@
-﻿a {
+﻿@import "~bootstrap/dist/css/bootstrap.css";
+
+a {
     cursor: pointer;
 }
 
 body {
-    font-family: "Roboto";
+    font-family: 'Roboto', sans-serif;
 }
 
 .main {

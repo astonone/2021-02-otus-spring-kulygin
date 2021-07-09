@@ -7,13 +7,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.otus.kulygin.domain.InterviewTemplate;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class InterviewDto {
+public class InterviewDto implements Serializable {
 
     private String id;
     private CandidateDto candidate;

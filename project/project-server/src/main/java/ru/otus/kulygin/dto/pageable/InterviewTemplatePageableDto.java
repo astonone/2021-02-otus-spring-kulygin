@@ -6,13 +6,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.otus.kulygin.dto.InterviewTemplateDto;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class InterviewTemplatePageableDto {
+public class InterviewTemplatePageableDto implements Serializable {
 
     private long totalSize;
     private int totalPageSize;

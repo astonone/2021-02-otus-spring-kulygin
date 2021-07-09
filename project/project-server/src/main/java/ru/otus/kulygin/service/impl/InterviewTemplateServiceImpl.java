@@ -1,6 +1,8 @@
 package ru.otus.kulygin.service.impl;
 
 import lombok.val;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.otus.kulygin.domain.InterviewTemplate;
@@ -32,6 +34,7 @@ public class InterviewTemplateServiceImpl implements InterviewTemplateService {
     }
 
     @Override
+    @Cacheable(value = "templates", key="{ #pageable.getPageNumber(), #pageable.getPageSize() }")
     public InterviewTemplatePageableDto findAll(Pageable pageable) {
         val templates = interviewTemplateRepository.findAll(pageable);
 
@@ -46,6 +49,7 @@ public class InterviewTemplateServiceImpl implements InterviewTemplateService {
     }
 
     @Override
+    @Cacheable(value = "templates", key="{ #root.methodName}")
     public InterviewTemplatePageableDto findAll() {
         val templates = interviewTemplateRepository.findAll();
 
@@ -55,6 +59,7 @@ public class InterviewTemplateServiceImpl implements InterviewTemplateService {
     }
 
     @Override
+    @CacheEvict(value = {"templates", "template", "interviews", "interview"}, allEntries = true)
     public InterviewTemplateDto save(InterviewTemplateDto templateDto) {
         InterviewTemplate forSave = InterviewTemplate.builder().build();
         Optional<InterviewTemplate> templateById = Optional.empty();
@@ -71,6 +76,7 @@ public class InterviewTemplateServiceImpl implements InterviewTemplateService {
     }
 
     @Override
+    @CacheEvict(value = {"templates", "template", "interviews", "interview"}, allEntries = true)
     public void deleteById(String id) {
         if (interviewTemplateRepository.existsById(id)) {
             interviewTemplateRepository.deleteById(id);
@@ -78,6 +84,7 @@ public class InterviewTemplateServiceImpl implements InterviewTemplateService {
     }
 
     @Override
+    @Cacheable("template")
     public InterviewTemplateDto getById(String id) {
         return interviewTemplateRepository.findById(id)
                 .map(template -> mappingService.map(template, InterviewTemplateDto.class))
@@ -85,6 +92,7 @@ public class InterviewTemplateServiceImpl implements InterviewTemplateService {
     }
 
     @Override
+    @CacheEvict(value = {"templates", "template", "interviews", "interview"}, allEntries = true)
     public InterviewTemplateDto addCriteria(String templateId, InterviewTemplateCriteriaDto criteria) {
         if (!interviewTemplateRepository.existsById(templateId)) {
             throw new InterviewTemplateDoesNotExistException();
@@ -95,6 +103,7 @@ public class InterviewTemplateServiceImpl implements InterviewTemplateService {
     }
 
     @Override
+    @CacheEvict(value = {"templates", "template", "interviews", "interview"}, allEntries = true)
     public InterviewTemplateDto deleteCriteria(String templateId, String criteriaId) {
         if (!interviewTemplateRepository.existsById(templateId)) {
             throw new InterviewTemplateDoesNotExistException();

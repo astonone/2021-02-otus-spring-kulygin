@@ -1,6 +1,8 @@
 package ru.otus.kulygin.service.impl;
 
 import lombok.val;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.otus.kulygin.domain.Interview;
@@ -41,6 +43,7 @@ public class InterviewServiceImpl implements InterviewService {
     }
 
     @Override
+    @Cacheable(value = "interviews", key="{ #pageable.getPageNumber(), #pageable.getPageSize() }")
     public InterviewPageableDto findAll(Pageable pageable) {
         val interviews = interviewRepository.findAll(pageable);
 
@@ -55,6 +58,7 @@ public class InterviewServiceImpl implements InterviewService {
     }
 
     @Override
+    @Cacheable(value = "interviews", key="#root.methodName")
     public InterviewPageableDto findAll() {
         val interviews = interviewRepository.findAll();
 
@@ -64,6 +68,7 @@ public class InterviewServiceImpl implements InterviewService {
     }
 
     @Override
+    @Cacheable(value = "interviews", key="{ #pageable.getPageNumber(), #pageable.getPageSize(), #status }")
     public InterviewPageableDto findAllByInterviewStatus(Pageable pageable, String status) {
         val interviews = interviewRepository.findAllByInterviewStatus(InterviewStatus.valueOf(status), pageable);
 
@@ -78,6 +83,7 @@ public class InterviewServiceImpl implements InterviewService {
     }
 
     @Override
+    @CacheEvict(value = {"interviews", "interview"}, allEntries = true)
     public InterviewDto save(InterviewDto interviewDto) {
         Interview forSave = Interview.builder().build();
         Optional<Interview> interviewById = Optional.empty();
@@ -108,6 +114,7 @@ public class InterviewServiceImpl implements InterviewService {
     }
 
     @Override
+    @CacheEvict(value = {"interviews", "interview"}, allEntries = true)
     public void deleteById(String id) {
         if (interviewRepository.existsById(id)) {
             interviewRepository.deleteById(id);
@@ -115,6 +122,7 @@ public class InterviewServiceImpl implements InterviewService {
     }
 
     @Override
+    @Cacheable(value = "interview")
     public InterviewDto getById(String id) {
         return interviewRepository.findById(id)
                 .map(interview -> mappingService.map(interview, InterviewDto.class))
@@ -122,6 +130,7 @@ public class InterviewServiceImpl implements InterviewService {
     }
 
     @Override
+    @CacheEvict(value = "interview", allEntries = true)
     public InterviewDto updateCriteria(String interviewId, String criteriaId, Integer mark) {
         val interview = interviewRepository.findById(interviewId).orElseThrow(InterviewDoesNotExistException::new);
         val templateCriteria = interview.getInterviewTemplate().getCriterias().stream()
@@ -138,6 +147,7 @@ public class InterviewServiceImpl implements InterviewService {
     }
 
     @Override
+    @CacheEvict(value = "interview", allEntries = true)
     public InterviewDto updateCriteriaComment(String interviewId, String criteriaId, InterviewTemplateCriteriaDto criteria) {
         val interview = interviewRepository.findById(interviewId).orElseThrow(InterviewDoesNotExistException::new);
         val templateCriteria = interview.getInterviewTemplate().getCriterias().stream()
