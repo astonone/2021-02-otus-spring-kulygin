@@ -1,0 +1,10 @@
+.home {
+    width: 100%;
+}
+
+.home-tabs {
+    width: 100%;
+}
+
+@media screen and (max-device-width: 768px) {
+}
