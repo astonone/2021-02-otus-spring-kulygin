@@ -11,9 +11,9 @@ spring:
   data:
     mongodb:
       authentication-database: none
-      host: localhost
-      port: 27017
-      database: interviewer
+      host: ${DB_HOST:localhost}
+      port: ${DB_PORT:27017}
+      database: ${DB_NAME:interviewer}
   #H2 config
   datasource:
     url: jdbc:h2:mem:interviewer

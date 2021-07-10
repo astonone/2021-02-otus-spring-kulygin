@@ -29,7 +29,7 @@
                 <configuration>
                     <nodeVersion>${node.version}</nodeVersion>
                     <npmVersion>${npm.version}</npmVersion>
-                    <workingDirectory>../../../2021-02-otus-spring-kulygin/project/project-client/src/main/web</workingDirectory>
+                    <workingDirectory>${project.parent.basedir}/project-client/src/main/web</workingDirectory>
                 </configuration>
 
                 <executions>
@@ -47,16 +47,6 @@
                         </goals>
                     </execution>
 
-                    <execution>
-                        <id>npm run build</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-
-                        <configuration>
-                            <arguments>run build</arguments>
-                        </configuration>
-                    </execution>
                     <execution>
                         <id>prod</id>
                         <goals>

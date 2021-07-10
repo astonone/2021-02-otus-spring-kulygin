@@ -1,0 +1,29 @@
+version: "3.8"
+
+networks:
+  backend:
+    external: false
+    name: backend
+services:
+  interviewer-db-image:
+    networks:
+      - backend
+    image: mongo:4.4.6
+    hostname: docker-interviewer-db
+    ports:
+      - 27017:27017
+  interviewer-app-image:
+    networks:
+      - backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    privileged: true
+    environment:
+      - DB_HOST=docker-interviewer-db
+      - DB_PORT=27017
+      - DB_NAME=interviewer
+    ports:
+      - 8080:8080
+    depends_on:
+      - interviewer-db-image
