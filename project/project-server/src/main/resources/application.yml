@@ -10,10 +10,9 @@ spring:
   #MongoDB config
   data:
     mongodb:
-      authentication-database: none
       host: ${DB_HOST:localhost}
       port: ${DB_PORT:27017}
-      database: ${DB_NAME:interviewer}
+      database: ${DB_NAME:interviwer}
   #H2 config
   datasource:
     url: jdbc:h2:mem:interviewer
@@ -62,4 +61,4 @@ management:
 
 logging:
   file:
-    name: ${user.home}/interviewer-stor/interviewer.log
+    path: log

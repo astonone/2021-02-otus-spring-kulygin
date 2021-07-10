@@ -1,20 +1,20 @@
 version: "3.8"
 
 networks:
-  backend:
+  project-server:
     external: false
-    name: backend
+    name: project-server
 services:
   interviewer-db-image:
     networks:
-      - backend
+      - project-server
     image: mongo:4.4.6
     hostname: docker-interviewer-db
     ports:
       - 27017:27017
   interviewer-app-image:
     networks:
-      - backend
+      - project-server
     build:
       context: .
       dockerfile: Dockerfile
