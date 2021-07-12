@@ -14,7 +14,6 @@
     <properties>
         <ru.otus.kulygin.project-client.version>1.0-SNAPSHOT</ru.otus.kulygin.project-client.version>
 
-        <spring.shell.version>2.0.1.RELEASE</spring.shell.version>
         <org.projectlombok.lombok.version>1.18.18</org.projectlombok.lombok.version>
         <com.fasterxml.jackson.version>2.12.2</com.fasterxml.jackson.version>
         <ma.glasnost.orika.orika-core.version>1.5.4</ma.glasnost.orika.orika-core.version>
@@ -89,12 +88,6 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.shell</groupId>
-            <artifactId>spring-shell-starter</artifactId>
-            <version>${spring.shell.version}</version>
         </dependency>
 
         <dependency>

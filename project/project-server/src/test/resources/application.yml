@@ -1,7 +1,4 @@
 spring:
-  shell:
-    interactive:
-      enabled: false
     #MongoDB config
   data:
     mongodb:

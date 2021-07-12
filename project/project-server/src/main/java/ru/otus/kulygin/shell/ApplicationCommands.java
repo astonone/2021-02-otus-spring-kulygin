@@ -1,3 +1,4 @@
+/*
 package ru.otus.kulygin.shell;
 
 import org.h2.tools.Console;
@@ -46,3 +47,4 @@ public class ApplicationCommands {
     }
 
 }
+*/

@@ -3,10 +3,6 @@ spring:
   batch:
     job:
       enabled: false
-  #Shell config
-  shell:
-    interactive:
-      enabled: true
   #MongoDB config
   data:
     mongodb:
