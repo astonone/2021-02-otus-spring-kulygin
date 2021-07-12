@@ -23,7 +23,7 @@ services:
       - DB_HOST=docker-interviewer-db
       - DB_PORT=27017
       - DB_NAME=interviewer
-      - APP_STORAGE=/opt/interviewer/storage
+      - APP_STORAGE=
     ports:
       - 8080:8080
     depends_on:
