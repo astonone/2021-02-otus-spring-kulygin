@@ -2,6 +2,7 @@ FROM maven:3.8.1-openjdk-11
 ENV PROJECT_DIR=/opt/interviewer
 
 RUN mkdir -p $PROJECT_DIR
+RUN mkdir -p $PROJECT_DIR/storage/
 WORKDIR $PROJECT_DIR
 COPY . .
 RUN mvn clean install -Dmaven.test.skip=true

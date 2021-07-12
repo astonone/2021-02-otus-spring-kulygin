@@ -8,7 +8,7 @@ spring:
       database: interviewer-test
 file:
   storage:
-    path: ${user.home}/interviewer-stor/
+    path: ${APP_STORAGE:${user.home}/interviewer-stor/}
 app:
   admin:
     # mySecret777

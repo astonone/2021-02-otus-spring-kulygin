@@ -3,27 +3,19 @@ package ru.otus.kulygin.changelogs;
 import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;
 import lombok.val;
-import org.apache.commons.io.IOUtils;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ru.otus.kulygin.domain.*;
-import ru.otus.kulygin.enumeration.DecisionStatus;
-import ru.otus.kulygin.enumeration.InterviewStatus;
+import ru.otus.kulygin.domain.InterviewTemplate;
+import ru.otus.kulygin.domain.InterviewTemplateCriteria;
+import ru.otus.kulygin.domain.Interviewer;
 import ru.otus.kulygin.enumeration.UserRoles;
-import ru.otus.kulygin.repository.*;
+import ru.otus.kulygin.repository.InterviewTemplateCriteriaRepository;
+import ru.otus.kulygin.repository.InterviewTemplateRepository;
+import ru.otus.kulygin.repository.InterviewerRepository;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 
 @ChangeLog(order = "001")
 public class Changelog001 {
-
-    private final String storagePath = System.getProperty("user.home") + "/interviewer-stor/";
 
     @ChangeSet(order = "001", id = "2021-09-04--001-insert-interviewers--vkulygin", author = "viktor.kulygin")
     public void insertInterviewers(InterviewerRepository interviewerRepository, PasswordEncoder passwordEncoder) {
@@ -462,71 +454,7 @@ public class Changelog001 {
                 criteria71, criteria72, criteria73));
     }
 
-    @ChangeSet(order = "003", id = "2021-26-04--001-insert-candidates--vkulygin", author = "viktor.kulygin")
-    public void insertCandidates(CandidateRepository candidateRepository) {
-        val candidate = Candidate.builder()
-                .firstName("Виктор")
-                .lastName("Кулыгин")
-                .claimingPosition("Java Software Architect")
-                .pathToCvFile(storagePath + "Viktor_Kulygin_Java_Developer.pdf")
-                .build();
-
-        val candidate2 = Candidate.builder()
-                .firstName("Ирина")
-                .lastName("Кулыгина")
-                .claimingPosition("Java Developer")
-                .interviewerComment("Должен быть толковый джун")
-                .pathToCvFile(storagePath + "Irina_Kulygina_-_Java_Developer.pdf")
-                .build();
-
-        val candidate3 = Candidate.builder()
-                .firstName("Андрей")
-                .lastName("Оськин")
-                .claimingPosition("Java Senior Developer")
-                .pathToCvFile(storagePath + "Andrew Oskin Java Developer.pdf")
-                .build();
-
-        candidateRepository.saveAll(Arrays.asList(candidate, candidate2, candidate3));
-
-        copyCvFilesToUserHomeDirectory(storagePath, "Viktor_Kulygin_Java_Developer.pdf",
-                "Irina_Kulygina_-_Java_Developer.pdf", "Andrew Oskin Java Developer.pdf");
-    }
-
-    private void copyCvFilesToUserHomeDirectory(String storagePath, String... fileNames) {
-        for (String fileName : fileNames) {
-            copyFile(getFileInputStream(fileName), storagePath, fileName);
-        }
-    }
-
-    private InputStream getFileInputStream(String filename) {
-        try {
-            return new ClassPathResource("cv/" + filename).getInputStream();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private void copyFile(InputStream fileInputStream, String storagePath, String filename) {
-        File targetFile = new File(storagePath + filename);
-
-        try {
-            Files.copy(
-                    fileInputStream,
-                    targetFile.toPath(),
-                    StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            IOUtils.close(fileInputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @ChangeSet(order = "004", id = "2021-02-05--001-insert-template--vkulygin", author = "viktor.kulygin")
+    @ChangeSet(order = "003", id = "2021-02-05--001-insert-template--vkulygin", author = "viktor.kulygin")
     public void insertTemplate(InterviewTemplateRepository interviewTemplateRepository, InterviewTemplateCriteriaRepository interviewTemplateCriteriaRepository) {
 
         val java_junior_developer = interviewTemplateCriteriaRepository.findAllByPositionType("Java Developer");
@@ -537,29 +465,6 @@ public class Changelog001 {
                 .build();
 
         interviewTemplateRepository.save(template);
-    }
-
-    @ChangeSet(order = "005", id = "2021-15-05--001-insert-interview--vkulygin", author = "viktor.kulygin")
-    public void insertInterview(InterviewRepository interviewRepository, InterviewTemplateRepository interviewTemplateRepository,
-                                CandidateRepository candidateRepository, InterviewerRepository interviewerRepository) {
-
-        val interviewTemplate = interviewTemplateRepository.findByPositionName("Java Junior Developer");
-        val candidate = candidateRepository.findByFirstNameAndLastName("Ирина", "Кулыгина");
-        val interviewer = interviewerRepository.findByFirstNameAndLastName("Джон", "Петрович");
-
-        val interview = Interview.builder()
-                .candidate(candidate)
-                .interviewer(interviewer)
-                .interviewTemplate(interviewTemplate)
-                .interviewDateTime(LocalDateTime.of(2021, 8, 25, 14, 30))
-                .interviewStatus(InterviewStatus.PLANNED)
-                .totalMark(0.0)
-                .totalComment("")
-                .desiredSalary("2000 €")
-                .decisionStatus(DecisionStatus.NOT_APPLICABLE)
-                .build();
-
-        interviewRepository.save(interview);
     }
 
 }
