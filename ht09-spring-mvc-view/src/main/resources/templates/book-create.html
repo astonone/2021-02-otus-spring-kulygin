@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Create book</title>
+    <style type="text/css">
+        .main-container {
+            padding: 15px 15px 15px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .btn-action {
+            margin-top: 15px !important;
+        }
+
+        .book-dropdown {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css" rel="stylesheet"/>
+    <link th:href="@{/css/bootstrap-select.min.css}" href="../static/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <ul class="nav navbar-nav">
+        <li><a>Библиотека</a></li>
+        <li><a th:href="@{/}" href="book-list.html">Книги</a></li>
+        <li class="active"><a href="#">Создать</a></li>
+    </ul>
+</nav>
+<div class="main-container">
+    <form id="create-form" th:action="@{/create-book}" th:method="post" action="book-create.html">
+        <h1>Информация о книге:</h1>
+        <div>
+            <label for="holder-input-name">Название:</label>
+            <input id="holder-input-name" class="form-control" name="title" type="text" th:value="${book.title}"
+                   value="Holy Bible"/>
+        </div>
+
+        <div class="book-dropdown">
+            <label for="holder-input-name">Автор:</label>
+            <select th:field="*{book.author.id}" class="selectpicker form-control">
+                <option th:each="author : ${authors}" th:value="${author.id}"
+                        th:text="${author.firstName + ' ' + author.lastName}"
+                        th:selected="${book.author.id==author.id}"></option>
+            </select>
+        </div>
+
+        <div class="book-dropdown">
+            <label for="holder-input-name">Жанр:</label>
+            <select th:field="*{book.genre.id}" class="selectpicker form-control">
+                <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}"
+                        th:selected="${book.genre.id==genre.id}"></option>
+            </select>
+        </div>
+
+        <div>
+            <button class="btn btn-success btn-action" type="submit">Создать</button>
+        </div>
+    </form>
+</div>
+
+<script th:src="@{/js/jquery-3.6.0.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/bootstrap-select.min.js}"></script>
+
+</body>
+</html>

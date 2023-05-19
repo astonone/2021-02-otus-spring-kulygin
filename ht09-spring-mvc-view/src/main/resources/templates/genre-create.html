@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Create genre</title>
+    <style type="text/css">
+        .main-container {
+            padding: 15px 15px 15px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .btn-action {
+            margin-top: 15px !important;
+        }
+    </style>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <ul class="nav navbar-nav">
+        <li><a>Библиотека</a></li>
+        <li><a th:href="@{/genre-list}" href="genre-list.html">Жанры</a></li>
+        <li class="active"><a href="#">Создать</a></li>
+    </ul>
+</nav>
+<div class="main-container">
+    <form id="create-form" th:action="@{/create-genre}" th:method="post" action="genre-create.html">
+        <h1>Информация о жанре:</h1>
+        <div>
+            <label for="holder-input-name">Название:</label>
+            <input id="holder-input-name" class="form-control" name="name" type="text" th:value="${genre.name}"
+                   value="drama"/>
+        </div>
+        <div>
+            <button class="btn btn-success btn-action" type="submit">Создать</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

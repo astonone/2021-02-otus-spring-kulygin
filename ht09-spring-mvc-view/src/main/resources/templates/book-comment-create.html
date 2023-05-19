@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Create comment</title>
+    <style type="text/css">
+        .main-container {
+            padding: 15px 15px 15px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .btn-action {
+            margin-top: 15px !important;
+        }
+    </style>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <ul class="nav navbar-nav">
+        <li><a>Библиотека</a></li>
+        <li class="active"><a href="#">Создание комментария</a></li>
+    </ul>
+</nav>
+<div class="main-container">
+    <form id="create-form" th:action="@{/book-comment-create(bookId=${bookId})}" th:method="post"
+          action="book-comment-create.html">
+        <h1>Ваш комментарий:</h1>
+        <div>
+            <label for="holder-input-name">Имя:</label>
+            <input id="holder-input-name" name="commentatorName" class="form-control" type="text"
+                   th:value="${comment.commentatorName}" value="ivan"/>
+        </div>
+        <div>
+            <label for="holder-input-text">Текст:</label>
+            <input id="holder-input-text" name="text" class="form-control" type="text" th:value="${comment.text}"
+                   value="wow"/>
+        </div>
+        <div>
+            <button class="btn btn-success btn-action" type="submit">Создать</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

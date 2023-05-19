@@ -1,0 +1,79 @@
+<div>
+    <button mat-raised-button color="primary" class="new-entity-button" (click)="newAuthor()">New author
+    </button>
+
+    <table mat-table #authorTable [dataSource]="localStorageService.authors" class="entity-table mat-elevation-z8">
+
+        <!-- id Column -->
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> No.</th>
+            <td mat-cell *matCellDef="let element">
+                <div *ngIf="!element.isEdit">
+                    {{element.id}}
+                </div>
+                <div *ngIf="element.isEdit">
+                    <mat-form-field class="table-row">
+                        <mat-label>No. (disabled)</mat-label>
+                        <input matInput disabled value="{{element.id}}">
+                    </mat-form-field>
+                </div>
+            </td>
+        </ng-container>
+
+        <!-- fname Column -->
+        <ng-container matColumnDef="firstName">
+            <th mat-header-cell *matHeaderCellDef> Firstname</th>
+            <td mat-cell *matCellDef="let element">
+                <div *ngIf="!element.isEdit">
+                    {{element.firstName}}
+                </div>
+                <div *ngIf="element.isEdit">
+                    <mat-form-field class="table-row">
+                        <mat-label>Firstname</mat-label>
+                        <input matInput [(ngModel)]="element.firstName">
+                    </mat-form-field>
+                </div>
+            </td>
+        </ng-container>
+
+        <!-- lname Column -->
+        <ng-container matColumnDef="lastName">
+            <th mat-header-cell *matHeaderCellDef> Lastname</th>
+            <td mat-cell *matCellDef="let element">
+                <div *ngIf="!element.isEdit">
+                    {{element.lastName}}
+                </div>
+                <div *ngIf="element.isEdit">
+                    <mat-form-field class="table-row">
+                        <mat-label>Lastname</mat-label>
+                        <input matInput [(ngModel)]="element.lastName">
+                    </mat-form-field>
+                </div>
+            </td>
+        </ng-container>
+
+        <!-- actions Column -->
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions</th>
+            <td mat-cell *matCellDef="let element">
+                <div *ngIf="!element.isEdit">
+                    <img class="action-element" src="assets/image/edit.png"
+                         alt="edit" (click)="makeAuthorEdit(element)">
+                    <img class="action-element" src="assets/image/remove.png"
+                         alt="remove" (click)="removeAuthor(element)">
+                </div>
+                <div *ngIf="element.isEdit">
+                    <img *ngIf="isAuthorReadyToUpdate(element)" class="action-element"
+                         src="assets/image/save.png" alt="save" (click)="updateAuthor(element)">
+                    <img class="action-element" src="assets/image/cancel.png" alt="cancel"
+                         (click)="cancelAuthorEdit(element)">
+                    <img *ngIf="element.id" class="action-element" src="assets/image/remove.png"
+                         alt="remove" (click)="removeAuthor(element)">
+                </div>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="authorDisplayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: authorDisplayedColumns;"></tr>
+    </table>
+</div>

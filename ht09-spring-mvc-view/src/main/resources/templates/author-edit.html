@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit author</title>
+    <style type="text/css">
+        .main-container {
+            padding: 15px 15px 15px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .btn-action {
+            margin-top: 15px !important;
+        }
+    </style>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <ul class="nav navbar-nav">
+        <li><a>Библиотека</a></li>
+        <li><a th:href="@{/author-list}" href="author-list.html">Авторы</a></li>
+        <li class="active"><a href="#">Создать</a></li>
+    </ul>
+</nav>
+<div class="main-container">
+    <form id="edit-form" th:action="@{/edit-author(id=${author.id})}" th:method="post" action="author-edit.html">
+        <h1>Информация об авторе:</h1>
+        <div>
+            <label for="id-input">ID:</label>
+            <input id="id-input" type="text" class="form-control" readonly="readonly" th:value="${author.id}"
+                   value="1"/>
+        </div>
+        <div>
+            <label for="holder-input-fname">Имя:</label>
+            <input id="holder-input-fname" class="form-control" name="firstName" type="text" th:value="${author.firstName}"
+                   value="Alexander"/>
+        </div>
+
+        <div>
+            <label for="holder-input-lname">Фамилия:</label>
+            <input id="holder-input-lname" class="form-control" name="lastName" type="text" th:value="${author.lastName}"
+                   value="Pushkin"/>
+        </div>
+        <div>
+            <button class="btn btn-success btn-action" type="submit">Сохранить</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

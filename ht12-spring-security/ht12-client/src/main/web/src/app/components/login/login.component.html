@@ -1,0 +1,20 @@
+<div class="login-container">
+    <h3>Please login</h3>
+    <mat-form-field class="login-text-input" appearance="outline">
+        <mat-label>Username</mat-label>
+        <input matInput type="email" placeholder="Please enter your username" [(ngModel)]="user.username"
+               (keyup.enter)="isLoginAvailable() ? login() : false">
+    </mat-form-field>
+    <mat-form-field class="login-text-input" appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" placeholder="Please enter your password" [(ngModel)]="user.password"
+               (keyup.enter)="isLoginAvailable() ? login() : false">
+    </mat-form-field>
+    <mat-checkbox [(ngModel)]="isRemember">Remember me</mat-checkbox>
+    <div class="login-buttons">
+        <button class="login-button" mat-raised-button color="primary" [disabled]="!isLoginAvailable()"
+                (click)="login()">Login
+        </button>
+        <button routerLink="/sign-up" class="login-button" mat-raised-button color="warn">Sign-up</button>
+    </div>
+</div>

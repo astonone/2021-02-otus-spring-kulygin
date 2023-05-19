@@ -1,0 +1,77 @@
+<div class="comments">
+    <button mat-raised-button color="primary" class="new-entity-button" (click)="newComment()">New Comment
+    </button>
+
+    <table mat-table #commentsTable [dataSource]="comments" class="entity-table mat-elevation-z8">
+
+        <!-- id Column -->
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> No.</th>
+            <td mat-cell *matCellDef="let element">
+                <div *ngIf="!element.isEdit">
+                    {{element.id}}
+                </div>
+                <div *ngIf="element.isEdit">
+                    <mat-form-field class="table-row">
+                        <mat-label>No. (disabled)</mat-label>
+                        <input matInput disabled value="{{element.id}}">
+                    </mat-form-field>
+                </div>
+            </td>
+        </ng-container>
+
+        <!-- commentatorName Column -->
+        <ng-container matColumnDef="commentatorName">
+            <th mat-header-cell *matHeaderCellDef> Commentator Name</th>
+            <td mat-cell *matCellDef="let element">
+                <div *ngIf="!element.isEdit">
+                    {{element.commentatorName}}
+                </div>
+                <div *ngIf="element.isEdit">
+                    <mat-form-field class="table-row">
+                        <mat-label>Text</mat-label>
+                        <input matInput [(ngModel)]="element.commentatorName">
+                    </mat-form-field>
+                </div>
+            </td>
+        </ng-container>
+
+        <!-- text Column -->
+        <ng-container matColumnDef="text">
+            <th mat-header-cell *matHeaderCellDef> Text</th>
+            <td mat-cell *matCellDef="let element">
+                <div *ngIf="!element.isEdit">
+                    {{element.text}}
+                </div>
+                <div *ngIf="element.isEdit">
+                    <mat-form-field class="table-row">
+                        <mat-label>Text</mat-label>
+                        <input matInput [(ngModel)]="element.text">
+                    </mat-form-field>
+                </div>
+            </td>
+        </ng-container>
+
+        <!-- actions Column -->
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions</th>
+            <td mat-cell *matCellDef="let element">
+                <div *ngIf="!element.isEdit">
+                    <img class="action-element" src="assets/image/remove.png"
+                         alt="remove" (click)="removeComment(element)">
+                </div>
+                <div *ngIf="element.isEdit">
+                    <img *ngIf="isCommentReadyToUpdate(element)" class="action-element"
+                         src="assets/image/save.png" alt="save" (click)="updateComment(element)">
+                    <img class="action-element" src="assets/image/cancel.png"
+                         alt="cancel" (click)="cancelCommentEdit(element)">
+                    <img *ngIf="element.id" class="action-element" src="assets/image/remove.png"
+                         alt="remove" (click)="removeComment(element)">
+                </div>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="commentsDisplayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: commentsDisplayedColumns;"></tr>
+    </table>
+</div>

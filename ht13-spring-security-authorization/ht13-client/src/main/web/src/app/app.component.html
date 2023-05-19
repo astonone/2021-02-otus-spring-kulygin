@@ -1,0 +1,18 @@
+﻿<mat-toolbar color="primary" class="header-panel">
+    <div class="home-info">
+        <span class="home-label" routerLink="/home">Library</span>
+    </div>
+    <div class="login-management" *ngIf="userService.isUserLogged()">
+        <span>You logged as: {{userService.getLoggedUser().username}}</span>
+        <div class="exit-button">
+            <button mat-raised-button color="warn" (click)="logout()">Exit</button>
+        </div>
+    </div>
+
+</mat-toolbar>
+<div class="app-content">
+    <router-outlet></router-outlet>
+</div>
+
+
+

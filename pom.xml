@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>ru.otus.kulygin</groupId>
+    <artifactId>2021-02-otus-spring-kulygin</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>ht01-spring-xml-configuration</module>
+        <module>ht02-spring-annotation-configuration</module>
+        <module>ht03-spring-boot</module>
+        <module>ht04-spring-shell</module>
+        <module>ht05-spring-jdbc</module>
+        <module>ht06-spring-jpa-hibernate</module>
+        <module>ht07-spring-data</module>
+        <module>ht08-spring-data-mongodb</module>
+        <module>ht09-spring-mvc-view</module>
+        <module>ht10-spring-mvc-spa</module>
+        <module>ht11-spring-webflux</module>
+        <module>ht12-spring-security</module>
+        <module>ht13-spring-security-authorization</module>
+        <module>ht14-spring-batch</module>
+        <module>ht15-spring-integration</module>
+        <module>ht16-spring-boot-actuator</module>
+        <module>ht17-docker</module>
+        <module>ht18-hystrix</module>
+    </modules>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+    </properties>
+    
+</project>

@@ -1,0 +1,42 @@
+app:
+  health-check:
+    url: http://localhost:8080/api/health-check
+  admin:
+    # mySecret777
+    secret-key: $2a$10$Uke6zNBEQbaDz5MVLlX8ze0.pG5bMO2aF68QpYrejxbX8uUeDJ.lq
+
+spring:
+  data:
+    mongodb:
+      host: ${DB_HOST:localhost}
+      port: ${DB_PORT:27017}
+      database: ${DB_NAME:library}
+
+mongock:
+  change-logs-scan-package:
+    - ru.otus.kulygin.changelog
+
+management:
+  endpoints:
+    web:
+      base-path: /api/management
+      exposure:
+        include: [ 'configprops', 'env', 'health', 'info', 'jhimetrics', 'logfile', 'loggers', 'threaddump' ]
+  endpoint:
+    health:
+      show-details: always
+    jhimetrics:
+      enabled: true
+    logfile:
+      enabled: true
+  metrics:
+    enable:
+      http: true
+      jvm: true
+      logback: true
+      process: true
+      system: true
+
+logging:
+  file:
+    path: log
