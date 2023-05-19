@@ -1,0 +1,104 @@
+<div class="candidates">
+    <mat-paginator [length]="totalSize"
+                   [pageSize]="pageSize"
+                   [pageSizeOptions]="pageSizeOptions"
+                   (page)="pageEvent = updatePage($event)">
+    </mat-paginator>
+
+    <button mat-raised-button color="primary" class="new-entity-button" (click)="create()">
+        {{'candidates.button.create' | translate}}
+    </button>
+
+    <p class="empty-table" *ngIf="dataSource.length === 0">{{'candidates.empty' | translate}}</p>
+
+    <mat-accordion *ngIf="dataSource.length > 0" class="headers-align">
+        <mat-expansion-panel *ngFor="let element of dataSource"
+                             [expanded]="element.isNew">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{!element.isNew ? element.claimingPosition : ''}}
+                </mat-panel-title>
+                <mat-panel-description>
+                    {{!element.isNew ? element.firstName + ' ' + element.lastName : ''}}
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <button mat-raised-button color="primary" class="new-entity-button" [disabled]="!isReadyToUpdate()"
+                    *ngIf="element.isEdit"
+                    (click)="update()">
+                {{'candidates.button.save' | translate}}
+            </button>
+
+            <button mat-raised-button color="link" class="new-entity-button" *ngIf="element.isEdit"
+                    (click)="cancelEdit(element)">
+                {{'candidates.button.cancel' | translate}}
+            </button>
+
+            <button mat-raised-button color="accent" class="new-entity-button" *ngIf="!element.isEdit"
+                    (click)="makeEdit(element)">
+                {{'candidates.button.change' | translate}}
+            </button>
+
+            <button mat-raised-button color="warn" class="new-entity-button" (click)="remove(element)">
+                {{'candidates.button.remove' | translate}}
+            </button>
+
+            <mat-list role="list" *ngIf="!element.isEdit">
+                <mat-list-item role="listitem">{{'candidates.items.firstName' | translate}}
+                    : {{element.firstName}}</mat-list-item>
+                <mat-list-item role="listitem">{{'candidates.items.lastName' | translate}}
+                    : {{element.lastName}}</mat-list-item>
+                <mat-list-item role="listitem">{{'candidates.items.positionType' | translate}}
+                    : {{element.claimingPosition}}</mat-list-item>
+                <mat-list-item role="listitem">{{'candidates.items.comments' | translate}}
+                    : {{element.interviewerComment}}</mat-list-item>
+                <mat-list-item role="listitem">{{'candidates.items.showCv' | translate}}
+                    <button mat-raised-button color="link" (click)="onClickDownloadPdf(element)" *ngIf="element.cvFile"
+                            class="new-entity-button">
+                        {{'candidates.button.load' | translate}}
+                    </button>
+                    <mat-label *ngIf="!element.cvFile">: {{'candidates.items.noCv' | translate}}</mat-label>
+                </mat-list-item>
+            </mat-list>
+
+            <mat-list role="list" *ngIf="element.isEdit" class="item-change-element">
+                <mat-list-item role="listitem" class="item-input-element">
+                    <mat-form-field appearance="outline">
+                        <mat-label>{{'candidates.items.firstName' | translate}}</mat-label>
+                        <input matInput type="text" placeholder="{{'candidates.items.firstName' | translate}}"
+                               [(ngModel)]="newCandidate.firstName">
+                    </mat-form-field>
+                </mat-list-item>
+                <mat-list-item role="listitem" class="item-input-element">
+                    <mat-form-field appearance="outline">
+                        <mat-label>{{'candidates.items.lastName' | translate}}</mat-label>
+                        <input matInput type="text" placeholder="{{'candidates.items.lastName' | translate}}"
+                               [(ngModel)]="newCandidate.lastName">
+                    </mat-form-field>
+                </mat-list-item>
+                <mat-list-item role="listitem" class="item-input-element">
+                    <mat-form-field appearance="outline">
+                        <mat-label>{{'candidates.items.positionType' | translate}}</mat-label>
+                        <input matInput type="text" placeholder="{{'candidates.items.positionType' | translate}}"
+                               [(ngModel)]="newCandidate.claimingPosition">
+                    </mat-form-field>
+                </mat-list-item>
+                <mat-list-item role="listitem" class="item-input-element">
+                    <mat-form-field appearance="outline">
+                        <mat-label>{{'candidates.items.comments' | translate}}</mat-label>
+                        <input matInput type="text" placeholder="{{'candidates.items.comments' | translate}}"
+                               [(ngModel)]="newCandidate.interviewerComment">
+                    </mat-form-field>
+                </mat-list-item>
+            </mat-list>
+            <div class="upload-wrapper" *ngIf="element.isEdit">
+                <mat-label>{{'candidates.items.uploadCv' | translate}}</mat-label>
+                <label class="btn btn-default">
+                    <input class="upload-container-item" type="file" name="file" (change)="selectFile($event)"/>
+                </label>
+            </div>
+
+        </mat-expansion-panel>
+    </mat-accordion>
+
+</div>

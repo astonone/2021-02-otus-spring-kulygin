@@ -1,0 +1,16 @@
+server:
+  port: 8788
+
+eureka:
+  client:
+    fetch-registry: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+turbine:
+  clusterNameExpression: new String("default")
+  appConfig: criteria-service, candidate-service, user-service, interview-service, template-service, facade-gateway

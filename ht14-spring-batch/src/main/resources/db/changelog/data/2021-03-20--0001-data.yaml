@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2021-03-20--0001-data-genres
+      author: vkulygin
+      runOnChange: true
+      loadUpdateData:
+        primaryKey: id
+        file: data/2021-03-20--0001-genres.csv
+        relativeToChangelogFile: true
+        separator: ;
+        quotChar: '"'
+        seperator: ';'
+        encoding: UTF-8
+        tableName: genre
+
+  - changeSet:
+      id: 2021-03-20--0001-data-authors
+      author: vkulygin
+      runOnChange: true
+      loadUpdateData:
+        primaryKey: id
+        file: data/2021-03-20--0002-authors.csv
+        relativeToChangelogFile: true
+        separator: ;
+        quotChar: '"'
+        seperator: ';'
+        encoding: UTF-8
+        tableName: author
+
+  - changeSet:
+      id: 2021-03-20--0001-data-books
+      author: vkulygin
+      runOnChange: true
+      loadUpdateData:
+        primaryKey: id
+        file: data/2021-03-20--0003-books.csv
+        relativeToChangelogFile: true
+        separator: ;
+        quotChar: '"'
+        seperator: ';'
+        encoding: UTF-8
+        tableName: book

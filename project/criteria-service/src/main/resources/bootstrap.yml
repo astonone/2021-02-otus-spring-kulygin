@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: criteria-service
+  cloud:
+    config:
+      fail-fast: true

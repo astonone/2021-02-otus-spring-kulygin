@@ -1,0 +1,26 @@
+spring:
+  batch:
+    job:
+      enabled: false
+  datasource:
+    url: jdbc:h2:mem:library
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  data:
+    mongodb:
+      host: localhost
+      port: 0
+      database: spring-batch-library
+  h2:
+    console:
+      path: /h2-console
+      settings:
+        web-allow-others: true
+  liquibase:
+    enabled: true
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: validate
+

@@ -1,0 +1,66 @@
+.app-img {
+    height: 56px;
+}
+
+.app-title {
+    padding: 10px 10px;
+    color: white;
+}
+
+.header-control-panel {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.header-control-label-panel {
+    display: flex;
+    align-items: center;
+    font-size: medium;
+}
+
+.header-control-menu-panel {
+    display: flex;
+    align-items: center;
+    font-size: medium;
+}
+
+.sidenav {
+    width: 200px;
+    box-shadow: 3px 0 6px rgba(0,0,0,.24);
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.header-panel-el {
+    margin: 5px 5px 5px 5px;
+}
+
+.header-exit {
+    margin: 5px 5px 5px 5px;
+    width: 56px;
+    cursor: pointer;
+}
+
+.lang-el {
+    color: white;
+    padding: 5px 5px 5px 5px;
+}
+
+.user-name {
+    margin-left: 15px;
+}
+
+@media screen and (max-device-width: 980px) {
+    .header-control-label-panel {
+        font-size: small;
+    }
+
+    .header-control-menu-panel {
+        font-size: small;
+    }
+}

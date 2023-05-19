@@ -1,0 +1,45 @@
+.template-tables {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 64px);
+}
+
+.criterias-table {
+    width: 100%;
+}
+
+.table-info {
+    text-align: center;
+}
+
+.empty-table {
+    text-align: center;
+}
+
+.filter {
+    width: 100%;
+}
+
+.global-criterias {
+
+}
+
+.template-criterias {
+
+}
+
+.action-element {
+    padding: 5px 5px 5px 5px;
+    height: 48px;
+    width: 48px;
+    cursor: pointer;
+}
+
+@media screen and (max-device-width: 768px) {
+    .action-element {
+        padding: 5px 5px 5px 5px;
+        height: 32px;
+        width: 32px;
+        cursor: pointer;
+    }
+}

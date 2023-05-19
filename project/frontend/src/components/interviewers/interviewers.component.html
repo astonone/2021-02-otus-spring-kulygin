@@ -1,0 +1,78 @@
+<div class="interviewers">
+    <mat-paginator [length]="totalSize"
+                   [pageSize]="pageSize"
+                   [pageSizeOptions]="pageSizeOptions"
+                   (page)="pageEvent = updatePage($event)">
+    </mat-paginator>
+
+    <p class="empty-table" *ngIf="dataSource.length === 0">{{'interviewers.empty' | translate}}</p>
+
+    <mat-accordion *ngIf="dataSource.length > 0" class="headers-align">
+        <mat-expansion-panel *ngFor="let element of dataSource"
+                             [expanded]="element.isNew">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{element.positionType ? element.positionType : ''}}
+                </mat-panel-title>
+                <mat-panel-description>
+                    {{element.firstName + ' ' + element.lastName}}
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <button mat-raised-button color="primary" class="new-entity-button" [disabled]="!isReadyToUpdate()"
+                    *ngIf="element.isEdit"
+                    (click)="update(element)">
+                {{'interviewers.button.save' | translate}}
+            </button>
+
+            <button mat-raised-button color="link" class="new-entity-button" *ngIf="element.isEdit"
+                    (click)="cancelEdit(element)">
+                {{'interviewers.button.cancel' | translate}}
+            </button>
+
+            <button mat-raised-button color="accent" class="new-entity-button" *ngIf="!element.isEdit"
+                    (click)="makeEdit(element)">
+                {{'interviewers.button.change' | translate}}
+            </button>
+
+            <button mat-raised-button color="warn" class="new-entity-button" (click)="remove(element)">
+                {{'interviewers.button.remove' | translate}}
+            </button>
+
+            <mat-list role="list" *ngIf="!element.isEdit">
+                <mat-list-item role="listitem">{{'interviewers.items.firstName' | translate}}
+                    : {{element.firstName}}</mat-list-item>
+                <mat-list-item role="listitem">{{'interviewers.items.lastName' | translate}}
+                    : {{element.lastName}}</mat-list-item>
+                <mat-list-item role="listitem">{{'interviewers.items.positionType' | translate}}
+                    : {{element.positionType}}</mat-list-item>
+            </mat-list>
+
+            <mat-list role="list" *ngIf="element.isEdit" class="item-change-element">
+                <mat-list-item role="listitem" class="item-input-element">
+                    <mat-form-field appearance="outline">
+                        <mat-label>{{'interviewers.items.firstName' | translate}}</mat-label>
+                        <input matInput type="text" placeholder="{{'interviewers.items.firstName' | translate}}"
+                               [(ngModel)]="newInterviewer.firstName">
+                    </mat-form-field>
+                </mat-list-item>
+                <mat-list-item role="listitem" class="item-input-element">
+                    <mat-form-field appearance="outline">
+                        <mat-label>{{'interviewers.items.lastName' | translate}}</mat-label>
+                        <input matInput type="text" placeholder="{{'interviewers.items.lastName' | translate}}"
+                               [(ngModel)]="newInterviewer.lastName">
+                    </mat-form-field>
+                </mat-list-item>
+                <mat-list-item role="listitem" class="item-input-element">
+                    <mat-form-field appearance="outline">
+                        <mat-label>{{'interviewers.items.positionType' | translate}}</mat-label>
+                        <input matInput type="text" placeholder="{{'interviewers.items.positionType' | translate}}"
+                               [(ngModel)]="newInterviewer.positionType">
+                    </mat-form-field>
+                </mat-list-item>
+            </mat-list>
+
+        </mat-expansion-panel>
+    </mat-accordion>
+
+</div>

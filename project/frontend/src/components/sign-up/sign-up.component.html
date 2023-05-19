@@ -1,0 +1,48 @@
+<div class="registration-container">
+    <h3>{{'sign-up.main-text' | translate}}</h3>
+    <mat-form-field class="registration-text-input" appearance="outline">
+        <mat-label>{{'sign-up.username' | translate}}</mat-label>
+        <input matInput type="email" placeholder="{{'sign-up.username-placeholder' | translate}}"
+               [(ngModel)]="newUser.username"
+               (keyup.enter)="isCreateAvailable() ? createUser() : false">
+        <mat-hint class="text-filed-hint">{{'sign-up.required-field' | translate}}</mat-hint>
+    </mat-form-field>
+    <mat-form-field class="registration-text-input" appearance="outline">
+        <mat-label>{{'sign-up.password' | translate}}</mat-label>
+        <input matInput type="password" placeholder="{{'sign-up.password-placeholder' | translate}}"
+               [(ngModel)]="newUser.password"
+               (keyup.enter)="isCreateAvailable() ? createUser() : false">
+        <mat-hint class="text-filed-hint">{{'sign-up.required-field' | translate}}</mat-hint>
+    </mat-form-field>
+    <mat-form-field class="registration-text-input" appearance="outline">
+        <mat-label>{{'sign-up.password-repeat' | translate}}</mat-label>
+        <input matInput type="password" placeholder="{{'sign-up.password-repeat-placeholder' | translate}}"
+               [(ngModel)]="newUser.passwordRepeat"
+               (keyup.enter)="isCreateAvailable() ? createUser() : false">
+        <mat-hint class="text-filed-hint">{{'sign-up.required-field' | translate}}</mat-hint>
+    </mat-form-field>
+    <mat-form-field class="registration-text-input" appearance="outline">
+        <mat-label>{{'sign-up.firstname' | translate}}</mat-label>
+        <input matInput placeholder="{{'sign-up.firstname-placeholder' | translate}}"
+               [(ngModel)]="newUser.firstName"
+               (keyup.enter)="isCreateAvailable() ? createUser() : false">
+        <mat-hint class="text-filed-hint">{{'sign-up.required-field' | translate}}</mat-hint>
+    </mat-form-field>
+    <mat-form-field class="registration-text-input" appearance="outline">
+        <mat-label>{{'sign-up.lastname' | translate}}</mat-label>
+        <input matInput placeholder="{{'sign-up.lastname-placeholder' | translate}}"
+               [(ngModel)]="newUser.lastName"
+               (keyup.enter)="isCreateAvailable() ? createUser() : false">
+        <mat-hint class="text-filed-hint">{{'sign-up.required-field' | translate}}</mat-hint>
+    </mat-form-field>
+    <mat-form-field class="registration-text-input" appearance="outline">
+        <mat-label>{{'sign-up.secret-key' | translate}}</mat-label>
+        <input matInput type="search" placeholder="{{'sign-up.secret-key-placeholder' | translate}}"
+               [(ngModel)]="newUser.secretKey"
+               (keyup.enter)="isCreateAvailable() ? createUser() : false">
+    </mat-form-field>
+    <div class="registration-buttons">
+        <button class="registration-button" mat-raised-button color="primary"
+                [disabled]="!isCreateAvailable()" (click)="createUser()">{{'sign-up.sign-up' | translate}}</button>
+    </div>
+</div>

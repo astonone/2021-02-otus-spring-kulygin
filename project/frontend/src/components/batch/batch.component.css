@@ -1,0 +1,30 @@
+.batch {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 64px);
+    padding: 10px 10px 10px 10px;
+}
+
+.upload-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.upload-button {
+    width: fit-content;
+}
+
+.refresh-button {
+    width: fit-content;
+}
+
+.job-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@media screen and (max-device-width: 768px) {
+
+}

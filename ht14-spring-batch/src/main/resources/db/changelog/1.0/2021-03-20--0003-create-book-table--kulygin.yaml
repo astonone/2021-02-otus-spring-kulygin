@@ -1,0 +1,44 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2021-03-20--create-book-table--kulygin
+      author: vkulygin
+      createTable:
+        tableName: book
+        columns:
+          - column:
+              name: id
+              type: bigint
+              autoIncrement: true
+              constraints:
+                nullable: false
+                primaryKey: true
+                primaryKeyName: pk_book
+          - column:
+              name: title
+              type: varchar(1024)
+          - column:
+              name: genre_id
+              type: bigint
+          - column:
+              name: author_id
+              type: bigint
+  - changeSet:
+      id: 2021-03-20--add-foreign-keys--kulygin
+      author: vkulygin
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: genre_id
+            baseTableName: book
+            constraintName: fk_book_genre
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: genre
+        - addForeignKeyConstraint:
+            baseColumnNames: author_id
+            baseTableName: book
+            constraintName: fk_book_author
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: author

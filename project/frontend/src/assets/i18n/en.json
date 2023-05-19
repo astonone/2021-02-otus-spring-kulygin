@@ -1,0 +1,223 @@
+{
+  "app": {
+    "header": {
+      "home": "Home",
+      "themes": "Themes",
+      "candidates": "Candidates",
+      "interviewers": "Interviewers",
+      "templates": "Interview's templates",
+      "template-criteria": "Template's criteria",
+      "interviews": "Interviews",
+      "batch": "Criteria import job",
+      "menu": "Menu",
+      "user-prefix" : "You are entered as:",
+      "button": {
+        "login": "Login",
+        "sign-up": "Sign-up",
+        "logout": "Logout"
+      }
+    }
+  },
+  "menu": {
+    "themes": "Themes"
+  },
+  "home": {
+    "empty": "You do not have any scheduled interviews",
+    "interviewer": "Interviewer",
+    "candidate": "Candidate",
+    "claimingPosition": "Claiming position",
+    "template": "Interview template",
+    "dateTime": "Date and Time",
+    "date": "Date",
+    "time": "Time",
+    "status": "Status",
+    "mark": "Total mark",
+    "comment": "Comment",
+    "salary": "Claiming salary",
+    "decision": "Total decision",
+    "showCv": "Candidate's CV",
+    "noCv": "CV was not uploaded",
+    "button": {
+      "create": "Add interview",
+      "save": "Save data",
+      "cancel": "Cancel edit",
+      "change": "Change data",
+      "remove": "Remove interview",
+      "load": "Download CV",
+      "start": "Start interview",
+      "continue": "Continue interview",
+      "details": "See details"
+    }
+  },
+  "login": {
+    "main-text": "Please sign in",
+    "username": "Username",
+    "username-placeholder": "Please enter your username",
+    "password": "Password",
+    "password-placeholder": "Please enter your password",
+    "remember-me": "Remember me",
+    "sign-in": "Sign in"
+  },
+  "sign-up": {
+    "main-text": "Please fill your personal data",
+    "required-field": "This field is required",
+    "username": "Username",
+    "username-placeholder": "Please enter your username",
+    "password": "Password",
+    "password-placeholder": "Please enter your password",
+    "password-repeat": "Repeat password",
+    "password-repeat-placeholder": "Please repeat your password",
+    "firstname": "Firstname",
+    "firstname-placeholder": "Please enter your firstname",
+    "lastname": "Lastname",
+    "lastname-placeholder": "Please enter your lastname",
+    "sign-up": "Sign up",
+    "secret-key": "Secret key(for developer user)",
+    "secret-key-placeholder": "Please enter secret key",
+    "user": "User: ",
+    "created": " successfully created"
+  },
+  "interviewers": {
+    "empty": "You do not have any created interviewers",
+    "items" : {
+      "id": "No.",
+      "firstName": "FirstName",
+      "lastName": "LastName",
+      "positionType": "Position type"
+    },
+    "button": {
+      "create": "Add interviewer",
+      "save": "Save data",
+      "cancel": "Cancel edit",
+      "change": "Change data",
+      "remove": "Remove interviewer"
+    }
+  },
+  "criterias": {
+    "empty": "You do not have any created template criterias",
+    "table" : {
+      "id": "No.",
+      "name": "Criteria name",
+      "positionType": "Position type",
+      "actions": "Actions"
+    },
+    "button": {
+      "create": "Add criteria"
+    }
+  },
+  "candidates": {
+    "empty": "You do not have any created candidates",
+    "items" : {
+      "id": "No.",
+      "firstName": "FirstName",
+      "lastName": "LastName",
+      "positionType": "Position type",
+      "comments": "Interviewer's comments",
+      "uploadCv": "Candidate's CV (PDF only)",
+      "showCv": "Candidate's CV",
+      "noCv": "CV was not uploaded"
+    },
+    "button": {
+      "create": "Add candidate",
+      "save": "Save data",
+      "cancel": "Cancel edit",
+      "change": "Change data",
+      "remove": "Remove candidate",
+      "load": "Download CV"
+    }
+  },
+  "interviews": {
+    "empty": "You do not have any created interviews",
+    "interviewer": "Interviewer",
+    "candidate": "Candidate",
+    "claimingPosition": "Claiming position",
+    "template": "Interview template",
+    "dateTime": "Date and Time",
+    "date": "Date",
+    "time": "Time",
+    "status": "Status",
+    "mark": "Total mark",
+    "comment": "Comment",
+    "salary": "Claiming salary",
+    "decision": "Total decision",
+    "showCv": "Candidate's CV",
+    "noCv": "CV was not uploaded",
+    "button": {
+      "create": "Add interview",
+      "save": "Save data",
+      "cancel": "Cancel edit",
+      "change": "Change data",
+      "remove": "Remove interview",
+      "load": "Download CV",
+      "start": "Start interview",
+      "continue": "Continue interview",
+      "details": "See details"
+    }
+  },
+  "templates": {
+    "empty": "You do not have any created templates",
+    "items" : {
+      "positionName": "Position Name",
+      "criterias": "Criteria list"
+    },
+    "button": {
+      "create": "Add template",
+      "save": "Save data",
+      "cancel": "Cancel edit",
+      "change": "Change data",
+      "remove": "Remove template",
+      "editCriterias": "Edit criteria list"
+    }
+  },
+  "edit-criterias": {
+    "empty-global": "You do not have any created template criterias",
+    "empty-template": "Your template do not have added template criterias",
+    "table-info-global": "Here placed global template criterias",
+    "table-info-template": "Here placed your template criterias",
+    "filter": "Filter",
+    "added": "Criteria successfully added to your interview template",
+    "removed": "Criteria successfully removed from your interview template",
+    "table" : {
+      "id": "No.",
+      "name": "Criteria name",
+      "positionType": "Position type",
+      "actions": "Actions"
+    }
+  },
+  "interview": {
+    "started": "Interview was started",
+    "criteriaComment": "Comment from interviewer",
+    "criteriaMark": "Mark from interviewer",
+    "generalInfo": "General info",
+    "questions": "Questions",
+    "total": "Total",
+    "interviewer": "Interviewer",
+    "candidate": "Candidate",
+    "claimingPosition": "Claiming position",
+    "template": "Interview template",
+    "mark": "Total mark",
+    "comment": "Total comment",
+    "salary": "Claiming salary",
+    "decision": "Total decision",
+    "showCv": "Candidate's CV",
+    "noCv": "CV was not uploaded",
+    "button": {
+      "load": "Download CV",
+      "finish": "Finish interview and go to main"
+    }
+  },
+  "snackbar": {
+    "end-now": "End now",
+    "rights": "You don't have rights for this action"
+  },
+  "page-not-found": {
+    "text": "Page not found"
+  },
+  "batch" : {
+    "upload": "Choose CSV file for import criterias",
+    "button" : {
+      "upload": "Upload",
+      "refresh": "Refresh last job info"
+    }
+  }
+}

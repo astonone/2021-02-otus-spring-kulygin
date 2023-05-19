@@ -1,0 +1,20 @@
+spring:
+  #Batch config
+  batch:
+    job:
+      enabled: false
+  #MongoDB config
+  data:
+    mongodb:
+      host: ${DB_HOST:localhost}
+      port: ${DB_PORT:27017}
+      database: ${DB_NAME:interviewer-test}
+
+#Mongock config
+mongock:
+  enabled: false
+
+file:
+  storage:
+    csv:
+      path: src/test/resources/testWriteDir/

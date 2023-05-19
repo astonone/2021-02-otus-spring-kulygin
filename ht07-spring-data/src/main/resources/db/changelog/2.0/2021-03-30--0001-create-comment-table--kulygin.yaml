@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2021-03-30--create-book-table--kulygin
+      author: vkulygin
+      createTable:
+        tableName: comment
+        columns:
+          - column:
+              name: id
+              type: bigint
+              autoIncrement: true
+              constraints:
+                nullable: false
+                primaryKey: true
+                primaryKeyName: pk_comment
+          - column:
+              name: commentator_name
+              type: varchar(256)
+          - column:
+              name: text
+              type: varchar(2048)
+          - column:
+              name: book_id
+              type: bigint
+  - changeSet:
+      id: 2021-03-30--add-foreign-keys--kulygin
+      author: vkulygin
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: book_id
+            baseTableName: comment
+            constraintName: fk_comment_book
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: book

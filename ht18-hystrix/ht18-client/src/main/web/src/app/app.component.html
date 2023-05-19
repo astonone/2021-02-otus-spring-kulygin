@@ -1,0 +1,45 @@
+﻿<mat-toolbar color="primary" class="header-panel">
+    <div class="home-info">
+        <span class="home-label" routerLink="/home">Library</span>
+    </div>
+    <div class="login-management" *ngIf="userService.isUserLogged()">
+        <span>You logged as: {{userService.getLoggedUser().username}}</span>
+        <button mat-raised-button color="basic" *ngIf="userService.getLoggedUser().authority === 'ROLE_ADMIN'"
+                class="exit-button"
+                [matMenuTriggerFor]="menu">
+            <fa-icon icon="users-cog"></fa-icon>
+            Management
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item routerLink="metrics">
+                <fa-icon icon="tachometer-alt" [fixedWidth]="true"></fa-icon>
+                Metrics
+            </button>
+            <button mat-menu-item routerLink="health">
+                <fa-icon icon="heart" [fixedWidth]="true"></fa-icon>
+                Health
+            </button>
+            <button mat-menu-item routerLink="configuration">
+                <fa-icon icon="cogs" [fixedWidth]="true"></fa-icon>
+                Configuration
+            </button>
+            <button mat-menu-item routerLink="logs">
+                <fa-icon icon="tasks" [fixedWidth]="true"></fa-icon>
+                Logs
+            </button>
+        </mat-menu>
+        <div class="exit-button">
+            <button mat-raised-button color="warn" (click)="logout()">
+                <fa-icon icon="sign-out-alt" [fixedWidth]="true"></fa-icon>
+                Exit
+            </button>
+        </div>
+    </div>
+
+</mat-toolbar>
+<div class="app-content">
+    <router-outlet></router-outlet>
+</div>
+
+
+

@@ -1,0 +1,20 @@
+app:
+  locale: en
+
+spring:
+  messages:
+    basename: i18n/messages
+  datasource:
+    url: jdbc:h2:mem:library
+  h2:
+    console:
+      path: /h2-console
+      settings:
+        web-allow-others: true
+  liquibase:
+    enabled: true
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: validate
+

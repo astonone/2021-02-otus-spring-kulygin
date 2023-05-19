@@ -1,0 +1,181 @@
+﻿<div class="home">
+    <mat-paginator [length]="totalSize"
+                   [pageSize]="pageSize"
+                   [pageSizeOptions]="pageSizeOptions"
+                   (page)="pageEvent = updatePage($event)">
+    </mat-paginator>
+
+    <p class="empty-table" *ngIf="dataSource.length === 0">{{'home.empty' | translate}}</p>
+
+    <mat-accordion *ngIf="dataSource.length > 0" class="headers-align">
+        <mat-expansion-panel *ngFor="let element of dataSource">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{element.candidate.claimingPosition}}
+                </mat-panel-title>
+                <mat-panel-description>
+                    {{element.interviewer.firstName + ' ' + element.interviewer.lastName + ':' +
+                element.candidate.firstName + ' ' + element.candidate.lastName}}
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <button mat-raised-button color="primary" class="new-entity-button" [disabled]="!isReadyToUpdate()"
+                    *ngIf="element.isEdit"
+                    (click)="update()">
+                {{'home.button.save' | translate}}
+            </button>
+
+            <button mat-raised-button color="link" class="new-entity-button" *ngIf="element.isEdit"
+                    (click)="cancelEdit(element)">
+                {{'home.button.cancel' | translate}}
+            </button>
+
+            <button mat-raised-button color="accent" class="new-entity-button" *ngIf="!element.isEdit"
+                    (click)="makeEdit(element)">
+                {{'home.button.change' | translate}}
+            </button>
+
+            <button mat-raised-button color="warn" class="new-entity-button" (click)="remove(element)">
+                {{'home.button.remove' | translate}}
+            </button>
+
+            <mat-list role="list" *ngIf="!element.isEdit">
+                <mat-list-item role="listitem">{{'home.candidate' | translate}}
+                    : {{element.candidate.firstName + ' ' + element.candidate.lastName}}</mat-list-item>
+                <mat-list-item role="listitem">{{'home.interviewer' | translate}}
+                    : {{element.interviewer.firstName + ' ' + element.interviewer.lastName}}</mat-list-item>
+                <mat-list-item role="listitem">{{'home.showCv' | translate}}
+                    <button mat-raised-button color="link" (click)="onClickDownloadPdf(element.candidate)"
+                            *ngIf="element.candidate.cvFile"
+                            class="new-entity-button">
+                        {{'home.button.load' | translate}}
+                    </button>
+                    <mat-label *ngIf="!element.candidate.cvFile">: {{'home.noCv' | translate}}</mat-label>
+                </mat-list-item>
+                <mat-list-item role="listitem">{{'home.claimingPosition' | translate}}
+                    : {{element.candidate.claimingPosition}}</mat-list-item>
+                <mat-list-item role="listitem">{{'home.template' | translate}}
+                    : {{element.interviewTemplate.positionName}}</mat-list-item>
+                <mat-list-item role="listitem">{{'home.dateTime' | translate}}
+                    : {{element.interviewDateTime}}</mat-list-item>
+                <mat-list-item role="listitem">{{'home.salary' | translate}}
+                    : {{element.desiredSalary}}</mat-list-item>
+                <mat-list-item role="listitem">{{'home.status' | translate}}
+                    :
+                    <div class="status-planned">{{element.interviewStatus}}</div>
+                </mat-list-item>
+                <mat-list-item role="listitem">{{'home.mark' | translate}}
+                    : <div class="status-finished">{{element.totalMark}}</div></mat-list-item>
+                <mat-list-item role="listitem">{{'home.comment' | translate}}
+                    : {{element.totalComment}}</mat-list-item>
+                <mat-list-item role="listitem">{{'home.decision' | translate}}
+                    :
+                    <div class="status-finished">{{element.decisionStatus}}</div>
+                </mat-list-item>
+            </mat-list>
+
+            <mat-list role="list" *ngIf="element.isEdit" class="item-change-element">
+                <mat-list-item role="listitem" class="item-input-element">
+                    <mat-form-field appearance="fill" class="table-row">
+                        <mat-label>{{'home.candidate' | translate}}</mat-label>
+                        <mat-select [(ngModel)]="newInterviewer.candidate" [compareWith]="objectComparisonFunction">
+                            <mat-option *ngFor="let candidate of candidates" [value]="candidate">
+                                {{candidate.firstName + ' ' + candidate.lastName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-list-item>
+                <mat-list-item role="listitem" class="item-input-element">
+                    <mat-form-field appearance="fill" class="table-row">
+                        <mat-label>{{'home.interviewer' | translate}}</mat-label>
+                        <mat-select [(ngModel)]="newInterviewer.interviewer" [compareWith]="objectComparisonFunction">
+                            <mat-option *ngFor="let interviewer of interviewers" [value]="interviewer">
+                                {{interviewer.firstName + ' ' + interviewer.lastName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-list-item>
+                <mat-list-item role="listitem" class="item-input-element">
+                    <mat-form-field appearance="fill" class="table-row">
+                        <mat-label>{{'home.template' | translate}}</mat-label>
+                        <mat-select [(ngModel)]="newInterviewer.interviewTemplate"
+                                    [compareWith]="objectComparisonFunction">
+                            <mat-option *ngFor="let template of templates" [value]="template">
+                                {{template.positionName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-list-item>
+                <mat-list-item role="listitem" class="item-input-element">
+                    <mat-form-field>
+                        <mat-label>
+                            {{'home.date' | translate}}
+                        </mat-label>
+                        <input matInput [matDatepicker]="datePicker" [(ngModel)]="newInterviewer.interviewDate">
+                        <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #datePicker></mat-datepicker>
+                        <mat-hint class="text-filed-hint"></mat-hint>
+                    </mat-form-field>
+                </mat-list-item>
+                <mat-list-item role="listitem" class="item-input-element">
+                    <mat-label>
+                        {{'home.time' | translate}}
+                    </mat-label>
+                    <input [ngxTimepicker]="timePicker" [(ngModel)]="newInterviewer.interviewTime">
+                    <ngx-material-timepicker #timePicker></ngx-material-timepicker>
+                </mat-list-item>
+                <mat-list-item role="listitem" class="item-input-element">
+                    <mat-form-field appearance="fill" class="table-row">
+                        <mat-label>{{'home.status' | translate}}</mat-label>
+                        <mat-select [(ngModel)]="newInterviewer.interviewStatus">
+                            <mat-option *ngFor="let status of statuses" [value]="status">
+                                {{status}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-list-item>
+                <mat-list-item role="listitem" class="item-input-element">
+                    <mat-form-field appearance="outline">
+                        <mat-label>{{'home.comment' | translate}}</mat-label>
+                        <input matInput type="text" placeholder="{{'home.comment' | translate}}"
+                               [(ngModel)]="newInterviewer.totalComment">
+                    </mat-form-field>
+                </mat-list-item>
+                <mat-list-item role="listitem" class="item-input-element">
+                    <mat-form-field appearance="outline">
+                        <mat-label>{{'home.salary' | translate}}</mat-label>
+                        <input matInput type="text" placeholder="{{'home.salary' | translate}}"
+                               [(ngModel)]="newInterviewer.desiredSalary">
+                    </mat-form-field>
+                </mat-list-item>
+                <mat-list-item role="listitem" class="item-input-element">
+                    <mat-form-field appearance="fill" class="table-row">
+                        <mat-label>{{'home.decision' | translate}}</mat-label>
+                        <mat-select [(ngModel)]="newInterviewer.decisionStatus">
+                            <mat-option *ngFor="let decision of decisions" [value]="decision">
+                                {{decision}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-list-item>
+            </mat-list>
+
+            <button mat-raised-button color="primary" class="new-entity-button"
+                    (click)="goto('interview/' + element.id)" *ngIf="element.interviewStatus === 'PLANNED'">
+                {{'home.button.start' | translate}}
+            </button>
+
+            <button mat-raised-button color="primary" class="new-entity-button"
+                    (click)="goto('interview/' + element.id)" *ngIf="element.interviewStatus === 'IN_PROGRESS'">
+                {{'home.button.continue' | translate}}
+            </button>
+
+            <button mat-raised-button color="primary" class="new-entity-button"
+                    (click)="goto('interview/' + element.id)" *ngIf="element.interviewStatus === 'FINISHED'">
+                {{'home.button.details' | translate}}
+            </button>
+
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>
+

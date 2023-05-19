@@ -1,0 +1,20 @@
+<div class="login-container">
+    <h3>{{'login.main-text' | translate}}</h3>
+    <mat-form-field class="login-text-input" appearance="outline">
+        <mat-label>{{'login.username' | translate}}</mat-label>
+        <input matInput type="email" placeholder="{{'login.username-placeholder' | translate}}"
+               [(ngModel)]="user.username"
+               (keyup.enter)="isLoginAvailable() ? login() : false">
+    </mat-form-field>
+    <mat-form-field class="login-text-input" appearance="outline">
+        <mat-label>{{'login.password' | translate}}</mat-label>
+        <input matInput type="password" placeholder="{{'login.password-placeholder' | translate}}"
+               [(ngModel)]="user.password"
+               (keyup.enter)="isLoginAvailable() ? login() : false">
+    </mat-form-field>
+    <mat-checkbox [(ngModel)]="isRemember">{{'login.remember-me' | translate}}</mat-checkbox>
+    <div class="login-buttons">
+        <button class="login-button" mat-raised-button color="primary"
+                (click)="login()">{{'login.sign-in' | translate}}</button>
+    </div>
+</div>

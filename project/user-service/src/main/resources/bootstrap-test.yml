@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    config:
+      enabled: false
+
+app:
+  admin:
+    # mySecret777
+    secret-key: $2a$10$Uke6zNBEQbaDz5MVLlX8ze0.pG5bMO2aF68QpYrejxbX8uUeDJ.lq

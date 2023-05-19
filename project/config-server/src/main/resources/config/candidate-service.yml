@@ -1,0 +1,49 @@
+server:
+  port: 8004
+
+eureka:
+  client:
+    fetch-registry: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+  #Sleuth config
+  sleuth:
+    sampler:
+      probability: 100
+  #Zipkin config
+  zipkin:
+    baseUrl: http://localhost:9411
+  #MongoDB config
+  data:
+    mongodb:
+      host: ${DB_HOST:localhost}
+      port: ${DB_PORT:27017}
+      database: ${DB_NAME:interviewer-candidate}
+
+#Mongock config
+mongock:
+  runner-type: InitializingBean
+  change-logs-scan-package:
+    - ru.otus.kulygin.candidateservice.changelogs
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+
+file:
+  storage:
+      path: ${APP_STORAGE:${user.home}/interviewer-stor/}

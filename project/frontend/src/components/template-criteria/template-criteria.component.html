@@ -1,0 +1,73 @@
+<div class="criterias">
+    <mat-paginator [length]="totalSize"
+                   [pageSize]="pageSize"
+                   [pageSizeOptions]="pageSizeOptions"
+                   (page)="pageEvent = updatePage($event)">
+    </mat-paginator>
+
+    <button mat-raised-button color="primary" class="new-entity-button" (click)="create()">
+        {{'criterias.button.create' | translate}}
+    </button>
+
+    <p class="empty-table" *ngIf="dataSource.length === 0">{{'criterias.empty' | translate}}</p>
+
+    <table mat-table #criteriaTable [dataSource]="dataSource" *ngIf="dataSource.length > 0"
+           class="mat-elevation-z8 criterias-table">
+
+        <!-- name Column -->
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> {{'criterias.table.name' | translate}} </th>
+            <td mat-cell *matCellDef="let element">
+                <div *ngIf="!element.isEdit">
+                    {{element.name}}
+                </div>
+                <div *ngIf="element.isEdit">
+                    <mat-form-field class="criterias-table-row">
+                        <mat-label>{{'criterias.table.name' | translate}}</mat-label>
+                        <input matInput [(ngModel)]="element.name">
+                    </mat-form-field>
+                </div>
+            </td>
+        </ng-container>
+
+        <!-- positionType Column -->
+        <ng-container matColumnDef="positionType">
+            <th mat-header-cell *matHeaderCellDef> {{'criterias.table.positionType' | translate}} </th>
+            <td mat-cell *matCellDef="let element">
+                <div *ngIf="!element.isEdit">
+                    {{element.positionType}}
+                </div>
+                <div *ngIf="element.isEdit">
+                    <mat-form-field class="criterias-table-row">
+                        <mat-label>{{'criterias.table.positionType' | translate}}</mat-label>
+                        <input matInput [(ngModel)]="element.positionType">
+                    </mat-form-field>
+                </div>
+            </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> {{'criterias.table.actions' | translate}} </th>
+            <td mat-cell *matCellDef="let element">
+                <div *ngIf="!element.isEdit">
+                    <img class="action-element" src="assets/image/actions/edit.png"
+                         (click)="makeEdit(element)">
+                    <img class="action-element" src="assets/image/actions/remove.png"
+                         (click)="remove(element)">
+                </div>
+                <div *ngIf="element.isEdit">
+                    <img *ngIf="isReadyToUpdate(element)" class="action-element"
+                         src="assets/image/actions/save.png" (click)="update(element)">
+                    <img class="action-element" src="assets/image/actions/cancel.png"
+                         (click)="cancelEdit(element)">
+                    <img *ngIf="element.id" class="action-element" src="assets/image/actions/remove.png"
+                         (click)="remove(element)">
+                </div>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>

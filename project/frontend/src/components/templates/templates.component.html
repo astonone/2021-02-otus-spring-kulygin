@@ -1,0 +1,86 @@
+<div class="interviewers">
+    <mat-paginator [length]="totalSize"
+                   [pageSize]="pageSize"
+                   [pageSizeOptions]="pageSizeOptions"
+                   (page)="pageEvent = updatePage($event)">
+    </mat-paginator>
+
+    <button mat-raised-button color="primary" class="new-entity-button" (click)="create()">
+        {{'templates.button.create' | translate}}
+    </button>
+
+    <p class="empty-table" *ngIf="dataSource.length === 0">{{'templates.empty' | translate}}</p>
+
+    <mat-accordion *ngIf="dataSource.length > 0" class="headers-align">
+        <mat-expansion-panel *ngFor="let element of dataSource"
+                             [expanded]="element.isNew">
+            <mat-expansion-panel-header>
+                <mat-panel-title></mat-panel-title>
+                <mat-panel-description>
+                    {{!element.isNew ? element.positionName : ''}}
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <button mat-raised-button color="primary" class="new-entity-button" [disabled]="!isReadyToUpdate()"
+                    *ngIf="element.isEdit"
+                    (click)="update(element)">
+                {{'templates.button.save' | translate}}
+            </button>
+
+            <button mat-raised-button color="link" class="new-entity-button" *ngIf="element.isEdit"
+                    (click)="cancelEdit(element)">
+                {{'templates.button.cancel' | translate}}
+            </button>
+
+            <button mat-raised-button color="accent" class="new-entity-button" *ngIf="!element.isEdit"
+                    (click)="makeEdit(element)">
+                {{'templates.button.change' | translate}}
+            </button>
+
+            <button mat-raised-button color="warn" class="new-entity-button" (click)="remove(element)">
+                {{'templates.button.remove' | translate}}
+            </button>
+
+            <mat-list role="list" *ngIf="!element.isEdit">
+                <mat-list-item role="listitem">{{'templates.items.positionName' | translate}}
+                    : {{element.positionName}}
+                </mat-list-item>
+            </mat-list>
+
+            <mat-accordion *ngIf="!element.isEdit">
+                <mat-expansion-panel hideToggle>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            {{'templates.items.criterias' | translate}}
+                        </mat-panel-title>
+                        <mat-panel-description>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <mat-list role="list">
+                        <mat-list-item role="listitem" *ngFor="let criteria of element.criterias">
+                            {{criteria.name}}
+                        </mat-list-item>
+                    </mat-list>
+                </mat-expansion-panel>
+            </mat-accordion>
+
+            <mat-list role="list" *ngIf="element.isEdit" class="item-change-element">
+                <mat-list-item role="listitem" class="item-input-element">
+                    <mat-form-field appearance="outline">
+                        <mat-label>{{'templates.items.positionName' | translate}}</mat-label>
+                        <input matInput type="text" placeholder="{{'templates.items.positionName' | translate}}"
+                               [(ngModel)]="newTemplate.positionName">
+                    </mat-form-field>
+                </mat-list-item>
+                <mat-list-item role="listitem" class="item-input-element" *ngIf="!element.isNew">
+                    <button mat-raised-button color="link" class="new-entity-button" *ngIf="element.isEdit"
+                            (click)="openEditCriterias(element)">
+                        {{'templates.button.editCriterias' | translate}}
+                    </button>
+                </mat-list-item>
+            </mat-list>
+
+        </mat-expansion-panel>
+    </mat-accordion>
+
+</div>

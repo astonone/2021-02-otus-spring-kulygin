@@ -1,0 +1,20 @@
+<div class="batch">
+    <button mat-raised-button color="primary" class="refresh-button" (click)="loadLastJobInfo()">
+        {{'batch.button.refresh' | translate}}
+    </button>
+    <div class="job-info">
+        <p>
+            {{lastJobInfo}}
+        </p>
+    </div>
+    <div class="upload-wrapper">
+        <mat-label>{{'batch.upload' | translate}}</mat-label>
+        <label class="btn btn-default">
+            <input class="upload-container-item" type="file" name="file" (change)="selectFile($event)"/>
+        </label>
+        <button mat-raised-button color="warn" class="upload-button" [disabled]="files === null" (click)="upload()">
+            {{'batch.button.upload' | translate}}
+        </button>
+    </div>
+
+</div>

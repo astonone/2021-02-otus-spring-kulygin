@@ -1,0 +1,11 @@
+${AnsiBackground.BLUE}  _   _  __   __  ____    _____   ____    ___  __  __
+ | | | | \ \ / / / ___|  |_   _| |  _ \  |_ _| \ \/ /
+${AnsiBackground.BLACK} | |_| |  \ V /  \___ \    | |   | |_) |  | |   \  /
+ |  _  |   | |    ___) |   | |   |  _ <   | |   /  \
+${AnsiBackground.BRIGHT_WHITE} |_| |_|   |_|   |____/    |_|   |_| \_\ |___| /_/\_\
+
+${AnsiBackground.DEFAULT}
+
+
+
+

@@ -1,0 +1,41 @@
+server:
+  port: 8005
+
+eureka:
+  client:
+    fetch-registry: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+spring:
+  #Sleuth config
+  sleuth:
+    sampler:
+      probability: 100
+  #Zipkin config
+  zipkin:
+    baseUrl: http://localhost:9411
+  #MongoDB config
+  data:
+    mongodb:
+      host: ${DB_HOST:localhost}
+      port: ${DB_PORT:27017}
+      database: ${DB_NAME:interviewer-interview}
+
+#Mongock config
+mongock:
+  runner-type: InitializingBean
+  change-logs-scan-package:
+    - ru.otus.kulygin.interviewservice.changelogs
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000

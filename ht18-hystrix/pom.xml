@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.4.3</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>ru.otus.kulygin</groupId>
+    <artifactId>ht18-hystrix</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>ht18-hystrix</name>
+    <description>Library of books testing project for Spring Boot and spring data mongodb and spring security and actuator and Hystrix and Angular wrapped to Docker</description>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>ht18-client</module>
+        <module>ht18-server</module>
+    </modules>
+
+    <properties>
+        <java.version>11</java.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+    </properties>
+
+</project>

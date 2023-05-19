@@ -1,0 +1,16 @@
+﻿@import "~bootstrap/dist/css/bootstrap.css";
+
+a {
+    cursor: pointer;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+}

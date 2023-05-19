@@ -1,0 +1,46 @@
+server:
+  port: 8002
+
+eureka:
+  client:
+    fetch-registry: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+spring:
+  #Sleuth config
+  sleuth:
+    sampler:
+      probability: 100
+  #Zipkin config
+  zipkin:
+    baseUrl: http://localhost:9411
+  #MongoDB config
+  data:
+    mongodb:
+      host: ${DB_HOST:localhost}
+      port: ${DB_PORT:27017}
+      database: ${DB_NAME:interviewer-user}
+
+#Mongock config
+mongock:
+  runner-type: InitializingBean
+  change-logs-scan-package:
+    - ru.otus.kulygin.userservice.changelogs
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+
+app:
+  admin:
+    # mySecret777
+    secret-key: $2a$10$Uke6zNBEQbaDz5MVLlX8ze0.pG5bMO2aF68QpYrejxbX8uUeDJ.lq

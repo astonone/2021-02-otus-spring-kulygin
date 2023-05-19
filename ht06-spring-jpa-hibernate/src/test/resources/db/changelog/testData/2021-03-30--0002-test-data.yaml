@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2021-03-30--0002-data-comments
+      author: vkulygin
+      runOnChange: true
+      loadUpdateData:
+        primaryKey: id
+        file: testData/2021-03-30--0004-comments.csv
+        relativeToChangelogFile: true
+        separator: ;
+        quotChar: '"'
+        seperator: ';'
+        encoding: UTF-8
+        tableName: comment
